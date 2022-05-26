@@ -3,9 +3,9 @@
   <button
     class="button button--primary button--large"
     type="button"
-    @click="$router.push({ name: 'dashboard' })"
+    @click="$router.push({ name: 'ccr-home' })"
   >
-    Back to Dashboard
+    Back to Home
   </button>
 </template>
 

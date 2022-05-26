@@ -24,7 +24,7 @@
       /></a>
 
       <nav>
-        <router-link class="header__link" to="/"
+        <router-link class="header__link" to="/dashboard"
           ><BaseIcon name="grid"
         /></router-link>
         <a

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import ViewDashboard from "@/views/ViewDashboard.vue";
 import ViewCRISPRcleanRHome from "@/views/ccr/ViewCRISPRcleanRHome.vue";
 import ViewCRISPRcleanRSubmitJob from "@/views/ccr/ViewCRISPRcleanRSubmitJob.vue";
 import ViewCRISPRcleanRResultsList from "@/views/ccr/ViewCRISPRcleanRResultsList.vue";
@@ -12,24 +11,28 @@ import ViewMessagePage from "@/views/ViewMessagePage.vue";
 
 import CcrAPI from "@/api/ccr.js";
 import { keycloak, authorize } from "@/authentication.js";
+import getEnv from "@/utils/env";
 
-/*test */
+const dashboardURL = getEnv("VUE_APP_DASHBOARD");
+
 const routes = [
   {
-    path: "/",
-    redirect: { name: "dashboard" },
+    path: "/dashboard",
+    beforeEnter() {
+      window.location.href = dashboardURL;
+    }
   },
   {
-    path: "/dashboard",
-    name: "dashboard",
-    component: ViewDashboard,
+    path: "/",
+    redirect: { name: "ccr-home" },
+  },
+  {
+    path: "/ccr/home",
+    name: "ccr-home",
+    component: ViewCRISPRcleanRHome,
     meta: {
       layout: "web",
     },
-  },
-  {
-    path: "/ccr",
-    redirect: { name: "ccr-home" },
   },
   {
     path: "/ccr/terms-and-conditions",
@@ -45,14 +48,6 @@ const routes = [
     component: ViewCRISPRcleanRTermsDataProcessing,
     meta: {
       layout: "msg",
-    },
-  },
-  {
-    path: "/ccr/home",
-    name: "ccr-home",
-    component: ViewCRISPRcleanRHome,
-    meta: {
-      layout: "web",
     },
   },
   {

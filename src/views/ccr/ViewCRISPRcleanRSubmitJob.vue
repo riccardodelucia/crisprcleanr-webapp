@@ -12,7 +12,7 @@
 
 <script>
 import { interpret } from "xstate";
-import { submitJobMachine } from "@/machines/ccr/submitJobMachine.js";
+import { submitJobMachine } from "@/machines/submitJobMachine.js";
 import FormFill from "@/components/ccr/FormFill.vue";
 export default {
   title: "Submit New Job",

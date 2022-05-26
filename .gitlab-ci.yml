@@ -7,7 +7,7 @@ stages:
 
 variables:
     BUILD_VERSION: $CI_COMMIT_SHORT_SHA
-
+    IMAGE_NAME: crisprcleanr_webapp
 
 lint-dockerfile:
   stage: .pre
@@ -52,7 +52,6 @@ build image:
     entrypoint: [""]
   variables:
     PATH_DOCKERFILE: $CI_PROJECT_DIR
-    IMAGE_NAME: iorio_apps
   script:
     - ls $CI_PROJECT_DIR/dist
     - mkdir -p /kaniko/.docker
@@ -70,7 +69,7 @@ test docker image:
   variables:
     VERSION: latest
   services:
-    - name: "gitlab.fht.org:5050/riccardo.delucia/iorio-apps/iorio_apps:$VERSION"
+    - name: "$CI_REGISTRY_IMAGE/$IMAGE_NAME:$VERSION"
       alias: website
   script:
     - curl http://website/build.html | grep $BUILD_VERSION
@@ -112,7 +111,7 @@ deploy to staging:
   extends: .deploy to environment
   variables:
     VM_NAME: combio-dev01.fht.org
-    VM_TARGET_DIR: /home/riccardo.delucia/deploy/iorio-apps
+    VM_TARGET_DIR: /home/riccardo.delucia/deploy/crisprcleanr_webapp
     ENV_FILE: staging.env
     USER: riccardo.delucia
     VERSION: latest
