@@ -4,62 +4,46 @@
       <div class="menu__item"></div>
     </div>
   </div>
-  <div
-    v-if="showSideNav && collapsible"
-    class="overlay"
-    @click="manageSidenav(false)"
-  ></div>
+  <div v-if="showSideNav && collapsible" class="overlay" @click="manageSidenav(false)"></div>
 
-  <nav
-    class="sidenav"
-    :class="{
-      'sidenav--collapsible': collapsible,
-      'sidenav--active': showSideNav,
-    }"
-  >
-    <div class="sidenav__title">{{ app.title }}</div>
+  <nav class="sidenav" :class="{
+    'sidenav--collapsible': collapsible,
+    'sidenav--active': showSideNav,
+  }">
+    <div class="sidenav__title">{{ sidenavObject.title }}</div>
     <ul class="sidenav__list">
-      <li
-        v-for="link in app.links"
-        class="sidenav__item"
-        :key="link.id"
-        @click="linkClick(link.url)"
-        :class="{ 'sidenav__item--active': $route.path.includes(link.url) }"
-      >
+      <li v-for="link in sidenavObject.links" class="sidenav__item" :key="link.id" @click="linkClick(link.url)"
+        :class="{ 'sidenav__item--active': $route.path.includes(link.url) }">
         <span class="sidenav__label">{{ link.label }}</span>
       </li>
     </ul>
-    <div
-      v-if="collapsible"
-      class="sidenav__close"
-      @click="manageSidenav(false)"
-    >
-      <span>hide</span><BaseIcon name="chevrons-left"></BaseIcon>
+    <div v-if="collapsible" class="sidenav__close" @click="manageSidenav(false)">
+      <span>hide</span>
+      <BaseIcon name="chevrons-left"></BaseIcon>
     </div>
   </nav>
 </template>
 
 <script>
-import apps from "@/sidenav_apps.json";
-import { ref, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { resizeListener } from "@/composables/utilities.js";
 
 export default {
   name: "TheSidenav",
+  props: {
+    sidenavObject: {
+      type: Object,
+      required: true
+    }
+  },
   setup() {
-    const route = useRoute();
     const router = useRouter();
 
     const collapsible = ref(false);
     const showSideNav = ref(false);
 
     resizeListener(() => (collapsible.value = window.innerWidth < 1100));
-
-    const app = computed(() => {
-      const key = Object.keys(apps).find((key) => route.path.includes(key));
-      return !key ? {} : { title: apps[key].title, links: apps[key].links };
-    });
 
     const manageSidenav = (value) => {
       showSideNav.value = value;
@@ -76,7 +60,6 @@ export default {
     return {
       collapsible,
       showSideNav,
-      app,
       linkClick,
       manageSidenav,
     };
@@ -117,6 +100,7 @@ export default {
         background-color: white;
         transform: translateY(-1.2rem);
       }
+
       &:after {
         background-color: white;
         transform: translateY(1rem);
@@ -178,7 +162,9 @@ export default {
     &--active {
       background-color: var(--color-green-lighter);
     }
+
     padding: 0.2em 0.3em;
+
     * {
       display: block;
       width: 100%;
@@ -195,6 +181,7 @@ export default {
     &:focus {
       cursor: pointer;
       background-color: var(--color-green-lighter);
+
       .sidenav__label {
         transform: translateX(0.5em);
         transition: transform 0.3s ease-in-out;

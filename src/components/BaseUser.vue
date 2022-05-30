@@ -17,7 +17,7 @@ import { useStore } from "vuex";
 import { resizeListener } from "@/composables/utilities.js";
 
 export default {
-  name: "User",
+  name: "BaseUser",
   setup() {
     const store = useStore();
     const keycloak = inject("keycloak");
@@ -76,8 +76,7 @@ export default {
       width: 0;
       height: 0;
       border: 5px solid transparent;
-      border-color: var(--color-text-dark-blue) transparent transparent
-        transparent;
+      border-color: var(--color-text-dark-blue) transparent transparent transparent;
     }
   }
 
@@ -94,9 +93,11 @@ export default {
     a {
       text-decoration: none;
     }
+
     a:hover {
       text-decoration: underline;
     }
+
     a:link,
     a:visited {
       color: inherit;

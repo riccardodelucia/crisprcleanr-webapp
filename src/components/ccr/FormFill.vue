@@ -1,88 +1,44 @@
 <template>
-  <form class="card ccr-form" ref="form" @submit="submit">
+  <form class="card job-form" ref="form" @submit="submit">
     <div class="form__group">
-      <BaseInput
-        label="Title"
-        v-model.trim="title"
-        type="text"
-        placeholder="Your title here"
-        :error="errors.title"
-      >
+      <BaseInput label="Title" v-model.trim="title" type="text" placeholder="Your title here" :error="errors.title">
       </BaseInput>
     </div>
     <div class="form__group">
-      <BaseInput
-        label="Email (optional)"
-        :modelValue="email"
-        @change="emailChange"
-        type="email"
-        placeholder="Your email here"
-        :error="errors.email"
-      >
+      <BaseInput label="Email (optional)" :modelValue="email" @change="emailChange" type="email"
+        placeholder="Your email here" :error="errors.email">
       </BaseInput>
     </div>
     <div class="form__group">
-      <BaseInput
-        label="Data label"
-        v-model="label"
-        type="text"
-        placeholder="Your data label here"
-        :error="errors.label"
-      >
+      <BaseInput label="Data label" v-model="label" type="text" placeholder="Your data label here"
+        :error="errors.label">
       </BaseInput>
     </div>
 
     <div class="form__group">
-      <BaseSelect
-        label="Library"
-        :options="Object.keys(config.libraries)"
-        v-model="library"
-        :error="errors.library"
-      >
+      <BaseSelect label="Library" :options="Object.keys(config.libraries)" v-model="library" :error="errors.library">
       </BaseSelect>
     </div>
 
     <div class="form__group">
-      <BaseInput
-        label="Minimal number of reads in the control sample"
-        v-model.number="normMinReads"
-        type="number"
-        :error="errors.normMinReads"
-      >
+      <BaseInput label="Minimal number of reads in the control sample" v-model.number="normMinReads" type="number"
+        :error="errors.normMinReads">
       </BaseInput>
     </div>
     <div class="form__group">
-      <BaseInput
-        label="Number of controls"
-        v-model.number="nControls"
-        type="number"
-        :error="errors.nControls"
-      >
+      <BaseInput label="Number of controls" v-model.number="nControls" type="number" :error="errors.nControls">
       </BaseInput>
     </div>
     <div class="form__group">
-      <BaseSelect
-        label="Normalization Method"
-        :options="Object.keys(methods)"
-        v-model="method"
-        :error="errors.method"
-      >
+      <BaseSelect label="Normalization Method" :options="Object.keys(methods)" v-model="method" :error="errors.method">
       </BaseSelect>
     </div>
     <div class="form__group">
-      <BaseTextarea
-        label="Notes"
-        v-model="notes"
-        placeholder="Your notes here"
-      />
+      <BaseTextarea label="Notes" v-model="notes" placeholder="Your notes here" />
     </div>
     <div class="form__group">
-      <BaseInputFile
-        class="button button--secondary button--large"
-        label="File"
-        v-model="fileCounts"
-        :error="errors.fileCounts"
-      >
+      <BaseInputFile class="button button--secondary button--large" label="File" v-model="fileCounts"
+        :error="errors.fileCounts">
       </BaseInputFile>
     </div>
 
@@ -140,7 +96,7 @@ export default {
     const buildResultsUrl = () => {
       const routePath = router
         .getRoutes()
-        .find((item) => item.name === "ccr-results-id").path;
+        .find((item) => item.name === "resultsId").path;
       const staticPath = routePath.includes("/:")
         ? routePath.split(":")[0]
         : routePath;
@@ -196,7 +152,8 @@ export default {
 .submit-button {
   width: 100%;
 }
-.ccr-form {
+
+.job-form {
   max-width: 50rem;
   display: flex;
   flex-direction: column;

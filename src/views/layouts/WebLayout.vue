@@ -1,17 +1,25 @@
 <template>
   <div class="layout layout--web">
-    <TheHeader layout="web"></TheHeader>
-    <div class="content"><slot></slot></div>
-    <TheFooter></TheFooter>
+    <div class="header-container">
+      <TheHeader></TheHeader>
+    </div>
+    <div class="content">
+      <router-view />
+    </div>
+    <div class="footer-container">
+      <BaseFooter></BaseFooter>
+    </div>
   </div>
 </template>
 
 <script>
-import TheHeader from "@/components/TheHeader";
-import TheFooter from "@/components/TheFooter";
+import TheHeader from "@/components/ccr/TheHeader";
+
 
 export default {
   name: "WebLayout",
-  components: { TheHeader, TheFooter },
+  components: { TheHeader }
 };
 </script>
+
+

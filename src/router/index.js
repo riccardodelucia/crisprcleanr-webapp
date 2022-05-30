@@ -1,11 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import ViewCRISPRcleanRHome from "@/views/ccr/ViewCRISPRcleanRHome.vue";
-import ViewCRISPRcleanRSubmitJob from "@/views/ccr/ViewCRISPRcleanRSubmitJob.vue";
-import ViewCRISPRcleanRResultsList from "@/views/ccr/ViewCRISPRcleanRResultsList.vue";
-import ViewCRISPRcleanRResultsByID from "@/views/ccr/ViewCRISPRcleanRResultsByID.vue";
-import ViewCRISPRcleanRTermsAndConditions from "@/views/ccr/ViewCRISPRcleanRTermsAndConditions.vue";
-import ViewCRISPRcleanRTermsDataProcessing from "@/views/ccr/ViewCRISPRcleanRTermsDataProcessing.vue";
+import WebLayout from "@/views/layouts/WebLayout";
+import AppLayout from "@/views/layouts/AppLayout";
+
+import ViewHome from "@/views/ViewHome.vue";
+import ViewSubmitJob from "@/views/ViewSubmitJob.vue";
+import ViewResultsList from "@/views/ViewResultsList.vue";
+import ViewResultsByID from "@/views/ViewResultsByID.vue";
+import ViewTermsAndConditions from "@/views/ViewTermsAndConditions.vue";
+import ViewTermsDataProcessing from "@/views/ViewTermsDataProcessing.vue";
 
 import ViewMessagePage from "@/views/ViewMessagePage.vue";
 
@@ -20,104 +23,107 @@ const routes = [
     path: "/dashboard",
     beforeEnter() {
       window.location.href = dashboardURL;
-    }
+    },
   },
   {
     path: "/",
-    redirect: { name: "ccr-home" },
+    component: WebLayout,
+    children: [
+      {
+        path: "home",
+        name: "home",
+        component: ViewHome,
+      },
+      {
+        path: "terms-and-conditions",
+        name: "termsAndConditions",
+        component: ViewTermsAndConditions,
+      },
+      {
+        path: "terms-data-processing",
+        name: "termsDataProcessing",
+        component: ViewTermsDataProcessing,
+      },
+    ],
   },
   {
-    path: "/ccr/home",
-    name: "ccr-home",
-    component: ViewCRISPRcleanRHome,
-    meta: {
-      layout: "web",
-    },
-  },
-  {
-    path: "/ccr/terms-and-conditions",
-    name: "termsAndConditions",
-    component: ViewCRISPRcleanRTermsAndConditions,
-    meta: {
-      layout: "msg",
-    },
-  },
-  {
-    path: "/ccr/terms-data-processing",
-    name: "termsDataProcessing",
-    component: ViewCRISPRcleanRTermsDataProcessing,
-    meta: {
-      layout: "msg",
-    },
-  },
-  {
-    path: "/ccr/submit",
-    name: "ccr-submit",
+    path: "/submit",
     meta: {
       requiresAuth: true,
-      layout: "app",
     },
-    component: ViewCRISPRcleanRSubmitJob,
-    beforeEnter: (to, from, next) => {
-      return CcrAPI.getStaticResource("job_config.json")
-        .then((response) => {
-          to.params.config = response.data;
-          next();
-        })
-        .catch((error) => {
-          next({ name: "error", params: { message: error } });
-        });
-    },
+    component: AppLayout,
+    children: [
+      {
+        path: "",
+        name: "submit",
+        component: ViewSubmitJob,
+        beforeEnter: (to, from, next) => {
+          return CcrAPI.getStaticResource("job_config.json")
+            .then((response) => {
+              to.params.config = response.data;
+              next();
+            })
+            .catch((error) => {
+              next({ name: "error", params: { message: error } });
+            });
+        },
+      },
+    ],
   },
   {
-    path: "/ccr/results",
-    name: "ccr-results-list",
-    component: ViewCRISPRcleanRResultsList,
-    meta: {
-      requiresAuth: true,
-      layout: "app",
-    },
-    props: true,
-    beforeEnter(to, from, next) {
-      CcrAPI.getResultsList()
-        .then((response) => {
-          to.params.results = response.data;
-          next();
-        })
-        .catch((error) => {
-          next({ name: "error", params: { message: error } });
-        });
-    },
+    path: "/jobs",
+    component: AppLayout,
+    children: [
+      {
+        path: "",
+        name: "resultsList",
+        component: ViewResultsList,
+        meta: {
+          requiresAuth: true,
+        },
+        props: true,
+        beforeEnter(to, from, next) {
+          CcrAPI.getResultsList()
+            .then((response) => {
+              to.params.results = response.data;
+              next();
+            })
+            .catch((error) => {
+              next({ name: "error", params: { message: error } });
+            });
+        },
+      },
+      {
+        path: ":id",
+        name: "resultsId",
+        component: ViewResultsByID,
+        meta: {
+          requiresAuth: true,
+        },
+        props: true,
+        beforeEnter(to, from, next) {
+          CcrAPI.getResultByID(to.params.id)
+            .then((response) => {
+              to.params.result = response.data;
+              next();
+            })
+            .catch((error) => {
+              if (error.response) {
+                switch (error.response.status) {
+                  case 404:
+                    next("/404");
+                    break;
+                  default:
+                    next({ name: "error" });
+                    break;
+                }
+              } else next({ name: "error" });
+            });
+        },
+      },
+    ],
   },
-  {
-    path: "/ccr/results/:id",
-    name: "ccr-results-id",
-    component: ViewCRISPRcleanRResultsByID,
-    meta: {
-      requiresAuth: true,
-      layout: "app",
-    },
-    props: true,
-    beforeEnter(to, from, next) {
-      CcrAPI.getResultByID(to.params.id)
-        .then((response) => {
-          to.params.result = response.data;
-          next();
-        })
-        .catch((error) => {
-          if (error.response) {
-            switch (error.response.status) {
-              case 404:
-                next("/404");
-                break;
-              default:
-                next({ name: "error" });
-                break;
-            }
-          } else next({ name: "error" });
-        });
-    },
-  },
+
   {
     path: "/error",
     name: "error",
@@ -127,9 +133,6 @@ const routes = [
       return;
     },
     props: true,
-    meta: {
-      layout: "msg",
-    },
   },
   {
     path: "/:catchAll(.*)",
@@ -141,9 +144,6 @@ const routes = [
       return;
     },
     props: true,
-    meta: {
-      layout: "msg",
-    },
   },
 ];
 

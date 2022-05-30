@@ -65,19 +65,38 @@ body {
   min-height: 100vh;
 
   &--web {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: min-content 1fr min-content;
 
-    .footer {
-      grid-row: -2/ -1;
-    }
-    .content {
-      grid-row: 2 / 3;
+    .header-container, .content, .footer-container{
       display: grid;
       grid-template-columns:
         minmax(5rem, 1fr) repeat(10, minmax(min-content, 15rem))
         minmax(5rem, 1fr);
+    }
+
+    .header, .content, .footer{
+      grid-column: 2/ -2;
+    }
+
+    .header-container{
+      background-image: linear-gradient(to right,
+      var(--color-gradient-blue-0) 0%,
+      var(--color-gradient-blue-100) 5%,
+      var(--color-gradient-green-0) 95%,
+      var(--color-gradient-green-100) 100%);
+      background-size: cover;
+      background-repeat: no-repeat;
+
+      .header{
+        background-color: transparent;
+      }
+    }
+
+    .footer-container{
+      background-color: var(--color-blue-light);
+
+      .footer{
+        background-color: transparent;
+      }
     }
   }
 
@@ -96,6 +115,14 @@ body {
     .header {
       grid-row: 1 / 2;
       grid-column: 2 / -1;
+
+      background-image: linear-gradient(to right,
+      var(--color-gradient-blue-0) 0%,
+      var(--color-gradient-blue-100) 5%,
+      var(--color-gradient-green-0) 95%,
+      var(--color-gradient-green-100) 100%);
+      background-size: cover;
+      background-repeat: no-repeat;
 
       @media only screen and (max-width: 600px) {
         grid-row: 2 / 3;
@@ -118,6 +145,7 @@ body {
       grid-column: 2 / -1;
       grid-row: 2 / -1;
       background-color: var(--color-grey-background);
+      padding: 1.5em 2em 1em 2em;
 
       @media only screen and (max-width: 600px) {
         grid-row: 3 / 4;
@@ -144,10 +172,6 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
   }
-}
-
-.layout-ccr {
-  padding: 1.5em 2em 1em 2em;
 }
 
 ul {

@@ -18,9 +18,8 @@
     </p>
     <p>
       This document contains the general terms and conditions governing the
-      relationship between HT and the users (hereinafter, also "<b
-        >Terms and Conditions</b
-      >" or "<b>T&C</b>"), within the scope of the Web-App's functionalities.
+      relationship between HT and the users (hereinafter, also "<b>Terms and Conditions</b>" or "<b>T&C</b>"), within
+      the scope of the Web-App's functionalities.
     </p>
     <p>
       Access to the Reserved Area of the Web-App is subject to acceptance of
@@ -338,21 +337,15 @@
     <p class="terms__update">
       This Privacy Policy is updated to April 14, 2022.
     </p>
-    <button
-      class="button button--primary button--large"
-      type="button"
-      @click="$router.push({ name: 'dashboard' })"
-    >
-      Back to Dashboard
+    <button class="button button--primary button--large" type="button" @click="$router.push({ name: 'home' })">
+      Back to Home
     </button>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "ViewCRISPRcleanRTermsAndConditions",
 };
 </script>
-
-<style lang="scss" scoped>
-</style>

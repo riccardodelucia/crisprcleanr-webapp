@@ -1,13 +1,7 @@
 <template>
-  <div class="layout-ccr">
-    <h2 class="u-margin-bottom-small">Submit a new job</h2>
-    <FormFill
-      v-if="currentState === 'idle'"
-      @nav="updateService($event)"
-      :config="$route.params.config"
-    />
-    <p v-else-if="currentState === 'submitting'">Submitting...</p>
-  </div>
+  <h2 class="u-margin-bottom-small">Submit a new job</h2>
+  <FormFill v-if="currentState === 'idle'" @nav="updateService($event)" :config="$route.params.config" />
+  <p v-else-if="currentState === 'submitting'">Submitting...</p>
 </template>
 
 <script>
@@ -47,4 +41,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

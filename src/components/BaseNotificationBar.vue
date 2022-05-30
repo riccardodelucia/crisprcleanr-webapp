@@ -10,6 +10,7 @@
 
 <script>
 export default {
+  name: "BaseNotificationBar",
   props: {
     notification: {
       type: Object,
@@ -29,4 +30,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

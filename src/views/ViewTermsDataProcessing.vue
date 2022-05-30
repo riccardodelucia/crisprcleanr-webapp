@@ -11,9 +11,8 @@
       Levi-Montalcini 1, 20157, Milano (MI), Italia, Tel. +39/02 30247001,
       e-mail: gdpr@fht.org (hereinafter, also “<b>HT</b>” or “<b>Foundation</b>”
       or “<b>Data Controller</b>”), makes available to all interested users
-      (hereinafter, also “<b>Users</b>” and, individually “<b>User</b>” or “<b
-        >Data subjects</b
-      >” and, individually “<b>Data subject</b>”), a Web-App, named
+      (hereinafter, also “<b>Users</b>” and, individually “<b>User</b>” or “<b>Data subjects</b>” and, individually
+      “<b>Data subject</b>”), a Web-App, named
       “CRISPRcleanR Web App (Beta)”, aimed at allowing users, free of charge,
       the unsupervised correction of gene-independent effects in CRISPR knockout
       screens encompassing pre-processing and normalization of single-guide RNA
@@ -173,61 +172,16 @@
     <p class="terms__update">
       This Privacy Policy is updated to April 14, 2022.
     </p>
-    <button
-      class="button button--primary button--large"
-      type="button"
-      @click="$router.push({ name: 'dashboard' })"
-    >
-      Back to Dashboard
+    <button class="button button--primary button--large" type="button" @click="$router.push({ name: 'home' })">
+      Back to Home
     </button>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "ViewCRISPRcleanRTermsDataProcessing",
 };
 </script>
 
-<style lang="scss">
-.terms {
-  max-width: 100rem;
-  background-color: white;
-  padding: 1em 2em;
-  max-height: 90vh;
-  overflow-y: scroll;
-
-  &__title {
-    margin-bottom: 5rem;
-    text-align: center;
-  }
-
-  &__subtitle {
-    text-align: center;
-    margin-bottom: 0.8em;
-  }
-
-  &__list {
-    &--indent {
-      margin-left: 20px;
-    }
-  }
-
-  &__list-item {
-    list-style-position: inside;
-    line-height: 2;
-  }
-
-  &__article {
-    margin-top: 5rem;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-  &__update {
-    margin-top: 4rem;
-    margin-bottom: 3rem;
-    text-align: right;
-    font-style: italic;
-  }
-}
-</style>

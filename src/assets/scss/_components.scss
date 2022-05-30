@@ -359,3 +359,46 @@
     }
   }
 }
+
+/////////////////////////////////////////////////
+// TERMS AND CONDITIONS
+.terms {
+  grid-column: 2 / -2;
+  background-color: white;
+  padding: 1em 2em;
+  overflow-y: scroll;
+
+  &__title {
+    margin-bottom: 5rem;
+    text-align: center;
+  }
+
+  &__subtitle {
+    text-align: center;
+    margin-bottom: 0.8em;
+  }
+
+  &__list {
+    &--indent {
+      margin-left: 20px;
+    }
+  }
+
+  &__list-item {
+    list-style-position: inside;
+    line-height: 2;
+  }
+
+  &__article {
+    margin-top: 5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  &__update {
+    margin-top: 4rem;
+    margin-bottom: 3rem;
+    text-align: right;
+    font-style: italic;
+  }
+}

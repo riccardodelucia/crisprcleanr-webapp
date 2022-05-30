@@ -1,33 +1,29 @@
 <template>
-  <div class="layout-ccr">
-    <h2 class="u-margin-bottom-medium">Results</h2>
-    <div class="results-container">
-      <BaseDatatable :columns="columns" :rows="results">
-        <template v-slot:default="slotProps">
-          <tr>
-            <td v-if="!isMobile">
-              {{ date(slotProps.row.dateTime) }}
-            </td>
-            <td v-if="!isMobile">{{ slotProps.row.email }}</td>
-            <td>{{ slotProps.row.title }}</td>
-            <td>{{ slotProps.row.status }}</td>
+  <h2 class="u-margin-bottom-medium">Results</h2>
+  <div class="results-table">
+    <BaseDatatable :columns="columns" :rows="results">
+      <template v-slot:default="slotProps">
+        <tr>
+          <td v-if="!isMobile">
+            {{ date(slotProps.row.dateTime) }}
+          </td>
+          <td v-if="!isMobile">{{ slotProps.row.email }}</td>
+          <td>{{ slotProps.row.title }}</td>
+          <td>{{ slotProps.row.status }}</td>
 
-            <td>
-              <button
-                class="button button--ghost button--large"
-                @click="$router.push(`/ccr/results/${slotProps.row.id}`)"
-              >
-                Show
-              </button>
-            </td>
-          </tr>
-        </template>
-      </BaseDatatable>
-    </div>
+          <td>
+            <button class="button button--ghost button--large" @click="$router.push(`/jobs/${slotProps.row.id}`)">
+              Show
+            </button>
+          </td>
+        </tr>
+      </template>
+    </BaseDatatable>
   </div>
 </template>
 
 <script>
+
 import { date } from "@/composables/utilities.js";
 import { ref, watchEffect } from "vue";
 import { resizeListener } from "@/composables/utilities.js";
@@ -35,7 +31,6 @@ import { resizeListener } from "@/composables/utilities.js";
 export default {
   title: "Jobs Results",
   name: "ViewCRISPRcleanRResultsList",
-  components: {},
   props: {
     results: {
       type: Array,
@@ -87,8 +82,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.results-container {
+<style lang="scss">
+.results-table {
   max-width: 150rem;
 }
 </style>

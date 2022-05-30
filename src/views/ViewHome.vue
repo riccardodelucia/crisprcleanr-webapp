@@ -1,36 +1,25 @@
 <template>
-  <div class="ccr-hero">
-    <div class="ccr-hero__container">
-      <img
-        class="ccr-hero__logo"
-        src="@/assets/logos/ccr-logo.svg"
-        alt="CRISPRcleanR logo"
-      />
-      <h1 class="ccr-hero__title">Welcome to CRISPRcleanR Web App (Beta)</h1>
-      <p class="ccr-hero__text">
+  <div class="hero">
+    <div class="hero__container">
+      <img class="hero__logo" src="@/assets/logos/ccr-logo.svg" alt="CRISPRcleanR logo" />
+      <h1 class="hero__title">Welcome to CRISPRcleanR Web App (Beta)</h1>
+      <p class="hero__text">
         CRISPRcleanR is a tool for the unsupervised correction of
         gene-independent effects in CRISPR knockout screens encompassing
         pre-processing and normalization of single-guide RNA counts,
         pre/post-correction quality-control assessment and interactive
         visualizations.
       </p>
-      <button
-        @click="$router.push('/ccr/submit')"
-        class="button button--primary button--large ccr-hero__btn--start"
-        type="button"
-      >
+      <button @click="$router.push({ name: 'submit' })" class="button button--primary button--large hero__btn--start"
+        type="button">
         Start Here
       </button>
-      <button
-        class="button button--ghost button--large ccr-hero__btn--download"
-        type="button"
-        @click="downloadSampleData"
-      >
+      <button class="button button--ghost button--large hero__btn--download" type="button" @click="downloadSampleData">
         Download Example Input Data
       </button>
     </div>
   </div>
-  <section class="ccr-section section-cards">
+  <section class="section section-cards">
     <div class="card-step">
       <div>
         <div class="card-step__icon-container card-step__icon-container--1">
@@ -72,7 +61,7 @@
       </p>
     </div>
   </section>
-  <section class="ccr-section section-security">
+  <section class="section section-security">
     <div class="section-security__promo">
       <h2>Your data in a secure place 🔐</h2>
       <p>
@@ -93,7 +82,7 @@
     </div>
     <img src="@/assets/img/login.png" alt="login form" />
   </section>
-  <section class="ccr-section section-howitworks">
+  <section class="section section-howitworks">
     <h2>How it works ⚙️</h2>
     <div class="section-howitworks__text">
       <p>
@@ -126,33 +115,16 @@
         <b>HT-29</b> cell lines with the <b>KY_Library_v1.0</b> (which should be
         selected in the job submission form) and it is part of the
         <a href="https://score.depmap.sanger.ac.uk/ ">Project Score dataset</a>
-        (<a href="https://academic.oup.com/nar/article/49/D1/D1365/5929235"
-          >Dwane et al. 2021</a
-        >,
-        <a href="https://www.nature.com/articles/s41586-019-1103-9"
-          >Behan et al. 2019</a
-        >)
+        (<a href="https://academic.oup.com/nar/article/49/D1/D1365/5929235">Dwane et al. 2021</a>,
+        <a href="https://www.nature.com/articles/s41586-019-1103-9">Behan et al. 2019</a>)
       </p>
     </div>
     <img src="@/assets/img/excel.png" alt="excel sheet" />
-    <!--  <p class="section-howitworks__example">
-      See, for example, the format of the
-      <b>downloadable dataset</b> example input data at the top of this page.
-      This data encompasses single guide RNA counts derived from screening the
-      <b>HT-29</b> cell lines with the <b>KY_Library_v1.0</b> (which should be
-      selected in the job submission form) and it is part of the
-      <a href="https://score.depmap.sanger.ac.uk/ ">Project Score dataset</a>
-      (<a href="https://score.depmap.sanger.ac.uk/">Dwane et al. 2021</a>,
-      <a href="https://www.nature.com/articles/s41586-019-1103-9"
-        >Behan et al. 2019</a
-      >)
-    </p> -->
-
     <BaseAccordion class="section-howitworks__accordion">
       <template v-slot:title>Step 1️⃣ : submit your job</template>
       <template v-slot:content>
         <div class="text-small">
-          <video controls class="ccr-section__video">
+          <video controls class="section__video">
             <source src="@/assets/videos/submission.mp4" type="video/mp4" />
           </video>
           <p>
@@ -188,8 +160,8 @@
               <b>Library: </b>Choose the library used for the current experiment
             </li>
             <li>
-              <b>Minimal number of reads in the control sample (default 30): </b
-              >This parameter defines a filtering threshold value for sgRNAs,
+              <b>Minimal number of reads in the control sample (default 30): </b>This parameter defines a filtering
+              threshold value for sgRNAs,
               based on their average counts in the control sample. Specifically,
               it indicates the minimal number of counts that each individual
               sgRNA needs to have in the controls (on average) in order to be
@@ -213,12 +185,10 @@
       </template>
     </BaseAccordion>
     <BaseAccordion class="section-howitworks__accordion">
-      <template v-slot:title
-        >Step 2️⃣: identify and access your results</template
-      >
+      <template v-slot:title>Step 2️⃣: identify and access your results</template>
       <template v-slot:content>
         <div class="text-small">
-          <video controls class="ccr-section__video">
+          <video controls class="section__video">
             <source src="@/assets/videos/results.mp4" type="video/mp4" />
           </video>
           <p>
@@ -239,12 +209,10 @@
     </BaseAccordion>
 
     <BaseAccordion class="section-howitworks__accordion">
-      <template v-slot:title
-        >Step 3️⃣: explore and download your results</template
-      >
+      <template v-slot:title>Step 3️⃣: explore and download your results</template>
       <template v-slot:content>
         <div class="text-small">
-          <video controls class="ccr-section__video">
+          <video controls class="section__video">
             <source src="@/assets/videos/result_by_id.mp4" type="video/mp4" />
           </video>
           <p>
@@ -271,7 +239,7 @@
       </template>
     </BaseAccordion>
   </section>
-  <section class="ccr-section section-charts">
+  <section class="section section-charts">
     <h2>Interactive Charts 📊</h2>
     <p>
       By <b>clicking</b> on each <b>image thumbnail</b> on the job results page
@@ -292,7 +260,7 @@
             area to reset to full view.
           </p>
 
-          <video controls class="ccr-section__video">
+          <video controls class="section__video">
             <source src="@/assets/videos/charts.mp4" type="video/mp4" />
           </video>
         </div>
@@ -302,13 +270,13 @@
 </template>
 
 <script>
+
 import CcrAPI from "@/api/ccr.js";
 import { download } from "@/composables/utilities.js";
 
 export default {
   title: "CRISPRcleanR",
   name: "ViewCRISPRcleanRHome",
-
   methods: {
     downloadSampleData() {
       const filename = "HT-29@KY_Library_v1.0.tsv";
@@ -321,17 +289,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ccr-hero {
+.hero {
   color: #fff;
   padding: 5rem 0;
   grid-column: 1 / -1;
 
-  background-image: linear-gradient(
-      to right bottom,
+  background-image: linear-gradient(to right bottom,
       rgba(#1f59a0, 0.9),
-      rgba(#16355c, 0.9)
-    ),
-    url("../../assets/img/dna-unsplash.jpg");
+      rgba(#16355c, 0.9)),
+    url("../assets/img/dna-unsplash.jpg");
   background-size: cover;
 
   &__container {
@@ -372,6 +338,7 @@ export default {
   &__text {
     grid-column: 2 / 5;
     line-height: 2.5;
+
     @media only screen and (max-width: 800px) {
       grid-column: 1 / -1;
     }
@@ -384,16 +351,19 @@ export default {
       @media only screen and (max-width: 800px) {
         grid-column: 1 / 3;
       }
+
       @media only screen and (max-width: 600px) {
         grid-column: 1 / -1;
       }
     }
+
     &--download {
       grid-column: 3 / 5;
 
       @media only screen and (max-width: 800px) {
         grid-column: 3 / 5;
       }
+
       @media only screen and (max-width: 600px) {
         grid-column: 1 / -1;
       }
@@ -401,7 +371,7 @@ export default {
   }
 }
 
-.ccr-section {
+.section {
   grid-column: 2 / -2;
   padding: 4rem 0;
   row-gap: 3rem;
@@ -447,6 +417,7 @@ export default {
       justify-content: center;
       align-items: center;
       background-color: white;
+
       &--1 {
         color: white;
         background-color: var(--color-blue);
@@ -471,6 +442,7 @@ export default {
 
   &__promo {
     grid-column: 1 / 2;
+
     @media only screen and (max-width: 700px) {
       grid-column: 1 / -1;
     }
@@ -481,6 +453,7 @@ export default {
     width: 100%;
     grid-column: 2 / 3;
     box-shadow: var(--shadow-1);
+
     @media only screen and (max-width: 700px) {
       grid-column: 1 / -1;
     }
@@ -502,6 +475,7 @@ export default {
   h2 {
     grid-row: 1 / 2;
     grid-column: 2 / 3;
+
     @media only screen and (max-width: 700px) {
       grid-column: 1 / -1;
     }
@@ -511,6 +485,7 @@ export default {
     width: 100%;
     grid-row: 1 / -1;
     grid-column: 1 / 2;
+
     @media only screen and (max-width: 700px) {
       grid-column: 1 / -1;
       grid-row: 3 / 4;
@@ -520,10 +495,12 @@ export default {
   &__text {
     grid-row: 2 / 3;
     grid-column: 2 / 3;
+
     @media only screen and (max-width: 700px) {
       grid-column: 1 / -1;
     }
   }
+
   &__accordion {
     grid-column: 1 / -1;
   }

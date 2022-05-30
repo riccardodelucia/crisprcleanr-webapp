@@ -1,17 +1,27 @@
 <template>
   <div class="layout layout--app">
-    <TheSidenav v-model="showSideNav"></TheSidenav>
-    <TheHeader layout="app"></TheHeader>
-    <div class="content"><slot></slot></div>
+    <BaseSidenav :sidenavObject="sidenavObject"></BaseSidenav>
+    <TheHeader></TheHeader>
+    <div class="content">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
-import TheSidenav from "@/components/TheSidenav";
-import TheHeader from "@/components/TheHeader";
+import sidenavObject from "@/sidenav.json";
+
+import TheHeader from "@/components/ccr/TheHeader";
+
 
 export default {
   name: "AppLayout",
-  components: { TheHeader, TheSidenav },
+  components: { TheHeader },
+  data() {
+    return { sidenavObject }
+  }
 };
 </script>
+
+<style lang="scss" scoped>
+</style>
