@@ -1,8 +1,6 @@
 export const namespaced = true;
 export const state = {
-  notifications: [
-    { type: "success", title: "Notification!", message: "Message", timeout: 0 },
-  ],
+  notifications: [],
 };
 
 let nextId = 1;

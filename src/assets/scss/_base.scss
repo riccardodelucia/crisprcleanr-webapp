@@ -66,6 +66,9 @@ body {
 
   &--web {
 
+    display: flex;
+    flex-direction: column;
+
     .header-container, .content, .footer-container{
       display: grid;
       grid-template-columns:
@@ -75,6 +78,10 @@ body {
 
     .header, .content, .footer{
       grid-column: 2/ -2;
+    }
+
+    .content{
+      flex-grow: 1;
     }
 
     .header-container{

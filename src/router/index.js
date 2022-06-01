@@ -27,6 +27,10 @@ const routes = [
   },
   {
     path: "/",
+    redirect: "/home",
+  },
+  {
+    path: "/",
     component: WebLayout,
     children: [
       {
