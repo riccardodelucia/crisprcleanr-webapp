@@ -30,7 +30,7 @@ import { useRouter } from "vue-router";
 import { resizeListener } from "@/composables/utilities.js";
 
 export default {
-  name: "TheSidenav",
+  name: "BaseSidenav",
   props: {
     sidenavObject: {
       type: Object,

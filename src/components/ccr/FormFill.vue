@@ -1,5 +1,5 @@
 <template>
-  <form class="card job-form" ref="form" @submit="submit">
+  <form class="widget job-form" ref="form" @submit="submit">
     <div class="form__group">
       <BaseInput label="Title" v-model.trim="title" type="text" placeholder="Your title here" :error="errors.title">
       </BaseInput>

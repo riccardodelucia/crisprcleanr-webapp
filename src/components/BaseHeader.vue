@@ -22,7 +22,7 @@ export default {
   flex-wrap: wrap;
   align-items: center;
 
-  min-height: 8rem;
+  min-height: 9.5rem;
   padding: 1em 2em;
 
   gap: 2rem;

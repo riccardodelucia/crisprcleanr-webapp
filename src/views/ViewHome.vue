@@ -318,6 +318,7 @@ export default {
 
     @media only screen and (max-width: 800px) {
       grid-column: 1 / -1;
+      grid-row: 1 / 2;
       justify-self: center;
       height: 20rem;
     }
@@ -331,6 +332,7 @@ export default {
 
     @media only screen and (max-width: 800px) {
       grid-column: 1 / -1;
+      grid-row: 2 / 3;
       font-size: 4rem;
     }
   }
@@ -341,6 +343,7 @@ export default {
 
     @media only screen and (max-width: 800px) {
       grid-column: 1 / -1;
+      grid-row: 3 / 4;
     }
   }
 
@@ -350,10 +353,12 @@ export default {
 
       @media only screen and (max-width: 800px) {
         grid-column: 1 / 3;
+        grid-row: 4 / 5;
       }
 
       @media only screen and (max-width: 600px) {
         grid-column: 1 / -1;
+        grid-row: 5 / 6;
       }
     }
 

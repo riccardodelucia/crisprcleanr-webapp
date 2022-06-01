@@ -1,7 +1,7 @@
 <template>
   <h2 class="u-margin-bottom-small">Results</h2>
   <div class="results">
-    <div class="card results__details">
+    <div class="widget results__details">
       <h3 class="u-margin-bottom-small">Details</h3>
       <ul>
         <li><b>Title: </b>{{ result.title }}</li>
@@ -18,7 +18,7 @@
       </ul>
     </div>
     <template v-if="result.status === 'success'">
-      <div class="card results__genes-signatures">
+      <div class="widget results__genes-signatures">
         <ContentLoader v-if="!genesSignatures" viewBox="0 0 520 700">
           <rect x="20" y="5" rx="0" ry="0" width="2" height="700" />
           <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
@@ -31,7 +31,7 @@
         <GenesSignaturesMultichart v-else :data="genesSignatures">
         </GenesSignaturesMultichart>
       </div>
-      <div class="card results__downloads">
+      <div class="widget results__downloads">
         <h3 class="u-margin-bottom-small">Downloads</h3>
         <div>
           <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <BaseAccordion class="card card--color1 results__thumbnails">
+      <BaseAccordion class="widget widget--color1 results__thumbnails">
         <template v-slot:title>Normalization</template>
         <template v-slot:content>
           <div class="thumbnails__content">
@@ -53,7 +53,7 @@
         </template>
       </BaseAccordion>
 
-      <BaseAccordion class="card card--color2 results__thumbnails" height="42rem">
+      <BaseAccordion class="widget widget--color2 results__thumbnails" height="42rem">
         <template v-slot:title>Chromosome Charts</template>
         <template v-slot:content>
           <div class="thumbnails__content">
@@ -63,7 +63,7 @@
         </template>
       </BaseAccordion>
 
-      <BaseAccordion class="card card--color3 results__thumbnails">
+      <BaseAccordion class="widget widget--color3 results__thumbnails">
         <template v-slot:title>QC Assessment</template>
         <template v-slot:content>
           <div class="thumbnails__content">

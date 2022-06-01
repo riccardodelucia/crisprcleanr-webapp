@@ -1,10 +1,10 @@
 version: "3.8"
 
 services:
-  iorio_apps:
-    image: "$REGISTRY_IMAGE/iorio_apps:$VERSION"
+  crisprcleanr_webapp:
+    image: "$REGISTRY_IMAGE/crisprcleanr_webapp:$VERSION"
     ports:
-      - 8080:80
+      - $APP_EXPOSED_PORT:80
     command: nginx
     env_file:
       - .env
