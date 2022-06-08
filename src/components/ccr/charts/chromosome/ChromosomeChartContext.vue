@@ -3,22 +3,10 @@
     <g :transform="`translate(0, ${innerHeight})`">
       <D3Axis :scale="xScale" position="bottom" />
     </g>
-    <BrushArea
-      :width="innerWidth"
-      :height="innerHeight"
-      v-bind="$attrs"
-      :domain="xDomain"
-      :scale="xScale"
-      brushDirection="horizontal"
-    >
+    <BrushArea :width="innerWidth" :height="innerHeight" v-bind="$attrs" :domain="xDomain" :scale="xScale"
+      brushDirection="horizontal">
     </BrushArea>
-    <Marks
-      :points="data.sgRNAArray"
-      :segments="data.segments"
-      :xScale="xScale"
-      :yScale="yScale"
-      :pointRadius="2"
-    />
+    <Marks :points="data.sgRNAArray" :segments="data.segments" :xScale="xScale" :yScale="yScale" :pointRadius="2" />
     <g ref="brush"></g>
   </g>
 </template>

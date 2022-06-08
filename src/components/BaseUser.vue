@@ -6,7 +6,7 @@
     </div>
     <BaseIcon v-else name="user" @click="open = !open"></BaseIcon>
     <div v-show="open" class="user__menu">
-      <a href="#" @click="logout">logout</a>
+      <a href="#" @click="logoutUser">logout</a>
     </div>
   </div>
 </template>
@@ -20,9 +20,8 @@ export default {
   name: "BaseUser",
   setup() {
     const store = useStore();
-    const keycloak = inject("keycloak");
+    const logout = inject("logout");
     const open = ref(false);
-    const logoutRedirectUri = `${window.location.protocol}//${window.location.host}/`;
     const useIcon = ref(false);
 
     resizeListener(() => (useIcon.value = window.innerWidth < 500));
@@ -30,8 +29,8 @@ export default {
     const onClickOutside = () => {
       open.value = false;
     };
-    const logout = () => {
-      keycloak.logout({ redirectUri: logoutRedirectUri });
+    const logoutUser = () => {
+      logout();
     };
 
     const user = computed(() => {
@@ -48,10 +47,9 @@ export default {
 
     return {
       open,
-      logoutRedirectUri,
       useIcon,
       onClickOutside,
-      logout,
+      logoutUser,
       user,
     };
   },

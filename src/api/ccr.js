@@ -4,7 +4,6 @@ import lodash from "lodash-es";
 import deepdash from "deepdash-es";
 import camelize from "camelize";
 import getEnv from "@/utils/env";
-import { keycloak, authorize } from "@/authentication.js";
 
 const _ = deepdash(lodash);
 
@@ -26,7 +25,7 @@ instance.interceptors.request.use(function (config) {
   return config;
 });
 
-instance.interceptors.request.use(async (config) => {
+/* instance.interceptors.request.use(async (config) => {
   const redirectUri = `${window.location.href}`;
 
   if (isProtected(config)) {
@@ -39,7 +38,7 @@ instance.interceptors.request.use(async (config) => {
     } else throw new axios.Cancel("Cannot authorize user");
   } else return config;
 });
-
+ */
 instance.interceptors.response.use(
   function (response) {
     //NProgress.done();
@@ -63,6 +62,19 @@ instance.interceptors.response.use(
 );
 
 export default {
+  setupAsyncInterceptor(f) {
+    instance.interceptors.request.use(async (config) => {
+      console.log("interceptor");
+      await f();
+      return config;
+    });
+  },
+  setupToken(token) {
+    instance.interceptors.request.use((config) => {
+      config.headers.Authorization = `Bearer ${token}`;
+      return config;
+    });
+  },
   submitJob({
     title,
     email,

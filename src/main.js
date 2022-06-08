@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import getRouter from "./router";
 import store from "./store";
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
@@ -10,21 +9,14 @@ import "@/assets/scss/vendor/nprogress.scss";
 
 import NProgress from "nprogress";
 
-import { keycloak } from "@/authentication.js";
+import { initializeAppWithAuth } from "@/authentication.js";
 
 import "tippy.js/dist/tippy.css"; // optional for styling
 
-(async function () {
-  NProgress.configure({ showSpinner: false });
+NProgress.configure({ showSpinner: false });
 
-  const router = await getRouter();
-
-  console.log("configuring Vue app");
-
-  const app = createApp(App).use(store).use(router);
-
-  // setting up keycloak
-  app.provide("keycloak", keycloak);
+initializeAppWithAuth().then(({ router, authentication }) => {
+  const app = createApp(App).use(store).use(router).use(authentication);
 
   // directive to catch out-of-element clicks (useful for blurring/ focusing)
   app.directive("click-outside", {
@@ -40,7 +32,6 @@ import "tippy.js/dist/tippy.css"; // optional for styling
       document.body.removeEventListener("click", el.clickOutsideEvent);
     },
   });
-
   const requireComponent = require.context(
     // The relative path of the components folder
     "./components",
@@ -71,7 +62,6 @@ import "tippy.js/dist/tippy.css"; // optional for styling
       componentConfig.default || componentConfig
     );
   });
-  console.log("mounting Vue app");
 
   app.mount("#app");
-})();
+});

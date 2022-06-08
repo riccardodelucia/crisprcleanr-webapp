@@ -1,29 +1,10 @@
 <template>
   <g class="brush-area" :transform="`translate(${margin.left}, ${margin.top})`">
-    <BrushArea
-      :width="innerWidth"
-      :height="innerHeight"
-      v-bind="$attrs"
-      :domain="yDomain"
-      :scale="yScale"
-    >
+    <BrushArea :width="innerWidth" :height="innerHeight" v-bind="$attrs" :domain="yDomain" :scale="yScale">
       <rect x="0" y="0" :width="innerWidth" :height="innerHeight" />
-      <line
-        :x1="0"
-        :y1="yScale(data.threshold)"
-        :x2="innerWidth"
-        :y2="yScale(data.threshold)"
-        stroke="red"
-        stroke-dasharray="4 2"
-        clip-path="url(#clip-genes)"
-      />
-      <MarksCurve
-        :width="innerWidth"
-        :data="data"
-        :xScale="xScale"
-        :yScale="yScale"
-        pointRadius="2"
-      ></MarksCurve>
+      <line :x1="0" :y1="yScale(data.threshold)" :x2="innerWidth" :y2="yScale(data.threshold)" stroke="red"
+        stroke-dasharray="4 2" clip-path="url(#clip-genes)" />
+      <MarksCurve :width="innerWidth" :data="data" :xScale="xScale" :yScale="yScale" :pointRadius="2"></MarksCurve>
     </BrushArea>
 
     <g :transform="`translate(${innerWidth}, 0)`">
@@ -90,10 +71,12 @@ export default {
   stroke: #ebebeb;
   stroke-width: 1px;
 }
+
 .brush-area text {
   text-anchor: middle;
   fill: #b1b1b1;
 }
+
 .brush-area__group text {
   fill: #b1b1b1;
 }

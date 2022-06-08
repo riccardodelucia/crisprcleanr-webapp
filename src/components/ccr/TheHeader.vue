@@ -7,7 +7,8 @@
             <router-link class="header__link" to="/dashboard">
                 <BaseIcon name="grid" />
             </router-link>
-            <a v-if="!keycloak.authenticated" to="#" class="header__link" @click="login">Sign in or Register</a>
+            <a v-if="!authentication.authenticated" to="#" class="header__link" @click="loginUser">Sign in or
+                Register</a>
             <BaseUser v-else></BaseUser>
         </template>
     </BaseHeader>
@@ -22,15 +23,10 @@ export default {
             type: Object
         }
     },
-    inject: ["keycloak"],
-    data() {
-        return {
-            currentUri: `${window.location.protocol}//${window.location.host}${this.$route.fullPath}`,
-        };
-    },
+    inject: ["login", "authentication"],
     methods: {
-        login() {
-            this.keycloak.login({ redirectUri: this.currentUri });
+        loginUser() {
+            this.login(this.$route.fullPath);
         },
     },
 }

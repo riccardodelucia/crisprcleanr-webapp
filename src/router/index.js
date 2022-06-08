@@ -13,12 +13,11 @@ import ViewTermsDataProcessing from "@/views/ViewTermsDataProcessing.vue";
 import ViewMessagePage from "@/views/ViewMessagePage.vue";
 
 import CcrAPI from "@/api/ccr.js";
-import { keycloak, authorize } from "@/authentication.js";
 import getEnv from "@/utils/env";
 
 const dashboardURL = getEnv("VUE_APP_DASHBOARD");
 
-const routes = [
+export const routes = [
   {
     path: "/dashboard",
     beforeEnter() {
@@ -151,27 +150,14 @@ const routes = [
   },
 ];
 
-export default async () => {
-  console.log("configuring keycloak");
+export const getRouter = function () {
+  const router = createRouter({
+    history: createWebHistory(process.env.BASE_URL),
+    routes,
+  });
 
-  const router = await keycloak
-    .init({ checkLoginIframe: false, enableLogging: true })
-    .then(() => {
-      console.log("configuring router");
+  // standard beforeEach handlers we want to setup
+  router.beforeEach(() => {});
 
-      const router = createRouter({
-        history: createWebHistory(process.env.BASE_URL),
-        routes,
-      });
-      router.beforeEach((to) => {
-        if (to.matched.some((record) => record.meta.requiresAuth)) {
-          const redirectUri = `${window.location.protocol}//${window.location.host}${to.path}`;
-          return authorize(redirectUri);
-        }
-        // This page did not require authentication
-        return;
-      });
-      return router;
-    });
   return router;
 };
