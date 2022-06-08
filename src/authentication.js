@@ -54,10 +54,15 @@ export function authorize(redirectUri) {
       redirectUri,
     });
   } else {
-    return keycloak.updateToken(expirationTime).catch(() => {
-      console.log("unable to refresh token, logging in");
-      keycloak.login({ redirectUri });
-    });
+    return keycloak
+      .updateToken(expirationTime)
+      .then(() => {
+        return true;
+      })
+      .catch(() => {
+        console.error("unable to refresh token, logging in");
+        return keycloak.login({ redirectUri });
+      });
   }
 }
 
@@ -68,8 +73,6 @@ service.setupAsyncInterceptor(() => {
 
 function login(redirectUri) {
   const absoluteUri = new URL(redirectUri, appRootUrl).toString();
-  console.log(absoluteUri);
-
   return keycloak.login({ redirectUri: absoluteUri });
 }
 
@@ -96,7 +99,6 @@ export const initializeAppWithAuth = function () {
       router.beforeEach((to) => {
         if (to.matched.some((record) => record.meta.requiresAuth)) {
           const redirectUri = new URL(to.path, appRootUrl).toString();
-          console.log(redirectUri);
           return authorize(redirectUri);
         }
         // This page did not require authentication

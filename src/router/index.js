@@ -14,6 +14,7 @@ import ViewMessagePage from "@/views/ViewMessagePage.vue";
 
 import CcrAPI from "@/api/ccr.js";
 import getEnv from "@/utils/env";
+import NProgress from "nprogress";
 
 const dashboardURL = getEnv("VUE_APP_DASHBOARD");
 
@@ -157,7 +158,13 @@ export const getRouter = function () {
   });
 
   // standard beforeEach handlers we want to setup
-  router.beforeEach(() => {});
+  router.beforeEach(() => {
+    NProgress.start();
+  });
+
+  router.afterEach(() => {
+    NProgress.done();
+  });
 
   return router;
 };

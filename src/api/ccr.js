@@ -21,24 +21,13 @@ const instance = axios.create({
 
 // Interceptors are run before/ after each request. They control the NProgress bar.
 instance.interceptors.request.use(function (config) {
-  //NProgress.start();
   return config;
 });
 
-/* instance.interceptors.request.use(async (config) => {
-  const redirectUri = `${window.location.href}`;
-
-  if (isProtected(config)) {
-    const authorized = await authorize(redirectUri, redirectUri);
-
-    if (authorized) {
-      const token = keycloak.token;
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    } else throw new axios.Cancel("Cannot authorize user");
-  } else return config;
+instance.interceptors.response.use(function (config) {
+  return config;
 });
- */
+
 instance.interceptors.response.use(
   function (response) {
     //NProgress.done();
@@ -64,7 +53,6 @@ instance.interceptors.response.use(
 export default {
   setupAsyncInterceptor(f) {
     instance.interceptors.request.use(async (config) => {
-      console.log("interceptor");
       await f();
       return config;
     });
