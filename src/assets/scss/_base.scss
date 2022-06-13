@@ -14,7 +14,10 @@
   --color-teal-light: #31ccc9;
   --color-teal-lighter: #30ddda;
 
-  --color-text-dark-blue: #102d51;
+  --color-text-dark-blue: #2b4d79;
+  --color-text-darker-blue: #15427c;
+
+
 
   --color-grey-background: #fcfcfc;
   --color-grey-lighter: #f0f0f0;
@@ -42,7 +45,7 @@ html {
   font-size: 62.5%;
   box-sizing: border-box;
 
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1200px) {
     font-size: 50%;
   }
 }

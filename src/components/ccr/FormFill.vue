@@ -16,7 +16,7 @@
     </div>
 
     <div class="form__group">
-      <BaseSelect label="Library" :options="Object.keys(config.libraries)" v-model="library" :error="errors.library">
+      <BaseSelect label="Library" :options="config.libraries" v-model="library" :error="errors.library">
       </BaseSelect>
     </div>
 
@@ -30,7 +30,8 @@
       </BaseInput>
     </div>
     <div class="form__group">
-      <BaseSelect label="Normalization Method" :options="Object.keys(methods)" v-model="method" :error="errors.method">
+      <BaseSelect label="Normalization Method" :options="methods" v-model="method" :error="errors.method"
+        default="Counts Per Million">
       </BaseSelect>
     </div>
     <div class="form__group">

@@ -10,13 +10,20 @@
         pre/post-correction quality-control assessment and interactive
         visualizations.
       </p>
-      <button @click="$router.push({ name: 'submit' })" class="button button--primary button--large hero__btn--start"
-        type="button">
-        Start Here
-      </button>
-      <button class="button button--ghost button--large hero__btn--download" type="button" @click="downloadSampleData">
-        Download Example Input Data
-      </button>
+      <div class="hero__button-container"><button @click="$router.push({ name: 'submit' })"
+          class="button button--primary button--large hero__button--submit" type="button">
+          Submit Job
+        </button>
+        <button @click="$router.push({ name: 'resultsList' })"
+          class="button button--secondary button--large hero__button--results" type="button">
+          Results
+        </button>
+        <button class="button button--ghost button--large hero__button--download" type="button"
+          @click="downloadSampleData">
+          Download Example File
+        </button>
+      </div>
+
     </div>
   </div>
   <section class="section section-cards">
@@ -251,7 +258,7 @@
       <template v-slot:title>Chart example</template>
       <template v-slot:content>
         <div class="text-small">
-          <p>
+          <p class="u-margin-bottom-medium">
             Each chart comes with its own sets of <b>controls</b>. For instance,
             you can find <b>sliders</b> and <b>checkboxes</b> to control major
             layout settings. Many charts come with a <b>minified graph</b> or
@@ -305,21 +312,23 @@ export default {
     padding: 5rem;
     margin: auto;
     display: grid;
-    grid-template-columns: minmax(20rem, 1fr) repeat(3, 1fr);
-    grid-template-rows: min-content 1fr min-content;
+    grid-template-columns: minmax(20rem, 1fr) repeat(2, 1fr); //3 columns to allow the logo occupy only 1/3 of the width;
+    grid-template-rows: repeat(3, min-content);
     column-gap: 3rem;
     row-gap: 2rem;
+
+    @media only screen and (max-width: 880px) {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
   }
 
   &__logo {
-    filter: brightness(0) invert(1);
     grid-column: 1 / 2;
     grid-row: 1/ -1;
 
-    @media only screen and (max-width: 800px) {
-      grid-column: 1 / -1;
-      grid-row: 1 / 2;
-      justify-self: center;
+    @media only screen and (max-width: 880px) {
       height: 20rem;
     }
   }
@@ -347,31 +356,15 @@ export default {
     }
   }
 
-  &__btn {
-    &--start {
-      grid-column: 2 / 3;
+  &__button-container {
+    grid-column: 2/ 4;
+    display: flex;
+    gap: 1em;
+    justify-content: space-between;
+    flex-wrap: wrap;
 
-      @media only screen and (max-width: 800px) {
-        grid-column: 1 / 3;
-        grid-row: 4 / 5;
-      }
-
-      @media only screen and (max-width: 600px) {
-        grid-column: 1 / -1;
-        grid-row: 5 / 6;
-      }
-    }
-
-    &--download {
-      grid-column: 3 / 5;
-
-      @media only screen and (max-width: 800px) {
-        grid-column: 3 / 5;
-      }
-
-      @media only screen and (max-width: 600px) {
-        grid-column: 1 / -1;
-      }
+    .button {
+      flex: 1 0 20rem;
     }
   }
 }
@@ -395,11 +388,15 @@ export default {
   grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
   justify-items: center;
 
-  .card-step {
-    width: 30rem;
+  @media only screen and (max-width: 880px) {
+    display: flex;
+    flex-direction: column;
+  }
 
+  .card-step {
+    flex-grow: 1;
     box-shadow: var(--shadow-1);
-    padding: 1em 1.5em;
+    padding: 2em 1.5em;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;

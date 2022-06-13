@@ -35,11 +35,13 @@
   resize: vertical;
   min-height: 4.5rem;
   position: relative;
+  border-bottom: 2px solid transparent;
+
 
   &:focus {
     outline: none;
     border-bottom: 2px solid var(--color-blue-lighter);
-    border-radius: 2px;
+    //border-radius: 2px;
   }
 
   &[type="file"] {
@@ -69,6 +71,8 @@
 
   &__selection {
     min-height: 4.5rem;
+    position: relative;
+    outline: none;
 
     cursor: pointer;
     user-select: none;
@@ -79,14 +83,15 @@
     background-color: var(--color-grey-light);
     padding: 1rem 1.5rem;
     padding-bottom: calc(1.5rem - 5px); //
+    border-bottom: 2px solid transparent;
 
     &--empty {
-      color: var(--color-grey-text);
+      color: #7a7a7a;
     }
 
     &--open {
       border-bottom: 2px solid var(--color-blue-lighter);
-      border-radius: 2px;
+      //border-radius: 2px;
     }
 
     &:after {
@@ -99,6 +104,15 @@
       border: 5px solid transparent;
       border-color: var(--color-grey-darker) transparent transparent transparent;
     }
+  }
+
+  &__overlay{
+    position: absolute;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
   }
 
   &__options {
@@ -207,10 +221,7 @@
   overflow: hidden;
   background-color: white;
   padding: 0.5rem;
-  //border: 1px solid black;
 
-  //border-radius: 8px;
-  //box-shadow: var(--shadow-1);
 
   transition: all 0.5s;
 
@@ -299,6 +310,7 @@
     border-radius: 4px;
     color: white;
 
+
     &--success {
       background-color: #43d787;
 
@@ -328,6 +340,7 @@
   &__title {
     font-size: 2rem;
     font-weight: 600;
+    color: white;
   }
 
   &__close {

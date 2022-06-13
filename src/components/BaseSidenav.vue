@@ -98,12 +98,12 @@ export default {
 
       &:before {
         background-color: white;
-        transform: translateY(-1.2rem);
+        transform: translateY(-1rem);
       }
 
       &:after {
         background-color: white;
-        transform: translateY(1rem);
+        transform: translateY(.8rem);
       }
     }
   }
@@ -125,11 +125,11 @@ export default {
     bottom: 0;
     z-index: 100;
     transform: translateX(-20rem);
-    transition: transform 0.2s ease-out;
   }
 
   &--active {
     transform: none;
+    transition: transform 0.2s ease-out;
   }
 
   &__close {

@@ -3,7 +3,7 @@
   <div class="results">
     <div class="widget results__details">
       <h3 class="u-margin-bottom-small">Details</h3>
-      <ul>
+      <ul class="results__list">
         <li><b>Title: </b>{{ result.title }}</li>
         <li><b>Date: </b>{{ date(result.dateTime) }}</li>
         <li><b>Status: </b>{{ result.status }}</li>
@@ -16,7 +16,19 @@
         <li><b>Normalization Method: </b>{{ result.method }}</li>
         <li v-if="result.notes"><b>Notes: </b>{{ result.notes }}</li>
       </ul>
+      <div v-if="result.status === 'success'" class="results__downloads">
+        <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
+          class="button button--primary button--small" type="button">
+          {{ file }}&nbsp;<span>
+            <BaseIcon name="download" />
+          </span>
+        </button>
+      </div>
+      <p class="results__msg" v-else>
+        Further content will be shown upon successful job completion...
+      </p>
     </div>
+
     <template v-if="result.status === 'success'">
       <div class="widget results__genes-signatures">
         <ContentLoader v-if="!genesSignatures" viewBox="0 0 520 700">
@@ -31,17 +43,7 @@
         <GenesSignaturesMultichart v-else :data="genesSignatures">
         </GenesSignaturesMultichart>
       </div>
-      <div class="widget results__downloads">
-        <h3 class="u-margin-bottom-small">Downloads</h3>
-        <div>
-          <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
-            class="button button--primary button--small" type="button">
-            {{ file }}&nbsp;<span>
-              <BaseIcon name="download" />
-            </span>
-          </button>
-        </div>
-      </div>
+
 
       <BaseAccordion class="widget widget--color1 results__thumbnails">
         <template v-slot:title>Normalization</template>
@@ -73,9 +75,7 @@
         </template>
       </BaseAccordion>
     </template>
-    <p class="results__msg" v-else>
-      Further content appears here upon successful job completion...
-    </p>
+
   </div>
 
   <BaseModal v-if="modalState != 'closed'" @modal-close="closeModal" :width="image.width">
@@ -223,13 +223,13 @@ export default {
 <style lang="scss">
 .results {
   display: grid;
-  grid-template-columns: minmax(min-content, 60rem) 60rem 1fr;
+  grid-template-columns: minmax(min-content, 50rem) 50rem 1fr;
   grid-column-gap: 1.2em;
   grid-row-gap: 1.5em;
   margin-bottom: 2em;
   grid-auto-flow: row dense;
 
-  @media only screen and (max-width: 800px) {
+  @media only screen and (max-width: 900px) {
     display: flex;
     flex-direction: column;
     gap: 1.5em;
@@ -240,30 +240,25 @@ export default {
   }
 
   &__details {
+    font-size: 1.5rem;
     grid-column: 1 / 2;
+  }
 
-    @media only screen and (max-width: 1300px) {
-      grid-column: 1 / -1;
-    }
+  &__list {
+    padding: 1em 0;
   }
 
   &__downloads {
-    grid-column: 1 / 2;
-
-    div {
-      margin-bottom: 1em;
-      display: flex;
-      gap: 1em;
-      flex-wrap: wrap;
-    }
+    //grid-column: 1 / 2;
+    padding: 1em 0;
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
   }
 
   &__genes-signatures {
     grid-column: 2 / 3;
-
-    @media only screen and (max-width: 800px) {
-      max-width: 60rem;
-    }
+    max-width: 60rem;
   }
 
   &__thumbnails {
