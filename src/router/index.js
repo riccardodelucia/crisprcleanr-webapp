@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import WebLayout from "@/views/layouts/WebLayout";
 import AppLayout from "@/views/layouts/AppLayout";
 
+import ViewTest from "@/views/ViewTest.vue";
+
 import ViewHome from "@/views/ViewHome.vue";
 import ViewSubmitJob from "@/views/ViewSubmitJob.vue";
 import ViewResultsList from "@/views/ViewResultsList.vue";
@@ -19,6 +21,10 @@ import NProgress from "nprogress";
 const dashboardURL = getEnv("VUE_APP_DASHBOARD");
 
 export const routes = [
+  {
+    path: "/test",
+    component: ViewTest,
+  },
   {
     path: "/dashboard",
     beforeEnter() {

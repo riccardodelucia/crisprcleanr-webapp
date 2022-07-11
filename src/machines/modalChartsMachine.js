@@ -27,9 +27,6 @@ export const modalChartsMachine = createMachine({
           target: "opened",
           actions: "assignChartData",
         },
-        // resolved promise
-
-        // rejected promise
         onError: {
           target: "error",
         },

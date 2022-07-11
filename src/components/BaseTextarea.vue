@@ -1,14 +1,16 @@
 <template>
-  <label :for="uuid" class="input__label" v-if="label">{{ label }}</label>
-  <textarea
-    :id="uuid"
-    class="input"
-    :value="modelValue"
-    v-bind="$attrs"
-    @input="onInput"
-  >
-  </textarea>
-  <small class="input__error" v-if="error">{{ error }}</small>
+  <div class="input-field">
+    <label :for="uuid" class="input-field__label" v-if="label">{{ label }}</label>
+    <div class="input-field__element">
+      <textarea :id="uuid" class="textarea" :class="{ 'input--error': error }" :value="modelValue" v-bind="$attrs"
+        @input.stop="onInput">
+    </textarea>
+    </div>
+    <div class="input-field__error" v-if="error">
+      <BaseIcon name="alert-circle" width="16px" height="16px"></BaseIcon><small>{{ error
+      }}</small>
+    </div>
+  </div>
 </template>
 
 <script>

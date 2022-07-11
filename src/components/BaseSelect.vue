@@ -1,20 +1,29 @@
 <template>
-  <label class="input__label" v-if="label">{{ label }}</label>
-  <div ref="select" class="select" :tabindex="tabindex" @blur="open = false" @focus="open = true">
-    <div class="select__selection" :class="{
-      'select__selection--open': open,
-      'select__selection--empty': Object.keys(modelValue).length === 0,
-    }">
-      {{ selection }}
-    </div>
-    <div class="select__overlay" v-if="open" @click="closeSelector"></div>
-    <div class="select__options" v-show="open">
-      <div v-for="option of Object.entries(options)" :key="option[0]" @click="clickedOption(option[1])">
-        {{ option[0] }}
+  <div class="input-field">
+    <label class="input-field__label" v-if="label">{{ label }}</label>
+
+    <div class="input-field__element">
+      <div ref="select" class="select" :class="{ 'select--error': error }" :tabindex="tabindex" @blur="open = false"
+        @focus="open = true">
+        <div class="select__selection" :class="{
+          'select__selection--empty': Object.keys(modelValue).length === 0,
+        }">
+          {{ selection }}
+        </div>
+        <div class="select__overlay" v-if="open" @click.stop="closeSelector"></div>
+        <div class="select__options" v-show="open">
+          <div class="select__option" v-for="option of Object.entries(options)" :key="option[0]"
+            @click.stop="clickedOption(option[1])">
+            {{ option[0] }}
+          </div>
+        </div>
       </div>
     </div>
+    <div class="input-field__error" v-if="error">
+      <BaseIcon name="alert-circle" width="16px" height="16px"></BaseIcon><small>{{ error
+      }}</small>
+    </div>
   </div>
-  <small class="input__error" v-if="error">{{ error }}</small>
 </template>
 
 <script>
@@ -25,7 +34,7 @@ export default {
     label: { type: String, default: "" },
     options: {
       type: Object,
-      required: true,
+      default: {}
     },
     error: {
       type: String,

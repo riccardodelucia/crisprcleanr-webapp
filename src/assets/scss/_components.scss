@@ -2,103 +2,158 @@
 // FORM
 .form {
   &__group {
-    display: grid;
-    grid-template-rows: repeat(2, min-content) 2rem;
-    grid-row-gap: 0.4em;
-
-    label {
-      grid-row: 1 / 2;
-    }
-
-    input,
-    textarea,
-    .select {
-      grid-row: 2 / 3;
-    }
-
-    small {
-      grid-row: 3 / 4;
-    }
+    min-height: 11rem;
   }
 }
 
 ///////////////////////////////////////////////
 // INPUT ELEMENTS
-.input {
-  font-family: inherit;
-  color: inherit;
-  font-size: 1.6rem;
-  background-color: var(--color-grey-light);
-  padding: 1rem 1.5rem;
-  border: none;
-  //border: 2px solid transparent;
-  resize: vertical;
-  min-height: 4.5rem;
-  position: relative;
-  border-bottom: 2px solid transparent;
 
+.input-field{
+  padding: .3em 0;
+  //min-width: 30rem;
 
-  &:focus {
-    outline: none;
-    border-bottom: 2px solid var(--color-blue-lighter);
-    //border-radius: 2px;
+  &__element{
+    //min-width: 30rem;
   }
 
-  &[type="file"] {
-    display: none;
-  }
+  &__error{
+    display: flex;
+    align-items: center;
+    gap: .3em;
+    padding-top: .1em;
+    color: red;
 
-  &--file {
-    width: 10rem;
-    display: inline-block;
-    margin-right: 0.3em;
+    small{
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   &__label {
     color: var(--color-text-dark-blue);
     font-weight: bold;
     cursor: pointer;
+    display: block;
+  }
+}
+
+.file{
+  background-color: var(--color-grey-light);
+  display: flex;
+  align-items: baseline;
+  padding: .75rem 1rem;
+  gap: .3em;
+
+  &__name{
+    display: flex;
+    gap: .3em;
+
+    span{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
-  &__error {
+  &__remove{
     color: red;
+    cursor: pointer;
   }
+
+  &__list{
+    background-color: var(--color-grey-light);
+    position: relative;
+    padding: 1rem;
+
+    &::before{
+      content: '';
+      //width: calc(100% - 2rem);
+      width: 100%;
+      border-bottom: solid 2px var(--color-blue-lighter);
+      position: absolute;
+      left: 0;
+
+      top: -2px;
+      z-index: 1;
+    }
+  }
+}
+
+
+.input, .textarea {
+  font-family: inherit;
+  color: inherit;
+  font-size: 1.6rem;
+  color: var(--color-text-dark-blue);
+  padding: 1rem 1rem;
+  background-color: var(--color-grey-light);
+
+  height: 4.5rem;
+  width: 100%;
+
+  border: none;
+  border-bottom: 2px solid transparent;
+  outline: none;
+
+  &:focus {
+    border-bottom: 2px solid var(--color-blue-lighter);
+  }
+
+  &--error{
+    border-bottom: 2px solid red;
+  }
+}
+
+.textarea{
+  height: 6rem;
+  min-height: 4.5rem;
+  resize: vertical;
 }
 
 .select {
   position: relative;
+  user-select: none;
+  background-color: var(--color-grey-light);
+  cursor: pointer;
+
   outline: none;
 
-  &__selection {
-    min-height: 4.5rem;
-    position: relative;
-    outline: none;
+  &--error{
+    border-bottom: 2px solid red;
+  }
 
+  &__overlay{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  &__input{
+    cursor: pointer;
+    background-color: var(--color-grey-light);
+    height: 4.5rem;
+  }
+
+  &__selection{
     cursor: pointer;
     user-select: none;
-
-    font-family: inherit;
-    color: inherit;
-    font-size: 1.6rem;
-    background-color: var(--color-grey-light);
-    padding: 1rem 1.5rem;
-    padding-bottom: calc(1.5rem - 5px); //
-    border-bottom: 2px solid transparent;
+    width: 100%;
+    position: relative;
+    height: 4.5rem;
+    padding: 1rem 2rem 1rem 1rem;
 
     &--empty {
       color: #7a7a7a;
     }
 
-    &--open {
-      border-bottom: 2px solid var(--color-blue-lighter);
-      //border-radius: 2px;
-    }
-
     &:after {
       position: absolute;
       content: "";
-      top: 22px;
-      right: 1em;
+      top: 20px;
+      right: .5rem;
       width: 0;
       height: 0;
       border: 5px solid transparent;
@@ -106,37 +161,31 @@
     }
   }
 
-  &__overlay{
+  &__options{
     position: absolute;
-    top: 0;
-    left:0;
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-  }
-
-  &__options {
-    overflow: hidden;
-
-    position: absolute;
-    background-color: var(--color-grey-lighter);
-    width: 100%;
     left: 0;
     right: 0;
     z-index: 1;
+    background-color: var(--color-grey-lighter);
+    border: solid 2px var(--color-blue-light);
+  }
 
-    div {
-      padding: 0.5em;
-      padding-left: 1em;
+  &__option {
+    padding: 1rem;
+    height: 4.5rem;
+    //padding-left: 1em;
 
-      cursor: pointer;
-      user-select: none;
-    }
+    cursor: pointer;
+    //user-select: none;
 
-    div:hover {
-      background-color: var(--color-blue-lighter);
+    &:hover{
+      background-color: var(--color-blue-light);
+      color: white;
     }
   }
+
+
+
 }
 
 ///////////////////////////////////////////////
@@ -158,6 +207,7 @@
     padding: 0.5em 1.4em;
     font-size: 1.8rem;
   }
+
   &--small {
     height: 3rem;
     padding: 0.2em 0.7em;
@@ -289,11 +339,36 @@
 }
 
 /////////////////////////////////////////////////
-// NOTIFICATIONS
-.notification {
+// FIXED CONTAINER
+.fixed-container{
   position: fixed;
   right: 1em;
   bottom: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+// UPLOADS
+.uploads{
+
+  //height: 500px;
+  //background-color: purple;
+  border-radius: 4px;
+  width: 40rem;
+  padding: 1em 1.2em;
+  background-color: white;
+
+/*   &__file-controller{
+
+  } */
+}
+
+// NOTIFICATIONS
+.notification {
+  //position: fixed;
+  //right: 1em;
+  //bottom: 1em;
   display: flex;
   flex-direction: column-reverse;
   gap: 1em;
@@ -305,7 +380,7 @@
 
   &__bar {
     width: 40rem;
-    padding: 1em 2em;
+    padding: 1em 1.2em;
     position: relative;
     border-radius: 4px;
     color: white;

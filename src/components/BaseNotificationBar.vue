@@ -1,5 +1,5 @@
 <template>
-  <div class="notification__bar" :class="notificationClass">
+  <div class="notification__bar card" :class="notificationClass">
     <div class="notification__close" @click="onClick"></div>
     <div class="notification__content">
       <h3 class="notification__title">{{ notification.title }}</h3>

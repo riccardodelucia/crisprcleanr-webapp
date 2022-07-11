@@ -1,6 +1,10 @@
 <template>
   <router-view />
-  <BaseNotificationContainer></BaseNotificationContainer>
+  <div class="fixed-container">
+    <BaseNotificationContainer></BaseNotificationContainer>
+    <BaseFileUploadsContainer></BaseFileUploadsContainer>
+  </div>
+
 </template>
 
 <script>

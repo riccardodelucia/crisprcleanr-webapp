@@ -1,7 +1,8 @@
 export const namespaced = true;
 export const state = {
   notifications: [
-    /* { type: "error", title: "Test", message: "Test message", timeout: 0 }, */
+    /*  { type: "error", title: "Test", message: "Test message", timeout: 0 },
+    { type: "success", title: "Test", message: "Test message", timeout: 0 }, */
   ],
 };
 
@@ -9,11 +10,12 @@ let nextId = 1;
 
 export const mutations = {
   PUSH(state, notification) {
-    state.notifications.push({ ...notification, id: nextId++ });
+    state.notifications.push({ ...notification, storeItemId: nextId++ });
   },
   DELETE(state, notificationToRemove) {
     state.notifications = state.notifications.filter(
-      (notification) => notification.id !== notificationToRemove.id
+      (notification) =>
+        notification.storeItemId !== notificationToRemove.storeItemId
     );
   },
 };

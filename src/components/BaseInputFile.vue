@@ -1,26 +1,27 @@
 <template>
-  <label :for="uuid" class="input__label" v-if="label">{{ label }}</label>
-  <div>
-    <button class="input--file" type="button" v-bind="$attrs" @click="onClick">
-      <BaseIcon name="upload" />
-    </button>
-    <span>{{ fileName }}</span>
+
+  <div class="input-field">
+    <label class="input-field__label" v-if="label">{{ label }}</label>
+    <div class="input-field__element">
+      <div class="file">
+        <label class="button button--primary button--small">Choose a File
+          <input type="file" @change.stop="updateFile" style="display: none;" />
+        </label>
+        <span class="file__name">{{ fileName }}</span>
+      </div>
+    </div>
+    <div class="input-field__error" v-if="error">
+      <BaseIcon name="alert-circle" width="16px" height="16px"></BaseIcon><small>{{ error
+      }}</small>
+    </div>
   </div>
-  <input
-    :id="uuid"
-    class="input"
-    type="file"
-    ref="inputFile"
-    @change="updateFile"
-  />
-  <small class="input__error" v-if="error">{{ error }}</small>
 </template>
 
 <script>
-import { ref, computed } from "vue";
-import UniqueID from "@/composables/uuid.js";
+import { computed } from "vue";
 
 export default {
+  name: "BaseInputFile",
   props: {
     label: { type: String, default: "" },
     modelValue: {
@@ -33,12 +34,6 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const uuid = UniqueID();
-    const inputFile = ref(null);
-
-    const onClick = () => {
-      inputFile.value.click();
-    };
     const updateFile = (event) => {
       emit("update:modelValue", event.target.files[0]);
     };
@@ -46,15 +41,10 @@ export default {
     const fileName = computed(() => {
       return props.modelValue?.name || "";
     });
-    return { inputFile, uuid, onClick, updateFile, fileName };
+    return { updateFile, fileName };
   },
 };
 </script>
 
 <style lang="scss">
-.input--file {
-  width: 10rem;
-  display: inline-block;
-  margin-right: 0.3em;
-}
 </style>
