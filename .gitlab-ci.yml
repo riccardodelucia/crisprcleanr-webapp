@@ -1,123 +1,126 @@
 stages:
+  - lint
   - build
   - package
   - test
+  - tag
   - deploy
 
-
 variables:
-    BUILD_VERSION: $CI_COMMIT_SHORT_SHA
-    IMAGE_NAME: crisprcleanr_webapp
+  BUILD: $CI_COMMIT_SHORT_SHA
+  IMAGE_NAME: crisprcleanr_webapp
+
+####################################################################################################
+# merge request pipeline: run this job only when a merge request is opened to save pipeline runs
+
+.lint:
+  stage: lint
+  rules:
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
 
 lint-dockerfile:
-  stage: .pre
+  extends: .lint
   image: hadolint/hadolint:latest-debian
   script:
     - hadolint Dockerfile
 
+# TODO lint javascript
 
-print pre:
-  stage: .pre
-  image: alpine
-  script:
-    - echo "Placeholder job"
+####################################################################################################
+# branch pipeline: build, package and test image on the master branch
 
+.master branch:
+  rules:
+    - if: $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH # excludes execution when tagging the commit
+      when: always
+    - when: never
 
 build website:
   stage: build
+  extends: .master branch
   image: node:18-alpine
   script:
     - npm install
     - npm run build
-    - echo $BUILD_VERSION > dist/build.html
+    - echo $BUILD > dist/build.html
   artifacts:
     paths:
       - dist
-  only:
-    - main
-    - tags
-
-
-print build:
-  stage: build
-  image: alpine
-  script:
-    - echo "Placeholder job"
-
 
 build image:
   stage: package
+  extends: .master branch
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
-  variables:
-    PATH_DOCKERFILE: $CI_PROJECT_DIR
   script:
     - ls $CI_PROJECT_DIR/dist
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - cat $CI_SERVER_TLS_CA_FILE >> /kaniko/ssl/certs/ca-certificates.crt
-    - /kaniko/executor --context $CI_PROJECT_DIR --destination $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_TAG --destination $CI_REGISTRY_IMAGE/$IMAGE_NAME:$BUILD_VERSION
-  only:
-    - main
-    - tags
-
+    - /kaniko/executor --context $CI_PROJECT_DIR --destination $CI_REGISTRY_IMAGE:$BUILD
 
 test docker image:
   stage: test
+  extends: .master branch
   image: curlimages/curl
   variables:
     VERSION: latest
   services:
-    - name: "$CI_REGISTRY_IMAGE/$IMAGE_NAME:$VERSION"
+    - name: "$CI_REGISTRY_IMAGE:$BUILD"
       alias: website
   script:
-    - curl http://website/build.html | grep $BUILD_VERSION
+    - curl http://website/build.html | grep $BUILD
+
+####################################################################################################
+# tag pipeline: tag image with git tag
+tag image:
+  stage: tag
+  image:
+    name: gcr.io/go-containerregistry/crane:debug
+    entrypoint: [""]
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - crane tag $CI_REGISTRY_IMAGE:$BUILD $CI_COMMIT_REF_NAME
   rules:
-     - if: $CI_COMMIT_TAG
-       variables:
-          VERSION: "$CI_COMMIT_TAG"
-     - if: '$CI_COMMIT_BRANCH == "main"'
-       when: always
-     - when: never
+    - if: $CI_COMMIT_TAG
+      when: always
+    - when: never
 
-
+####################################################################################################
+# branch pipeline: deploy to environment
 .deploy to environment:
   stage: deploy
   image: debian:bullseye-slim
   before_script:
-      - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
-      - eval $(ssh-agent -s)
-      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-      - mkdir -p ~/.ssh
-      - chmod 700 ~/.ssh
-      - ssh-keyscan $VM_NAME >> ~/.ssh/known_hosts
-      - chmod 644 ~/.ssh/known_hosts
-      - apt-get update -y
-      - apt-get install -y gettext
+    - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $VM_NAME >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - apt-get update -y
+    - apt-get install -y gettext
   script:
-    - echo $VERSION
-    - echo $CI_REGISTRY_IMAGE
     - envsubst < templates/$ENV_FILE > .env
-    - ssh -l riccardo.delucia -o StrictHostKeyChecking=no $VM_NAME "mkdir -p $VM_TARGET_DIR"
+    - envsubst < templates/deploy.sh > deploy.sh
+    - envsubst < templates/docker-compose.deploy.yml > docker-compose.deploy.yml
+    - ssh -l $USER -o StrictHostKeyChecking=no $VM_NAME "mkdir -p $VM_TARGET_DIR"
     - scp deploy.sh $USER@$VM_NAME:$VM_TARGET_DIR/deploy.sh
-    - scp docker-compose.yml $USER@$VM_NAME:$VM_TARGET_DIR/docker-compose.yml
+    - scp docker-compose.deploy.yml $USER@$VM_NAME:$VM_TARGET_DIR/docker-compose.yml
     - scp .env $USER@$VM_NAME:$VM_TARGET_DIR/.env
     - ssh -l $USER -o StrictHostKeyChecking=no $VM_NAME 'bash -s' < deploy.sh
-
 
 deploy to staging:
   environment: staging
   extends: .deploy to environment
   variables:
-    VM_NAME: combio-dev01.fht.org
-    VM_TARGET_DIR: /home/riccardo.delucia/deploy/crisprcleanr_webapp
     ENV_FILE: staging.env
-    USER: riccardo.delucia
-    VERSION: latest
-  rules:
-     - if: $CI_COMMIT_TAG
-       variables:
-          VERSION: "$CI_COMMIT_TAG"
-     - if: '$CI_COMMIT_BRANCH == "staging"'
-       when: always
+    TAG: $BUILD
+  only:
+    - staging

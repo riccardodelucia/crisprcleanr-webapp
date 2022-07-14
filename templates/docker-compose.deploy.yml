@@ -2,9 +2,9 @@ version: "3.8"
 
 services:
   crisprcleanr_webapp:
-    image: "$REGISTRY_IMAGE/crisprcleanr_webapp:$VERSION"
+    image: "$CI_REGISTRY_IMAGE:$TAG"
     ports:
-      - $APP_EXPOSED_PORT:80
+      - $PORT:80
     command: nginx
     env_file:
       - .env
