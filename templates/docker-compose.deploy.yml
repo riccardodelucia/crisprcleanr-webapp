@@ -8,3 +8,14 @@ services:
     command: nginx
     env_file:
       - .env
+    networks:
+      app_net:
+        ipv4_address: $CRISPRCLEANR_WEBAPP_IPV4_ADDRESS
+
+networks:
+  app_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: $IPV4_SUBNET
+          gateway: $IPV4_GATEWAY
