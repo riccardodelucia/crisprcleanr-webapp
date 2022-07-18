@@ -13,7 +13,7 @@ const uploadFile =
 
     const req = new XMLHttpRequest();
     const baseURL = `${getEnv("VUE_APP_FILE_SERVER_URL")}`;
-    const uploadURL = `${baseURL}/upload`;
+    const uploadURL = new URL("upload", baseURL);
 
     req.open("POST", uploadURL, true);
     req.setRequestHeader("Content-Range", `bytes=0-${file.size}/${file.size}`);
