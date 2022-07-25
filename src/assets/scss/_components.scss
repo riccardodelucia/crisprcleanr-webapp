@@ -351,30 +351,20 @@
 
 // UPLOADS
 .uploads{
-
-  //height: 500px;
-  //background-color: purple;
   border-radius: 4px;
   width: 40rem;
   padding: 1em 1.2em;
   background-color: white;
-
-/*   &__file-controller{
-
-  } */
 }
 
 // NOTIFICATIONS
 .notification {
-  //position: fixed;
-  //right: 1em;
-  //bottom: 1em;
   display: flex;
   flex-direction: column-reverse;
   gap: 1em;
 
   &__content {
-    overflow: scroll;
+    overflow: auto;
     height: 10rem;
   }
 

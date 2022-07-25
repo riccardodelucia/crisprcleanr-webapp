@@ -174,7 +174,6 @@
 
 <script>
 import { watch } from "vue";
-import { useRouter } from "vue-router";
 
 import { getInterpretedMachine, getDataFieldValue, getDataFieldErrorMessage, getFileFieldValue, getFileFieldErrorMessage } from "../../machines/submitJobMachine";
 
@@ -183,7 +182,7 @@ export default {
   props: {
     config: { type: Object },
   },
-  setup(props, { emit }) {
+  setup(_, { emit }) {
 
     const { state, send } = getInterpretedMachine();
 
