@@ -173,7 +173,7 @@
 </template>
 
 <script>
-import { computed, watch } from "vue";
+import { watch } from "vue";
 import { useRouter } from "vue-router";
 
 import { getInterpretedMachine, getDataFieldValue, getDataFieldErrorMessage, getFileFieldValue, getFileFieldErrorMessage } from "../../machines/submitJobMachine";
@@ -184,8 +184,6 @@ export default {
     config: { type: Object },
   },
   setup(props, { emit }) {
-
-    const router = useRouter();
 
     const { state, send } = getInterpretedMachine();
 
@@ -227,8 +225,11 @@ export default {
     const formDataReview = (state) => {
       const formDataMap = new Map();
       Object.entries(state.context.formData).forEach(([key, field]) => {
-        if (typeof field === "object") formDataMap.set(labelFieldPairs[key], field?.name)
-        else formDataMap.set(labelFieldPairs[key], field)
+        let fieldValue = field
+        if (Array.isArray(field)) {
+          fieldValue = field.join(", ")
+        }
+        formDataMap.set(labelFieldPairs[key], fieldValue)
       })
       return formDataMap;
     }
