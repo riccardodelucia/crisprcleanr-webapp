@@ -43,9 +43,9 @@
           </BaseInput>
         </div>
         <div class="form__group">
-          <BaseSelect :label="labelFieldPairs.method" :options="methods" @update:modelValue="onInput($event, 'method')"
-            :modelValue="getDataFieldValue(state, 'method')" :error="getDataFieldErrorMessage(state, 'method')"
-            default="Counts Per Million">
+          <BaseSelect :label="labelFieldPairs.method" :options="config.methods"
+            @update:modelValue="onInput($event, 'method')" :modelValue="getDataFieldValue(state, 'method')"
+            :error="getDataFieldErrorMessage(state, 'method')" default="Counts Per Million">
           </BaseSelect>
         </div>
       </template>
@@ -207,13 +207,6 @@ export default {
       if (state.value.matches("submitted")) emit("submitted")
     })
 
-    const methods = computed(() =>
-      props.config?.methods.reduce((acc, item) => {
-        acc[item.label] = item.value;
-        return acc;
-      }, {})
-    );
-
     const labelFieldPairs = {
       title: "Title",
       email: "Email (optional)",
@@ -246,7 +239,6 @@ export default {
       onChange,
       previous,
       submit,
-      methods,
       getDataFieldValue,
       getDataFieldErrorMessage,
       getFileFieldValue,
