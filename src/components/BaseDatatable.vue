@@ -3,7 +3,7 @@
     <div class="datatable__controls">
       <BaseSearchBar class="datatable__search" @search="setSearch"></BaseSearchBar>
       <div class="datatable__select">
-        <BaseSelect v-model="pageSize" :options="[5, 10, 20]"></BaseSelect>
+        <BaseSelect v-model="pageSize" :options="{ 5: 5, 10: 10, 20: 20 }"></BaseSelect>
       </div>
     </div>
 
