@@ -16,7 +16,7 @@
         <li><b>Normalization Method: </b>{{ result.method }}</li>
         <li v-if="result.notes"><b>Notes: </b>{{ result.notes }}</li>
       </ul>
-      <div v-if="result.status === 'success'" class="results__downloads">
+      <div v-if="result.status === 'SUCCESS'" class="results__downloads">
         <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
           class="button button--primary button--small" type="button">
           {{ file }}&nbsp;<span>
@@ -29,7 +29,7 @@
       </p>
     </div>
 
-    <template v-if="result.status === 'success'">
+    <template v-if="result.status === 'SUCCESS'">
       <div class="widget results__genes-signatures">
         <ContentLoader v-if="!genesSignatures" viewBox="0 0 520 700">
           <rect x="20" y="5" rx="0" ry="0" width="2" height="700" />
@@ -50,7 +50,7 @@
         <template v-slot:content>
           <div class="thumbnails__content">
             <BaseThumbnail v-for="item in imageListByCathegory.normImages" :key="item.filename"
-              @click="openModal(item, id)" :img="item"></BaseThumbnail>
+              @clicked="openModal(item, id)" :img="item"></BaseThumbnail>
           </div>
         </template>
       </BaseAccordion>
@@ -60,7 +60,7 @@
         <template v-slot:content>
           <div class="thumbnails__content">
             <BaseThumbnail v-for="item in imageListByCathegory.chrImages" :key="item.filename"
-              @click="openModal(item, id)" :img="item"></BaseThumbnail>
+              @clicked="openModal(item, id)" :img="item"></BaseThumbnail>
           </div>
         </template>
       </BaseAccordion>
@@ -70,7 +70,7 @@
         <template v-slot:content>
           <div class="thumbnails__content">
             <BaseThumbnail v-for="item in imageListByCathegory.qcImages" :key="item.filename"
-              @click="openModal(item, id)" :img="item"></BaseThumbnail>
+              @clicked="openModal(item, id)" :img="item"></BaseThumbnail>
           </div>
         </template>
       </BaseAccordion>
@@ -106,41 +106,8 @@ import { ContentLoader } from "vue-content-loader";
 
 import imageList from "@/images.json";
 
-
-const image = ref({});
-const data = ref({});
-const modalState = ref("closed");
-
-const openModal = (img, id) => {
-  modalState.value = "loading";
-  CcrAPI.getChart({
-    id,
-    chart: img.chart,
-  }).then((response) => {
-    data.value = response.data;
-    image.value = img;
-    modalState.value = "opened";
-  });
-};
-
-const closeModal = () => {
-  image.value = {};
-  data.value = {};
-  modalState.value = "closed";
-};
-
-const onClick = (file, id) => {
-  CcrAPI.getFile({ id, fileUri: file })
-    .then((response) => {
-      download(response.data, file);
-    })
-    .catch((err) => {
-      console.error("Something went wrong with downloading the file: " + err);
-    });
-};
-
 export default {
-  name: "ViewCRISPRcleanRResultShow",
+  name: "ViewResultsByID",
   components: {
     BoxPlotMultichart,
     ChromosomeMultichart,
@@ -159,6 +126,10 @@ export default {
     },
   },
   setup(props) {
+    const image = ref({});
+    const data = ref({});
+    const modalState = ref("closed");
+
     const imageListByCathegory = reactive({
       normImages: [],
       chrImages: [],
@@ -171,13 +142,17 @@ export default {
       (response) => {
         genesSignatures.value = response.data;
       }
-    );
+    ).catch((err) => {
+      console.error(`Something went wrong with downloading the file: ${err}`);
+    });
 
     const imageListWithURL = imageList.map(async (image) => {
       try {
         const response = await CcrAPI.getFile({
           id: props.id,
           fileUri: image.imgUri,
+        }).catch((err) => {
+          console.error(`Something went wrong with downloading the file: ${err}`);
         });
         return { ...image, src: URL.createObjectURL(response.data) };
       } catch (error) {
@@ -203,6 +178,36 @@ export default {
         (image) => image.section === "qc"
       );
     });
+
+    const openModal = (img, id) => {
+      modalState.value = "loading";
+      CcrAPI.getChart({
+        id,
+        chart: img.chart,
+      }).then((response) => {
+        data.value = response.data;
+        image.value = img;
+        modalState.value = "opened";
+      }).catch((err) => {
+        console.error(`Something went wrong with downloading the file: ${err}`);
+      });
+    };
+
+    const closeModal = () => {
+      image.value = {};
+      data.value = {};
+      modalState.value = "closed";
+    };
+
+    const onClick = (file, id) => {
+      CcrAPI.getFile({ id, fileUri: file })
+        .then((response) => {
+          download(response.data, file);
+        })
+        .catch((err) => {
+          console.error(`Something went wrong with downloading the file: ${err}`);
+        });
+    };
 
     return {
       fileList,
@@ -240,7 +245,7 @@ export default {
   }
 
   &__details {
-    font-size: 1.5rem;
+    //font-size: 1.5rem;
     grid-column: 1 / 2;
   }
 

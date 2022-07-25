@@ -172,9 +172,11 @@
     <p class="terms__update">
       This Privacy Policy is updated to April 14, 2022.
     </p>
-    <button class="button button--primary button--large" type="button" @click="$router.push({ name: 'home' })">
-      Back to Home
-    </button>
+    <div class="terms__button-container"><button class="button button--primary button--large" type="button"
+        @click="$router.push({ name: 'home' })">
+        Back to Home
+      </button>
+    </div>
   </div>
 </template>
 

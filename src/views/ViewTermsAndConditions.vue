@@ -337,9 +337,12 @@
     <p class="terms__update">
       This Privacy Policy is updated to April 14, 2022.
     </p>
-    <button class="button button--primary button--large" type="button" @click="$router.push({ name: 'home' })">
-      Back to Home
-    </button>
+    <div class="terms__button-container"><button class="button button--primary button--large" type="button"
+        @click="$router.push({ name: 'home' })">
+        Back to Home
+      </button>
+    </div>
+
   </div>
 </template>
 
@@ -349,3 +352,43 @@ export default {
   name: "ViewCRISPRcleanRTermsAndConditions",
 };
 </script>
+
+<style lang="scss">
+.terms {
+  grid-column: 2 / -2;
+  padding: 2em 1em;
+
+  &__title,
+  &__subtitle,
+  &__article {
+    text-align: center;
+  }
+
+  &__title {
+    margin-bottom: .5em;
+  }
+
+  &__subtitle {
+    margin-bottom: .5em;
+  }
+
+  &__article {
+    margin-top: 2em;
+    margin-bottom: 1em;
+  }
+
+  &__list {
+    list-style-position: inside;
+  }
+
+  &__list-item {
+    margin-bottom: 1em;
+  }
+
+  &__button-container {
+    margin-top: 4em;
+    display: flex;
+    justify-content: center;
+  }
+}
+</style>
