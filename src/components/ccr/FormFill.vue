@@ -43,9 +43,9 @@
           </BaseInput>
         </div>
         <div class="form__group">
-          <BaseSelect :label="labelFieldPairs.method" :options="methods" @update:modelValue="onInput($event, 'method')"
-            :modelValue="getDataFieldValue(state, 'method')" :error="getDataFieldErrorMessage(state, 'method')"
-            default="Counts Per Million">
+          <BaseSelect :label="labelFieldPairs.method" :options="config.methods"
+            @update:modelValue="onInput($event, 'method')" :modelValue="getDataFieldValue(state, 'method')"
+            :error="getDataFieldErrorMessage(state, 'method')" default="Counts Per Million">
           </BaseSelect>
         </div>
       </template>
@@ -173,8 +173,7 @@
 </template>
 
 <script>
-import { computed, watch } from "vue";
-import { useRouter } from "vue-router";
+import { watch } from "vue";
 
 import { getInterpretedMachine, getDataFieldValue, getDataFieldErrorMessage, getFileFieldValue, getFileFieldErrorMessage } from "../../machines/submitJobMachine";
 
@@ -183,9 +182,7 @@ export default {
   props: {
     config: { type: Object },
   },
-  setup(props, { emit }) {
-
-    const router = useRouter();
+  setup(_, { emit }) {
 
     const { state, send } = getInterpretedMachine();
 
@@ -207,13 +204,6 @@ export default {
       if (state.value.matches("submitted")) emit("submitted")
     })
 
-    const methods = computed(() =>
-      props.config?.methods.reduce((acc, item) => {
-        acc[item.label] = item.value;
-        return acc;
-      }, {})
-    );
-
     const labelFieldPairs = {
       title: "Title",
       email: "Email (optional)",
@@ -234,8 +224,11 @@ export default {
     const formDataReview = (state) => {
       const formDataMap = new Map();
       Object.entries(state.context.formData).forEach(([key, field]) => {
-        if (typeof field === "object") formDataMap.set(labelFieldPairs[key], field?.name)
-        else formDataMap.set(labelFieldPairs[key], field)
+        let fieldValue = field
+        if (Array.isArray(field)) {
+          fieldValue = field.join(", ")
+        }
+        formDataMap.set(labelFieldPairs[key], fieldValue)
       })
       return formDataMap;
     }
@@ -246,7 +239,6 @@ export default {
       onChange,
       previous,
       submit,
-      methods,
       getDataFieldValue,
       getDataFieldErrorMessage,
       getFileFieldValue,
