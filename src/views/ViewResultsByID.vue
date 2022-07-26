@@ -4,17 +4,9 @@
     <div class="widget results__details">
       <h3 class="u-margin-bottom-small">Details</h3>
       <ul class="results__list">
-        <li><b>Title: </b>{{ result.title }}</li>
-        <li><b>Date: </b>{{ date(result.dateTime) }}</li>
-        <li><b>Status: </b>{{ result.status }}</li>
-        <li><b>Input counts file: </b>{{ result.fileCountsName }}</li>
-        <li><b>Library: </b>{{ result.library }}</li>
-        <li><b>Number of controls: </b>{{ result.nControls }}</li>
-        <li>
-          <b>Minimal number of reads in the control sample: </b>{{ result.normMinReads }}
+        <li v-for="field in resultDataMap" :key="field[1]">
+          <b>{{ field[0] }}:</b> {{ field[1] }}
         </li>
-        <li><b>Normalization Method: </b>{{ result.method }}</li>
-        <li v-if="result.notes"><b>Notes: </b>{{ result.notes }}</li>
       </ul>
       <div v-if="result.status === 'SUCCESS'" class="results__downloads">
         <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
@@ -136,7 +128,6 @@ export default {
       qcImages: [],
     });
     const genesSignatures = ref(null);
-    //const store = useStore();
 
     CcrAPI.getChart({ id: props.id, chart: "genes_signatures" }).then(
       (response) => {
@@ -209,6 +200,38 @@ export default {
         });
     };
 
+    const labelFieldPairs = {
+      id: "ID",
+      title: "Title",
+      email: "Email",
+      label: "Data label",
+      notes: "Notes",
+      status: "Status",
+      dateTime: "Date Time",
+      nControls: "Number of controls",
+      normMinReads: "Min number of reads in the control sample",
+      method: "Normalization Method",
+      libraryBuiltin: "Default Library",
+      libraryFile: "Library File",
+      fileCounts: "Counts File",
+      filesFASTQcontrols: "FASTQ Controls",
+      filesFASTQsamples: "FASTQ Samples",
+      filesBAMcontrols: "BAM Controls",
+      filesBAMsamples: "BAM Samples"
+    }
+
+    const resultDataMap = new Map();
+    Object.entries(props.result).forEach(([key, field]) => {
+      if (field && labelFieldPairs[key]) {
+        let fieldValue = field
+        if (Array.isArray(field)) {
+          fieldValue = field.join(", ")
+        }
+        resultDataMap.set(labelFieldPairs[key], fieldValue)
+      }
+
+    })
+
     return {
       fileList,
       openModal,
@@ -220,6 +243,7 @@ export default {
       date,
       genesSignatures,
       imageListByCathegory,
+      resultDataMap
     };
   },
 };

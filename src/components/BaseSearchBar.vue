@@ -30,8 +30,8 @@ export default {
   &__icon {
     color: var(--color-grey-dark);
     position: absolute;
-    left: 1rem;
-    top: 1rem;
+    left: 1em;
+    top: 1.5em;
   }
 }
 </style>
