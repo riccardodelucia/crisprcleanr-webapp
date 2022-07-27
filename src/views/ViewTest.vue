@@ -15,7 +15,7 @@ export default {
     data() {
         return {
             fileValue: null,
-            selectValue: "a"
+            selectValue: null
         }
     }
 }

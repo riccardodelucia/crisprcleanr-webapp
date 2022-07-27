@@ -6,15 +6,15 @@
       <div ref="select" class="select" :class="{ 'select--error': error }" :tabindex="tabindex" @blur="open = false"
         @focus="open = true">
         <div class="select__selection" :class="{
-          'select__selection--empty': modelValue,
+          'select__selection--empty': modelValue === null,
         }">
           {{ selection }}
         </div>
         <div class="select__overlay" v-if="open" @click.stop="closeSelector"></div>
         <div class="select__options" v-show="open">
-          <div class="select__option" v-for="option of Object.entries(options)" :key="option[0]"
-            @click.stop="clickedOption(option[1])">
-            {{ option[0] }}
+          <div class="select__option" v-for="(option, index) of options" :key="index"
+            @click.stop="clickedOption(option)">
+            {{ option }}
           </div>
         </div>
       </div>
@@ -52,19 +52,14 @@ export default {
       required: false,
       default: 0,
     },
-    initialValue: {
-      type: ["Object", "String", "Number"],
-      required: false,
-      default: undefined
-    },
+
   },
   setup(props, { emit }) {
-    //const entries = Object.entries(props.options);
     const open = ref(false);
     const select = ref(null);
 
     // Initialize selected value, if default props provided
-    props.options.find(item => item === props.initialValue) && emit('update:modelValue', props.initialValue);
+    //props.options.find(item => item === props.initialValue) && emit('update:modelValue', props.initialValue);
 
     const closeSelector = () => {
       open.value = false;
