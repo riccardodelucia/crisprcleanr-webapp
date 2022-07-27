@@ -33,8 +33,8 @@ export default {
   props: {
     label: { type: String, default: "" },
     options: {
-      type: Object,
-      default: {}
+      type: Array,
+      default: []
     },
     error: {
       type: String,
@@ -52,40 +52,22 @@ export default {
       required: false,
       default: 0,
     },
-    selected: {
+    initialValue: {
       type: ["Object", "String", "Number"],
-      required: false
+      required: false,
+      default: undefined
     },
-    default: {
-      type: String,
-      default: ""
-    }
   },
   setup(props, { emit }) {
-    const entries = Object.entries(props.options);
+    //const entries = Object.entries(props.options);
     const open = ref(false);
     const select = ref(null);
 
-    // Check value type to decide whether to use Map (primitive) or WeakMap (references)
-    const types = new Set();
-    entries.forEach(([_, value]) => {
-      types.add(typeof value);
-    });
-    if (types.size > 1) throw new TypeError("Selector value types must be consistent");
-
-    const [type] = types;
-
-    // WeakMaps only work with non primitive key values
-    const map = ["boolean", "number", "bigint", "string", "undefined"].includes(type) ? new Map() : new WeakMap()
-
-    entries.forEach(([key, value]) => {
-      map.set(value, key);
-    });
-
     // Initialize selected value, if default props provided
-    props.options?.[props.default] && emit('update:modelValue', props.options?.[props.default]);
+    props.options.find(item => item === props.initialValue) && emit('update:modelValue', props.initialValue);
 
-    const selection = computed(() => map.get(props.modelValue) || props.placeholder)
+    //const selection = computed(() => map.get(props.modelValue) || props.placeholder)
+    const selection = "z"
 
     const closeSelector = () => {
       open.value = false;
@@ -98,7 +80,6 @@ export default {
     };
 
     return {
-      map,
       open,
       selection,
       select,
@@ -106,5 +87,48 @@ export default {
       clickedOption
     }
   },
+
+  /* setup(props, { emit }) {
+    const open = ref(false);
+    const select = ref(null);
+
+    const selection = ref("selection")
+
+    const closeSelector = () => console.log("Close!")
+
+    const clickedOption = (option) => console.log("clicked!")
+
+    // Initialize selected value, if initialValue props is provided
+    props.options.find(item => item === props.initialValue) && emit('update:modelValue', props.initialValue);
+
+    const closeSelector = () => {
+      open.value = false;
+      select.value.blur();
+    }
+
+    const clickedOption = (option) => {
+      debugger;
+      emit('update:modelValue', option);
+      closeSelector();
+    };
+
+    const showLabel = (option) => {
+      return "label"
+      //return typeof option === "object" ? (option?.label ? label : JSON.stringify(option)) : option
+    }
+
+    const selection = computed(() => {
+      return showLabel(props.modelValue)
+    })
+
+    return {
+      open,
+      selection,
+      select,
+      closeSelector,
+      clickedOption,
+      showLabel
+    }
+  }, */
 };
 </script>

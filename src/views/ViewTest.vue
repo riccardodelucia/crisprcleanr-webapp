@@ -3,9 +3,9 @@
         <div class="test">
             <BaseInput label="Label" error="error">
             </BaseInput>
-            <BaseSelect label="Label" error="error" :options="{ text1: 1, text2: 2 }"></BaseSelect>
+            <BaseSelect label="Label" error="error" :options="['a', 'b', 'c']" v-model="selectValue"></BaseSelect>
             <BaseTextarea label="Label" error="error"></BaseTextarea>
-            <BaseInputFile label="Label" v-model="value" error="error"></BaseInputFile>
+            <BaseInputFile label="Label" v-model="fileValue" error="error"></BaseInputFile>
         </div>
     </div>
 </template>
@@ -14,7 +14,8 @@
 export default {
     data() {
         return {
-            value: null
+            fileValue: null,
+            selectValue: "a"
         }
     }
 }
