@@ -14,7 +14,7 @@
         <div class="select__options" v-show="open">
           <div class="select__option" v-for="(option, index) of options" :key="index"
             @click.stop="clickedOption(option)">
-            {{ option }}
+            {{ showLabel(option) }}
           </div>
         </div>
       </div>
@@ -58,9 +58,6 @@ export default {
     const open = ref(false);
     const select = ref(null);
 
-    // Initialize selected value, if default props provided
-    //props.options.find(item => item === props.initialValue) && emit('update:modelValue', props.initialValue);
-
     const closeSelector = () => {
       open.value = false;
       select.value.blur();
@@ -72,7 +69,14 @@ export default {
     };
 
     const showLabel = (option) => {
-      return typeof option === "object" ? (option?.label ? label : JSON.stringify(option)) : option
+      if ([undefined, null].includes(option)) return "Select an option"
+      //console.log(option?.label)
+      //debugger;
+      if (typeof option === "object")
+        if (option?.label) return option.label
+        else return JSON.stringify(option)
+      return option
+      //return typeof option === "object" ? (option?.label ? option?.label : JSON.stringify(option)) : option
     }
 
     const selection = computed(() => {
@@ -88,43 +92,5 @@ export default {
       showLabel
     }
   },
-
-  /* setup(props, { emit }) {
-    const open = ref(false);
-    const select = ref(null);
-
-    const selection = ref("selection")
-
-    const closeSelector = () => console.log("Close!")
-
-    const clickedOption = (option) => console.log("clicked!")
-
-    // Initialize selected value, if initialValue props is provided
-    props.options.find(item => item === props.initialValue) && emit('update:modelValue', props.initialValue);
-
-    const clickedOption = (option) => {
-      debugger;
-      emit('update:modelValue', option);
-      closeSelector();
-    };
-
-    const showLabel = (option) => {
-      return "label"
-      //return typeof option === "object" ? (option?.label ? label : JSON.stringify(option)) : option
-    }
-
-    const selection = computed(() => {
-      return showLabel(props.modelValue)
-    })
-
-    return {
-      open,
-      selection,
-      select,
-      closeSelector,
-      clickedOption,
-      showLabel
-    }
-  }, */
 };
 </script>
