@@ -6,7 +6,7 @@
       <div ref="select" class="select" :class="{ 'select--error': error }" :tabindex="tabindex" @blur="open = false"
         @focus="open = true">
         <div class="select__selection" :class="{
-          'select__selection--empty': Object.keys(modelValue).length === 0,
+          'select__selection--empty': modelValue,
         }">
           {{ selection }}
         </div>
@@ -66,25 +66,31 @@ export default {
     // Initialize selected value, if default props provided
     props.options.find(item => item === props.initialValue) && emit('update:modelValue', props.initialValue);
 
-    //const selection = computed(() => map.get(props.modelValue) || props.placeholder)
-    const selection = "z"
-
     const closeSelector = () => {
       open.value = false;
       select.value.blur();
     }
 
-    const clickedOption = (optionValue) => {
-      emit('update:modelValue', optionValue);
+    const clickedOption = (option) => {
+      emit('update:modelValue', option);
       closeSelector();
     };
+
+    const showLabel = (option) => {
+      return typeof option === "object" ? (option?.label ? label : JSON.stringify(option)) : option
+    }
+
+    const selection = computed(() => {
+      return showLabel(props.modelValue)
+    })
 
     return {
       open,
       selection,
       select,
       closeSelector,
-      clickedOption
+      clickedOption,
+      showLabel
     }
   },
 
@@ -100,11 +106,6 @@ export default {
 
     // Initialize selected value, if initialValue props is provided
     props.options.find(item => item === props.initialValue) && emit('update:modelValue', props.initialValue);
-
-    const closeSelector = () => {
-      open.value = false;
-      select.value.blur();
-    }
 
     const clickedOption = (option) => {
       debugger;
