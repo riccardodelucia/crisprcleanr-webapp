@@ -1,30 +1,13 @@
 <template>
-  <BaseSelect
-    label="Choose a Genes Set"
-    :options="Object.keys(chartData.genesSets)"
-    :format="makeLabel"
-    v-model="genesSet"
-  >
+  <BaseSelect label="Choose a Genes Set" :options="Object.keys(chartData.genesSets)" :optionsLabels="genesSetsLabels"
+    v-model="genesSet">
   </BaseSelect>
-  <svg
-    preserveAspectRatio="xMinYMin meet"
-    :viewBox="[0, 0, width, height].join(' ')"
-  >
-    <GenesSignaturesChartFocus
-      :data="chartData"
-      :width="chartFocusWidth"
-      :height="height"
-      :yDomain="yDomainFocus"
-      :genesSet="genesSet"
-    ></GenesSignaturesChartFocus>
+  <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
+    <GenesSignaturesChartFocus :data="chartData" :width="chartFocusWidth" :height="height" :yDomain="yDomainFocus"
+      :genesSet="genesSet"></GenesSignaturesChartFocus>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
-      <GenesSignaturesChartContext
-        :data="chartData"
-        :width="chartContextWidth"
-        :height="height"
-        :yDomain="yDomainContext"
-        @brush="brushed"
-      ></GenesSignaturesChartContext>
+      <GenesSignaturesChartContext :data="chartData" :width="chartContextWidth" :height="height"
+        :yDomain="yDomainContext" @brush="brushed"></GenesSignaturesChartContext>
     </g>
   </svg>
 </template>
@@ -32,15 +15,10 @@
 <script>
 import { extent } from "d3";
 import { ref } from "vue";
-import { snakeCase } from "lodash";
 
 import GenesSignaturesChartFocus from "@/components/ccr/charts/genes_signatures/GenesSignaturesChartFocus.vue";
 import GenesSignaturesChartContext from "@/components/ccr/charts/genes_signatures/GenesSignaturesChartContext.vue";
 
-const makeLabel = (label) => {
-  const snakeCaseLabel = snakeCase(label);
-  return snakeCaseLabel.replace(/_/g, " ");
-};
 
 const setupChart = (data) => {
   const genes = data.curve
@@ -81,6 +59,7 @@ const setupChart = (data) => {
     genesSets,
   };
 };
+
 export default {
   name: "GeneSignatures",
   props: {
@@ -103,6 +82,16 @@ export default {
 
     const genesSet = ref(Object.keys(chartData.genesSets)[0]);
 
+    const genesSetsLabels = {
+      Proteasome: "Proteasome",
+      Spliceosome: "Spliceosome",
+      "Ribosomal Proteins": "RibosomalProteins",
+      "DNA Replication": "DNAReplication",
+      "RNA Polymerase": "RNAPolymerase",
+      "BAGEL Essentials": "BAGELEssential",
+      "BAGEL Non Essential": "BAGELNonEssential"
+    }
+
     const chartFocusWidth = 450;
     const chartContextWidth = 70;
     const width = chartFocusWidth + chartContextWidth;
@@ -117,7 +106,7 @@ export default {
       yDomainContext,
       brushed,
       genesSet,
-      makeLabel,
+      genesSetsLabels
     };
   },
 };
@@ -126,16 +115,20 @@ export default {
 <style lang="scss" scoped>
 .chart__line {
   stroke-width: 1;
+
   &--dashed {
     stroke-dasharray: 4 2;
   }
+
   &--black {
     stroke: black;
   }
+
   &--red {
     stroke: red;
   }
 }
+
 .axis-label {
   text-anchor: middle;
   font-family: sans-serif;

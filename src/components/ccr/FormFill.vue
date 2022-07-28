@@ -43,9 +43,9 @@
           </BaseInput>
         </div>
         <div class="form__group">
-          <BaseSelect :label="labelFieldPairs.method" :options="config.methods"
+          <BaseSelect :label="labelFieldPairs.method" :options="config.methods" :optionsLabels="methodsSelectorLabels"
             @update:modelValue="onInput($event, 'method')" :modelValue="getDataFieldValue(state, 'method')"
-            :error="getDataFieldErrorMessage(state, 'method')" default="Counts Per Million">
+            :error="getDataFieldErrorMessage(state, 'method')">
           </BaseSelect>
         </div>
       </template>
@@ -61,7 +61,7 @@
         <template v-if="state.hasTag('libraryBuiltin')">
           <div class="form__group">
             <BaseSelect :label="labelFieldPairs.libraryBuiltin" :options="config.libraries"
-              @update:modelValue="onInput($event, 'libraryBuiltin')"
+              :optionsLabels="librariesSelectorLabel" @update:modelValue="onInput($event, 'libraryBuiltin')"
               :modelValue="getDataFieldValue(state, 'libraryBuiltin')"
               :error="getDataFieldErrorMessage(state, 'libraryBuiltin')">
             </BaseSelect>
@@ -182,7 +182,7 @@ export default {
   props: {
     config: { type: Object },
   },
-  setup(_, { emit }) {
+  setup(props, { emit }) {
 
     const { state, send } = getInterpretedMachine();
 
@@ -233,6 +233,21 @@ export default {
       return formDataMap;
     }
 
+    const methodsSelectorLabels = {
+      "Counts Per Million": "CPM",
+      "Median Ratios": "MedRatios"
+    }
+
+
+    const librariesSelectorLabel = {
+      "AVANA": "AVANA_Library",
+      "Brunello": "Brunello_Library",
+      "GeCKO": "GeCKO_Library_v2",
+      "KY v1.1": "KY_Library_v1.1",
+      "MiniLibCas9": "MiniLibCas9_Library",
+      "Whitehead": "Whitehead_Library"
+    }
+
     return {
       state,
       onInput,
@@ -246,6 +261,8 @@ export default {
       send,
       labelFieldPairs,
       formDataReview,
+      methodsSelectorLabels,
+      librariesSelectorLabel
     };
   },
 };

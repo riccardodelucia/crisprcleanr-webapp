@@ -6,7 +6,7 @@
       <div ref="select" class="select" :class="{ 'select--error': error }" :tabindex="tabindex" @blur="open = false"
         @focus="open = true">
         <div class="select__selection" :class="{
-          'select__selection--empty': modelValue === null,
+          'select__selection--empty': !touched,
         }">
           {{ selection }}
         </div>
@@ -36,6 +36,10 @@ export default {
       type: Array,
       default: []
     },
+    optionsLabels: {
+      type: Object,
+      default: null,
+    },
     error: {
       type: String,
       default: "",
@@ -45,18 +49,21 @@ export default {
       default: "Select an option",
     },
     modelValue: {
-      default: "",
+      default: undefined,
     },
     tabindex: {
       type: Number,
       required: false,
       default: 0,
     },
-
   },
   setup(props, { emit }) {
     const open = ref(false);
     const select = ref(null);
+
+    const getKeyByValue = (object, value) => {
+      return Object.keys(object).find(key => object[key] === value);
+    }
 
     const closeSelector = () => {
       open.value = false;
@@ -64,24 +71,27 @@ export default {
     }
 
     const clickedOption = (option) => {
+      touched.value = true;
       emit('update:modelValue', option);
       closeSelector();
     };
 
     const showLabel = (option) => {
-      if ([undefined, null].includes(option)) return "Select an option"
-      //console.log(option?.label)
-      //debugger;
-      if (typeof option === "object")
-        if (option?.label) return option.label
-        else return JSON.stringify(option)
+      if (props.optionsLabels) {
+        const label = getKeyByValue(props.optionsLabels, option)
+        if (label) return label
+      }
       return option
-      //return typeof option === "object" ? (option?.label ? option?.label : JSON.stringify(option)) : option
     }
 
     const selection = computed(() => {
+      if (!touched.value) return "Select an Option"
       return showLabel(props.modelValue)
     })
+
+    const touched = ref(false)
+
+    if (props.modelValue) touched.value = true;
 
     return {
       open,
@@ -89,7 +99,8 @@ export default {
       select,
       closeSelector,
       clickedOption,
-      showLabel
+      showLabel,
+      touched
     }
   },
 };
