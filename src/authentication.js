@@ -43,10 +43,12 @@ keycloak.onAuthLogout = function () {
 };
 
 keycloak.onAuthRefreshSuccess = function () {
-  service.setupToken(keycloak.token);
+  // Do not setup token here, since this async callback is not guaranteed to be executed before the authorized route is called.
+  // This could cause the protected route to call the backend before the authentication header is setup in the axios call.
+  //service.setupToken(keycloak.token);
 };
 
-export function authorize(redirectUri) {
+function authorize(redirectUri) {
   const expirationTime = 70;
   if (!keycloak.authenticated) {
     // The page is protected and the user is not authenticated. Force a login.
@@ -57,6 +59,7 @@ export function authorize(redirectUri) {
     return keycloak
       .updateToken(expirationTime)
       .then(() => {
+        service.setupToken(keycloak.token);
         return true;
       })
       .catch(() => {
