@@ -1,11 +1,11 @@
 <template>
   <div class="input-field">
-    <label :for="uuid" class="input-field__label" v-if="label">{{ label }}</label>
-    <div class="input-field__element">
+    <label :for="uuid" class="input-field__label" v-if="label">
+      {{ label }}
       <textarea :id="uuid" class="textarea" :class="{ 'input--error': error }" :value="modelValue" v-bind="$attrs"
         @input.stop="onInput">
-    </textarea>
-    </div>
+      </textarea>
+    </label>
     <div class="input-field__error" v-if="error">
       <BaseIcon name="alert-circle" width="16px" height="16px"></BaseIcon><small>{{ error
       }}</small>
@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import UniqueID from "@/composables/uuid.js";
 
 export default {
   name: "BaseTextArea",
@@ -32,12 +31,9 @@ export default {
       default: "",
     },
   },
-  setup(props, { emit }) {
-    const uuid = UniqueID();
-
+  setup(_, { emit }) {
     const onInput = (event) => emit("update:modelValue", event.target.value);
     return {
-      uuid,
       onInput,
     };
   },

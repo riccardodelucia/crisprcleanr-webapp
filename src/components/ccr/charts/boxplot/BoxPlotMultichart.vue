@@ -1,32 +1,15 @@
 <template>
   <div class="controls-container">
-    <BaseToggleSwitch
-      v-if="data.raw && data.norm"
-      v-model="showNormalizedData"
-    />
-    <span v-if="needsToggleSwitch">{{
-      !showNormalizedData ? "unnormalized" : "normalized"
-    }}</span>
+    <BaseToggleSwitch v-if="data.raw && data.norm" v-model="showNormalizedData"
+      :option="!showNormalizedData ? 'unnormalized' : 'normalized'" />
   </div>
-  <svg
-    preserveAspectRatio="xMinYMin meet"
-    :viewBox="[0, 0, width, height].join(' ')"
-  >
+  <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
     <g>
-      <BoxPlotChartFocus
-        :data="selectedChartData"
-        :width="chartFocusWidth"
-        :height="height"
-        :yDomain="yDomainFocus"
-      />
+      <BoxPlotChartFocus :data="selectedChartData" :width="chartFocusWidth" :height="height" :yDomain="yDomainFocus" />
     </g>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
-      <BoxPlotChartContext
-        :width="chartContextWidth"
-        :height="height"
-        @brush="brushed"
-        :yDomain="yDomainContext"
-      ></BoxPlotChartContext>
+      <BoxPlotChartContext :width="chartContextWidth" :height="height" @brush="brushed" :yDomain="yDomainContext">
+      </BoxPlotChartContext>
     </g>
   </svg>
 </template>

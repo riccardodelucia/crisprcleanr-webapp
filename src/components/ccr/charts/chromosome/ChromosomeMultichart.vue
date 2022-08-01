@@ -1,36 +1,21 @@
 <template>
   <div class="controls-container">
-    <BaseCheckbox v-model="selections.segments" label="segments" />
-    <BaseCheckbox v-model="selections.guides" label="guides" />
+    <BaseCheckbox v-model="selections.segments" option="segments" />
+    <BaseCheckbox v-model="selections.guides" option="guides" />
 
     <div class="controls-container__normalization">
-      <span>{{
-        showNormalizedData ? "post correction" : "pre  correction"
-      }}</span>
-      <BaseToggleSwitch v-model="showNormalizedData" />
+      <BaseToggleSwitch v-model="showNormalizedData"
+        :option="showNormalizedData ? 'post correction' : 'pre correction'" />
     </div>
   </div>
-  <svg
-    preserveAspectRatio="xMinYMin meet"
-    :viewBox="[0, 0, width, height].join(' ')"
-  >
+  <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
     <g>
-      <ChromosomeChartFocus
-        :data="selectedChartData"
-        :width="width"
-        :height="chartFocusHeight"
-        :xDomain="xDomainFocus"
-        :selections="selections"
-      />
+      <ChromosomeChartFocus :data="selectedChartData" :width="width" :height="chartFocusHeight" :xDomain="xDomainFocus"
+        :selections="selections" />
     </g>
     <g :transform="`translate(0, ${chartFocusHeight})`">
-      <ChromosomeChartContext
-        :data="selectedChartData"
-        :width="width"
-        :height="chartContextHeight"
-        @brush="brushed"
-        :xDomain="xDomainContext"
-      ></ChromosomeChartContext>
+      <ChromosomeChartContext :data="selectedChartData" :width="width" :height="chartContextHeight" @brush="brushed"
+        :xDomain="xDomainContext"></ChromosomeChartContext>
     </g>
   </svg>
 </template>
@@ -123,8 +108,8 @@ export default {
 
   &__normalization {
     margin-left: auto;
+    flex: 0 0 20rem;
     display: flex;
-    align-items: center;
     gap: 0.4em;
   }
 }

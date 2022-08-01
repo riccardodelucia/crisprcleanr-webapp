@@ -1,21 +1,17 @@
 <template>
   <div class="input-field">
     <label class="input-field__label" v-if="label">{{ label }}</label>
-
-    <div class="input-field__element">
-      <div ref="select" class="select" :class="{ 'select--error': error }" :tabindex="tabindex" @blur="open = false"
-        @focus="open = true">
-        <div class="select__selection" :class="{
-          'select__selection--empty': !touched,
-        }">
-          {{ selection }}
-        </div>
-        <div class="select__overlay" v-if="open" @click.stop="closeSelector"></div>
-        <div class="select__options" v-show="open">
-          <div class="select__option" v-for="(option, index) of options" :key="index"
-            @click.stop="clickedOption(option)">
-            {{ showLabel(option) }}
-          </div>
+    <div ref="select" class="select" :class="{ 'select--error': error }" :tabindex="tabindex" @blur="open = false"
+      @focus="open = true">
+      <div class="select__selection" :class="{
+        'select__selection--empty': !touched,
+      }">
+        {{ selection }}
+      </div>
+      <div class="select__overlay" v-if="open" @click.stop="closeSelector"></div>
+      <div class="select__options" v-show="open">
+        <div class="select__option" v-for="(option, index) of options" :key="index" @click.stop="clickedOption(option)">
+          {{ showLabel(option) }}
         </div>
       </div>
     </div>

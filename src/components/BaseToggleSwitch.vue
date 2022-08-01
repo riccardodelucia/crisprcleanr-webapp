@@ -1,43 +1,32 @@
 <template>
-  <div class="toggle__container">
-    <span
-      class="toggle__wrapper"
-      role="checkbox"
-      :aria-checked="modelValue.toString()"
-      tabindex="0"
-      @click="toggle"
-      @keydown.space="toggle"
-    >
-      <span class="toggle__background" :class="backgroundModifierClass" />
-      <span class="toggle__indicator" :class="indicatorModifierClass" />
-    </span>
+  <div class="input-field">
+    <label class="input-field__label" v-if="label">{{ label }}</label>
+    <label class="toggle">
+      <div class="toggle__input" :class="{ 'toggle__input--selected': modelValue }"></div>
+      <input hidden type="checkbox" @click="onClick" />
+      {{ option }}
+    </label>
   </div>
 </template>
 
 <script>
 export default {
   props: {
+    label: {
+      type: String,
+      default: "",
+    },
+    option: {
+      type: String,
+      default: "",
+    },
     modelValue: {
       type: Boolean,
       required: true,
     },
   },
-  computed: {
-    backgroundModifierClass() {
-      return {
-        "toggle__background--on": this.modelValue,
-        "toggle__background--off": !this.modelValue,
-      };
-    },
-    indicatorModifierClass() {
-      return {
-        "toggle__indicator--on": this.modelValue,
-        "toggle__indicator--off": !this.modelValue,
-      };
-    },
-  },
   methods: {
-    toggle() {
+    onClick() {
       this.$emit("update:modelValue", !this.modelValue);
     },
   },
@@ -46,50 +35,35 @@ export default {
 
 <style lang="scss">
 .toggle {
-  &__container {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  display: flex;
+  gap: .5em;
+  cursor: pointer;
+  user-select: none;
 
-  &__wrapper {
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-    width: 4.5rem;
+  &__input {
+    width: 5rem;
     height: 3rem;
-    border-radius: 9999px;
-    &:focus {
-      outline: 0;
-    }
-  }
-  &__background {
-    display: inline-block;
-    border-radius: 9999px;
-    height: 100%;
-    width: 100%;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.4s ease;
-    &--off {
-      background-color: var(--color-grey-dark);
-    }
-    &--on {
-      background-color: var(--color-blue-lighter);
-    }
-  }
-  &__indicator {
-    position: absolute;
-    height: 2.5rem;
-    width: 2.5rem;
-    left: 0.1em;
-    bottom: 0.15em;
-    background-color: #ffffff;
-    border-radius: 9999px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.4s ease;
+    background-color: white;
+    border: 2px solid var(--color-blue-lighter);
+    border-radius: 3.4rem;
+    position: relative;
 
-    &--on {
-      transform: translate(1.7rem);
+    &:after {
+      content: "";
+      position: absolute;
+      left: .5rem;
+      top: 0.4rem;
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 50%;
+      background-color: var(--color-blue-lighter);
+      transition: transform 0.2s ease;
+    }
+
+    &--selected {
+      &:after {
+        transform: translate(1.9rem);
+      }
     }
   }
 }

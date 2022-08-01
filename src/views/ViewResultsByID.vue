@@ -8,7 +8,8 @@
           <b>{{ field[0] }}:</b> {{ field[1] }}
         </li>
       </ul>
-      <div v-if="result.status === 'SUCCESS'" class="results__downloads">
+      <p v-if="result.status === 'PENDING'">Further content will be shown upon successful job completion...</p>
+      <div v-else-if="result.status === 'SUCCESS'" class="results__downloads">
         <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
           class="button button--primary button--small" type="button">
           {{ file }}&nbsp;<span>
@@ -17,7 +18,7 @@
         </button>
       </div>
       <p class="results__msg" v-else>
-        Further content will be shown upon successful job completion...
+        Job finished in error status. No further content is available.
       </p>
     </div>
 
@@ -269,7 +270,6 @@ export default {
   }
 
   &__details {
-    //font-size: 1.5rem;
     grid-column: 1 / 2;
   }
 
@@ -278,7 +278,6 @@ export default {
   }
 
   &__downloads {
-    //grid-column: 1 / 2;
     padding: 1em 0;
     display: flex;
     gap: 1em;

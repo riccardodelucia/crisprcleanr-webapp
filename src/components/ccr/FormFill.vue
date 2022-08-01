@@ -53,11 +53,9 @@
 
       <template v-if="state.matches('enteringLibrary')">
         <h3 class="u-margin-bottom-small">Library</h3>
-        <input type="radio" id="html" name="fav_language" value="Default Library" @click="send('LIBRARY.DEFAULT')">
-        <label for="html">Default Library</label><br>
-        <input type="radio" id="css" name="fav_language" value="Upload Library File" @click="send('LIBRARY.FILE')">
-        <label for="css">Upload Library file</label><br>
-
+        <BaseRadioGroup label="Library type" :options="libraryTypeOptions" @update:modelValue="sendLibraryType"
+          :modelValue="libraryType">
+        </BaseRadioGroup>
         <template v-if="state.hasTag('libraryBuiltin')">
           <div class="form__group">
             <BaseSelect :label="labelFieldPairs.libraryBuiltin" :options="config.libraries"
@@ -84,12 +82,9 @@
       <template v-if="state.matches('enteringFiles')">
         <h3 class="u-margin-bottom-small">Input Files</h3>
 
-        <input type="radio" id="counts" name="fav_language" value="File Counts" @click="send('FILE.COUNTS')">
-        <label for="counts">File Counts</label><br>
-        <input type="radio" id="fastq" name="fav_language" value="Files FASTQ" @click="send('FILE.FASTQ')">
-        <label for="fastq">Files FASTQ</label><br>
-        <input type="radio" id="bam" name="fav_language" value="Files BAM" @click="send('FILE.BAM')">
-        <label for="bam">Files BAM</label><br>
+        <BaseRadioGroup label="File type" :options="fileTypeOptions" @update:modelValue="sendFileType"
+          :modelValue="fileType">
+        </BaseRadioGroup>
 
         <template v-if="state.hasTag('fileCounts')">
           <div class="form__group">
@@ -145,7 +140,7 @@
         <h3 class="u-margin-bottom-small">Review Data</h3>
         <ul v-for="field in formDataReview(state)" :key="field">
           <li>
-            <p> {{ field[0] }}:<br /> {{ field[1] }}</p>
+            <b>{{ field[0] }}:</b> {{ field[1] }}
           </li>
         </ul>
       </template>
@@ -173,7 +168,7 @@
 </template>
 
 <script>
-import { watch } from "vue";
+import { watch, ref } from "vue";
 
 import { getInterpretedMachine, getDataFieldValue, getDataFieldErrorMessage, getFileFieldValue, getFileFieldErrorMessage } from "../../machines/submitJobMachine";
 
@@ -210,7 +205,7 @@ export default {
       label: "Data label",
       notes: "Notes",
       nControls: "Number of controls",
-      normMinReads: "Minimal number of reads in the control sample",
+      normMinReads: "Min number of reads in the control sample",
       method: "Normalization Method",
       libraryBuiltin: "Default Library",
       libraryFile: "Library File",
@@ -248,6 +243,28 @@ export default {
       "Whitehead": "Whitehead_Library"
     }
 
+    const libraryTypeArray = [{ option: 'Default', event: "LIBRARY.DEFAULT" }, { option: 'File', event: "LIBRARY.FILE" }];
+    const libraryTypeOptions = libraryTypeArray.map(item => item.option)
+    const libraryType = ref("Default")
+
+    const sendLibraryType = (option) => {
+      libraryType.value = option
+      const event = libraryTypeArray.find(item => item.option === option)["event"]
+      event && send(event)
+    }
+
+
+    const fileTypeArray = [{ option: 'Raw Counts', event: "FILE.COUNTS" }, { option: 'FASTQ', event: "FILE.FASTQ" }, { option: 'BAM', event: "FILE.BAM" }];
+    const fileTypeOptions = fileTypeArray.map(item => item.option)
+    const fileType = ref("Raw Counts")
+
+    const sendFileType = (option) => {
+      fileType.value = option
+      const event = fileTypeArray.find(item => item.option === option)["event"]
+      event && send(event)
+    }
+
+
     return {
       state,
       onInput,
@@ -259,10 +276,16 @@ export default {
       getFileFieldValue,
       getFileFieldErrorMessage,
       send,
+      sendLibraryType,
+      sendFileType,
       labelFieldPairs,
       formDataReview,
       methodsSelectorLabels,
-      librariesSelectorLabel
+      librariesSelectorLabel,
+      libraryTypeOptions,
+      libraryType,
+      fileTypeOptions,
+      fileType
     };
   },
 };
