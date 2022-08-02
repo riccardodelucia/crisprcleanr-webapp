@@ -150,19 +150,23 @@ export default {
     });
     const genesSignatures = ref(null);
 
-    CcrAPI.getChart({ id: props.id, chart: "genes_signatures" }).then(
-      (response) => {
-        genesSignatures.value = response.data;
-      }
-    ).catch((err) => {
-      store.dispatch("notification/add", {
-        type: "error",
-        title: "Fetch Error",
-        message: "Unable to fetch Genes Signatures Data",
-        timeout: 5
+
+    if (props.result.status === 'SUCCESS') {
+      CcrAPI.getChart({ id: props.id, chart: "genes_signatures" }).then(
+        (response) => {
+          genesSignatures.value = response.data;
+        }
+      ).catch((err) => {
+        store.dispatch("notification/add", {
+          type: "error",
+          title: "Fetch Error",
+          message: "Unable to fetch Genes Signatures Data",
+          timeout: 5
+        });
+        genesSignatures.value = "error"
       });
-      genesSignatures.value = "error"
-    });
+    }
+
 
     const imageListWithURL = imageList.map(async (image) => {
       try {
