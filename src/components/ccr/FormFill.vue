@@ -3,6 +3,7 @@
     <form class="widget job-form" ref="form" @submit.prevent="submit">
       <h2 class="u-margin-bottom-small">Submit a new job</h2>
       <BaseFormProgressBar :steps="progressSteps" :currentStep="currentStep"></BaseFormProgressBar>
+
       <template v-if="state.matches('enteringGeneralInfo')">
         <h3 class="u-margin-bottom-small">General Info</h3>
         <div class="form__group">
@@ -32,12 +33,6 @@
 
       <template v-if="state.matches('enteringSettings')">
         <h3 class="u-margin-bottom-small">Settings</h3>
-        <div class="form__group">
-          <BaseInput :label="labelFieldPairs.nControls" @update:modelValue="onInput($event, 'nControls')"
-            :modelValue="getDataFieldValue(state, 'nControls')" type="number"
-            :error="getDataFieldErrorMessage(state, 'nControls')">
-          </BaseInput>
-        </div>
         <div class="form__group">
           <BaseInput :label="labelFieldPairs.normMinReads" @update:modelValue="onInput($event, 'normMinReads')"
             :modelValue="getDataFieldValue(state, 'normMinReads')" type="number"
@@ -94,6 +89,12 @@
               :modelValue="getFileFieldValue(state, 'fileCounts')"
               :error="getFileFieldErrorMessage(state, 'fileCounts')">
             </BaseInputFile>
+          </div>
+          <div class="form__group">
+            <BaseInput :label="labelFieldPairs.nControls" @update:modelValue="onInput($event, 'nControls')"
+              :modelValue="getDataFieldValue(state, 'nControls')" type="number"
+              :error="getDataFieldErrorMessage(state, 'nControls')">
+            </BaseInput>
           </div>
         </template>
 
@@ -206,12 +207,12 @@ export default {
       email: "Email (optional)",
       label: "Data label",
       notes: "Notes",
-      nControls: "Number of controls",
       normMinReads: "Min number of reads in the control sample",
       method: "Normalization Method",
       libraryBuiltin: "Default Library",
       libraryFile: "Library File",
       fileCounts: "Counts File",
+      nControls: "Number of controls",
       filesFASTQcontrols: "FASTQ Controls",
       filesFASTQsamples: "FASTQ Samples",
       filesBAMcontrols: "BAM Controls",

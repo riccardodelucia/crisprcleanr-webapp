@@ -1,5 +1,9 @@
 <template>
   <h2 class="u-margin-bottom-small">Results</h2>
+  <button class="button button--large button--primary" @click="$router.push({ name: 'resultsList' })">
+    <BaseIcon name="arrow-left"></BaseIcon> Results List
+  </button>
+
   <div class="results">
     <div class="widget results__details">
       <h3 class="u-margin-bottom-small">Details</h3>
@@ -24,17 +28,28 @@
 
     <template v-if="result.status === 'SUCCESS'">
       <div class="widget results__genes-signatures">
-        <ContentLoader v-if="!genesSignatures" viewBox="0 0 520 700">
-          <rect x="20" y="5" rx="0" ry="0" width="2" height="700" />
+        <ContentLoader v-if="!genesSignatures" viewBox="0 0 520 700" :animate="!genesSignatures">
+          <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
           <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
           <rect x="40" y="75" rx="0" ry="0" width="80" height="630" />
           <rect x="140" y="125" rx="0" ry="0" width="80" height="580" />
           <rect x="240" y="105" rx="0" ry="0" width="80" height="610" />
           <rect x="340" y="35" rx="0" ry="0" width="80" height="670" />
-          <rect x="440" y="55" rx="0" ry="0" width="80" height="650" /> -->
+          <rect x="440" y="55" rx="0" ry="0" width="80" height="650" />
         </ContentLoader>
-        <GenesSignaturesMultichart v-else :data="genesSignatures">
+        <GenesSignaturesMultichart v-else-if="typeof genesSignatures === 'object'" :data="genesSignatures">
         </GenesSignaturesMultichart>
+        <svg v-else viewBox="0 0 520 700">
+          <g stroke="var(--color-grey-lighter)" fill="var(--color-grey-lighter)">
+            <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
+            <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
+            <rect x="40" y="75" rx="0" ry="0" width="80" height="630" />
+            <rect x="140" y="125" rx="0" ry="0" width="80" height="580" />
+            <rect x="240" y="105" rx="0" ry="0" width="80" height="610" />
+            <rect x="340" y="35" rx="0" ry="0" width="80" height="670" />
+            <rect x="440" y="55" rx="0" ry="0" width="80" height="650" />
+          </g>
+        </svg>
       </div>
 
 
@@ -99,6 +114,9 @@ import { ContentLoader } from "vue-content-loader";
 
 import imageList from "@/images.json";
 
+import { useStore } from 'vuex'
+
+
 export default {
   name: "ViewResultsByID",
   components: {
@@ -123,6 +141,8 @@ export default {
     const data = ref({});
     const modalState = ref("closed");
 
+    const store = useStore()
+
     const imageListByCathegory = reactive({
       normImages: [],
       chrImages: [],
@@ -135,7 +155,13 @@ export default {
         genesSignatures.value = response.data;
       }
     ).catch((err) => {
-      console.error(`Something went wrong with downloading the file: ${err}`);
+      store.dispatch("notification/add", {
+        type: "error",
+        title: "Fetch Error",
+        message: "Unable to fetch Genes Signatures Data",
+        timeout: 5
+      });
+      genesSignatures.value = "error"
     });
 
     const imageListWithURL = imageList.map(async (image) => {
@@ -256,6 +282,7 @@ export default {
   grid-template-columns: minmax(min-content, 50rem) 50rem 1fr;
   grid-column-gap: 1.2em;
   grid-row-gap: 1.5em;
+  margin-top: 1em;
   margin-bottom: 2em;
   grid-auto-flow: row dense;
 

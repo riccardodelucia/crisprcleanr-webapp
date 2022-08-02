@@ -290,7 +290,7 @@ const setupGeneralInfoSchema = assign({
 });
 
 const setupSettingsSchema = assign({
-  currentSchema: () => ["nControls", "normMinReads", "method"],
+  currentSchema: () => ["normMinReads", "method"],
 });
 
 const setuplibraryBuiltinSchema = assign({
@@ -302,7 +302,7 @@ const setupLibraryFileSchema = assign({
 });
 
 const setupFileCountsSchema = assign({
-  currentSchema: () => ["fileCounts"],
+  currentSchema: () => ["fileCounts", "nControls"],
 });
 
 const setupFilesFASTQschema = assign({
@@ -331,6 +331,7 @@ const updateExcludedFieldsList = (context, event, { state }) => {
   }
   if (state.hasTag("fileCounts")) {
     excludedFields.delete("fileCounts");
+    excludedFields.delete("nControls");
     excludedFields.add("filesFASTQcontrols");
     excludedFields.add("filesFASTQsamples");
     excludedFields.add("filesBAMcontrols");
@@ -342,6 +343,7 @@ const updateExcludedFieldsList = (context, event, { state }) => {
     excludedFields.add("fileCounts");
     excludedFields.add("filesBAMcontrols");
     excludedFields.add("filesBAMsamples");
+    excludedFields.add("nControls");
   }
   if (state.hasTag("filesBAM")) {
     excludedFields.delete("filesBAMcontrols");
@@ -349,6 +351,7 @@ const updateExcludedFieldsList = (context, event, { state }) => {
     excludedFields.add("fileCounts");
     excludedFields.add("filesFASTQcontrols");
     excludedFields.add("filesFASTQsamples");
+    excludedFields.add("nControls");
   }
 };
 
@@ -475,11 +478,6 @@ export const getInterpretedMachine = () => {
   dataFields["notes"] = useField("notes", string());
 
   // step 2
-  dataFields["nControls"] = useField(
-    "nControls",
-    number().positive().required(),
-    { initialValue: 1 }
-  );
   dataFields["normMinReads"] = useField(
     "normMinReads",
     number().positive().required(),
@@ -498,6 +496,11 @@ export const getInterpretedMachine = () => {
 
   // step 4 verison A
   fileFields["fileCounts"] = useField("fileCounts", string().required());
+  dataFields["nControls"] = useField(
+    "nControls",
+    number().positive().required(),
+    { initialValue: 1 }
+  );
 
   // step 4 verison B
   fileFields["filesFASTQcontrols"] = useField(
