@@ -1,6 +1,8 @@
 <template>
   <template v-if="!state.hasTag('submitting') && !state.matches('submitted')">
     <form class="widget job-form" ref="form" @submit.prevent="submit">
+      <h2 class="u-margin-bottom-small">Submit a new job</h2>
+      <BaseFormProgressBar :steps="progressSteps" :currentStep="currentStep"></BaseFormProgressBar>
       <template v-if="state.matches('enteringGeneralInfo')">
         <h3 class="u-margin-bottom-small">General Info</h3>
         <div class="form__group">
@@ -168,7 +170,7 @@
 </template>
 
 <script>
-import { watch, ref } from "vue";
+import { watch, ref, computed } from "vue";
 
 import { getInterpretedMachine, getDataFieldValue, getDataFieldErrorMessage, getFileFieldValue, getFileFieldErrorMessage } from "../../machines/submitJobMachine";
 
@@ -264,6 +266,15 @@ export default {
       event && send(event)
     }
 
+    const progressSteps = ["General", "Settings", "Library", "Files", "Review"]
+    const currentStep = computed(() => {
+      if (state.value.matches('enteringGeneralInfo')) return progressSteps[0]
+      if (state.value.matches('enteringSettings')) return progressSteps[1]
+      if (state.value.matches('enteringLibrary')) return progressSteps[2]
+      if (state.value.matches('enteringFiles')) return progressSteps[3]
+      if (state.value.matches('review')) return progressSteps[4]
+    })
+
 
     return {
       state,
@@ -285,7 +296,9 @@ export default {
       libraryTypeOptions,
       libraryType,
       fileTypeOptions,
-      fileType
+      fileType,
+      progressSteps,
+      currentStep
     };
   },
 };

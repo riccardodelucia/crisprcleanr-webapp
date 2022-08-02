@@ -1,5 +1,4 @@
 <template>
-  <h2 class="u-margin-bottom-small">Submit a new job</h2>
   <FormFill :config="$route.params.config" :key="key" @submitted="incKey"></FormFill>
 </template>
 

@@ -1,8 +1,8 @@
 <template>
   <div class="input-field">
-    <label :for="uuid" class="input-field__label" v-if="label">
+    <label class="input-field__label" v-if="label">
       {{ label }}
-      <textarea :id="uuid" class="textarea" :class="{ 'input--error': error }" :value="modelValue" v-bind="$attrs"
+      <textarea class="textarea" :class="{ 'input--error': error }" :value="modelValue" v-bind="$attrs"
         @input.stop="onInput">
       </textarea>
     </label>
