@@ -1,10 +1,7 @@
 import axios from "axios";
-import lodash from "lodash-es";
-import deepdash from "deepdash-es";
+import getEnv from "@/utils/env";
 
-const _ = deepdash(lodash);
-
-const baseURL = "http://localhost:8888";
+const baseURL = `${getEnv("VUE_APP_FILE_SERVER_URL")}`;
 
 const instance = axios.create({
   baseURL: baseURL,
@@ -14,14 +11,41 @@ const controller = new AbortController();
 
 export default {
   controller,
-  initFile({ file }) {
-    return instance.post("/upload-request", {
-      fileName: file.name,
+  setupToken(token) {
+    instance.interceptors.request.use((config) => {
+      config.headers.Authorization = `Bearer ${token}`;
+      return config;
     });
   },
-  deleteUpload({ fileId }) {
-    return instance.delete("/upload", {
-      data: { fileId },
-    });
+  uploadFile({
+    file,
+    id,
+    jobId,
+    progressCallback,
+    uploadedCallback,
+    errorCallback,
+    controller,
+  }) {
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+    formData.append("jobId", jobId);
+    formData.append("id", id);
+
+    const config = {
+      headers: {
+        "Content-Range": `bytes=0-${file.size}/${file.size}`,
+        "X-Upload-Id": jobId,
+      },
+      signal: controller.signal,
+      onUploadProgress: progressCallback,
+    };
+
+    return instance
+      .post(`upload/`, formData, config)
+      .then(uploadedCallback)
+      .catch((err) => {
+        console.log("Error! ", err);
+        errorCallback();
+      });
   },
 };

@@ -4,7 +4,6 @@ import lodash from "lodash-es";
 import deepdash from "deepdash-es";
 import camelize from "camelize";
 import getEnv from "@/utils/env";
-import { formatDefaultLocale } from "d3";
 
 const _ = deepdash(lodash);
 

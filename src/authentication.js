@@ -3,7 +3,8 @@ import getEnv from "@/utils/env";
 import store from "./store";
 import { getRouter } from "@/router/index.js";
 import { reactive } from "vue";
-import service from "@/api/ccr.js";
+import ccrApi from "@/api/ccr.js";
+import uploadApi from "@/api/upload.js";
 
 const authServerURL = `${getEnv("VUE_APP_AUTH_SERVER_URL")}`;
 
@@ -13,7 +14,7 @@ const clientId = getEnv("VUE_APP_AUTH_CLIENT_ID");
 
 const appRootUrl = getEnv("VUE_APP_ROOT_URL");
 
-const keycloak = Keycloak({
+const keycloak = new Keycloak({
   url: authServerURL,
   realm,
   clientId,
@@ -24,7 +25,8 @@ keycloak.onAuthSuccess = function () {
     .loadUserProfile()
     .then((profile) => {
       store.commit("user/SET_USER", profile);
-      service.setupToken(keycloak.token);
+      ccrApi.setupToken(keycloak.token);
+      uploadApi.setupToken(keycloak.token);
     })
     .catch((error) => {
       store.commit("user/SET_USER", {});
@@ -39,13 +41,14 @@ keycloak.onAuthSuccess = function () {
 
 keycloak.onAuthLogout = function () {
   store.commit("user/SET_USER", {});
-  service.setupToken("");
+  ccrApi.setupToken("");
+  uploadApi.setupToken("");
 };
 
 keycloak.onAuthRefreshSuccess = function () {
   // Do not setup token here, since this async callback is not guaranteed to be executed before the authorized route is called.
   // This could cause the protected route to call the backend before the authentication header is setup in the axios call.
-  //service.setupToken(keycloak.token);
+  //ccrApi.setupToken(keycloak.token);
 };
 
 function authorize(redirectUri) {
@@ -59,7 +62,8 @@ function authorize(redirectUri) {
     return keycloak
       .updateToken(expirationTime)
       .then(() => {
-        service.setupToken(keycloak.token);
+        ccrApi.setupToken(keycloak.token);
+        uploadApi.setupToken(keycloak.token);
         return true;
       })
       .catch(() => {
@@ -69,7 +73,7 @@ function authorize(redirectUri) {
   }
 }
 
-service.setupAsyncInterceptor(() => {
+ccrApi.setupAsyncInterceptor(() => {
   const redirectUri = window.location.href;
   return authorize(redirectUri);
 });
