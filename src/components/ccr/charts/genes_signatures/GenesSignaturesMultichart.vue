@@ -1,10 +1,9 @@
 <template>
-  <BaseSelect label="Choose a Genes Set" :options="Object.keys(chartData.genesSets)" :optionsLabels="genesSetsLabels"
-    v-model="genesSet">
+  <BaseSelect label="Choose a Genes Set" :options="genesSetsOptions" v-model="genesSet">
   </BaseSelect>
   <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
     <GenesSignaturesChartFocus :data="chartData" :width="chartFocusWidth" :height="height" :yDomain="yDomainFocus"
-      :genesSet="genesSet"></GenesSignaturesChartFocus>
+      :genesSet="genesSet.genesSet"></GenesSignaturesChartFocus>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
       <GenesSignaturesChartContext :data="chartData" :width="chartContextWidth" :height="height"
         :yDomain="yDomainContext" @brush="brushed"></GenesSignaturesChartContext>
@@ -14,7 +13,7 @@
 
 <script>
 import { extent } from "d3";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 
 import GenesSignaturesChartFocus from "@/components/ccr/charts/genes_signatures/GenesSignaturesChartFocus.vue";
 import GenesSignaturesChartContext from "@/components/ccr/charts/genes_signatures/GenesSignaturesChartContext.vue";
@@ -80,17 +79,8 @@ export default {
       yDomainFocus.value = extent;
     };
 
-    const genesSet = ref(Object.keys(chartData.genesSets)[0]);
-
-    const genesSetsLabels = {
-      Proteasome: "Proteasome",
-      Spliceosome: "Spliceosome",
-      "Ribosomal Proteins": "RibosomalProteins",
-      "DNA Replication": "DNAReplication",
-      "RNA Polymerase": "RNAPolymerase",
-      "BAGEL Essentials": "BAGELEssential",
-      "BAGEL Non Essential": "BAGELNonEssential"
-    }
+    const genesSetsOptions = reactive([{ label: "Proteasome", genesSet: "Proteasome" }, { label: "Spliceosome", genesSet: "Spliceosome" }, { label: "Ribosomal Proteins", genesSet: "RibosomalProteins" }, { label: "DNA Replication", genesSet: "DNAReplication" }, { label: "RNA Polymerase", genesSet: "RNAPolymerase" }, { label: "BAGEL Essentials", genesSet: "BAGELEssential" }, { label: "BAGEL Non Essential", genesSet: "BAGELNonEssential" }])
+    const genesSet = ref(genesSetsOptions[0]);
 
     const chartFocusWidth = 450;
     const chartContextWidth = 70;
@@ -106,7 +96,7 @@ export default {
       yDomainContext,
       brushed,
       genesSet,
-      genesSetsLabels
+      genesSetsOptions
     };
   },
 };

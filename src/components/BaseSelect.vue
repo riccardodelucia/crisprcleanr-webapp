@@ -4,7 +4,7 @@
     <div ref="select" class="select" :class="{ 'select--error': error }" :tabindex="tabindex" @blur="open = false"
       @focus="open = true">
       <div class="select__selection" :class="{
-        'select__selection--empty': !touched,
+        'select__selection--empty': selection === placeholder,
       }">
         {{ selection }}
       </div>
@@ -32,9 +32,9 @@ export default {
       type: Array,
       default: []
     },
-    optionsLabels: {
-      type: Object,
-      default: null,
+    optionLabel: {
+      type: String,
+      default: "label"
     },
     error: {
       type: String,
@@ -45,6 +45,7 @@ export default {
       default: "Select an option",
     },
     modelValue: {
+      required: true,
       default: undefined,
     },
     tabindex: {
@@ -57,37 +58,27 @@ export default {
     const open = ref(false);
     const select = ref(null);
 
-    const getKeyByValue = (object, value) => {
-      return Object.keys(object).find(key => object[key] === value);
-    }
-
     const closeSelector = () => {
       open.value = false;
       select.value.blur();
     }
 
     const clickedOption = (option) => {
-      touched.value = true;
       emit('update:modelValue', option);
       closeSelector();
     };
 
     const showLabel = (option) => {
-      if (props.optionsLabels) {
-        const label = getKeyByValue(props.optionsLabels, option)
-        if (label) return label
+      if (typeof option === "object") {
+        return option?.[props.optionLabel] || option
       }
       return option
     }
 
     const selection = computed(() => {
-      if (!touched.value) return "Select an Option"
-      return showLabel(props.modelValue)
+      if (props.options.find(elem => elem === props.modelValue)) return showLabel(props.modelValue)
+      return props.placeholder
     })
-
-    const touched = ref(false)
-
-    if (props.modelValue) touched.value = true;
 
     return {
       open,
@@ -96,7 +87,6 @@ export default {
       closeSelector,
       clickedOption,
       showLabel,
-      touched
     }
   },
 };

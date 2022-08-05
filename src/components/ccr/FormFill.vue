@@ -40,8 +40,7 @@
           </BaseInput>
         </div>
         <div class="form__group">
-          <BaseSelect :label="labelFieldPairs.method" :options="config.methods" :optionsLabels="methodsSelectorLabels"
-            @update:modelValue="onInput($event, 'method')" :modelValue="getDataFieldValue(state, 'method')"
+          <BaseSelect :label="labelFieldPairs.method" :options="normalizationOptions" v-model="normalization"
             :error="getDataFieldErrorMessage(state, 'method')">
           </BaseSelect>
         </div>
@@ -55,9 +54,7 @@
         </BaseRadioGroup>
         <template v-if="state.hasTag('libraryBuiltin')">
           <div class="form__group">
-            <BaseSelect :label="labelFieldPairs.libraryBuiltin" :options="config.libraries"
-              :optionsLabels="librariesSelectorLabel" @update:modelValue="onInput($event, 'libraryBuiltin')"
-              :modelValue="getDataFieldValue(state, 'libraryBuiltin')"
+            <BaseSelect :label="labelFieldPairs.libraryBuiltin" :options="libraryOptions" v-model="libraryBuiltin"
               :error="getDataFieldErrorMessage(state, 'libraryBuiltin')">
             </BaseSelect>
           </div>
@@ -99,7 +96,6 @@
         </template>
 
         <template v-if="state.hasTag('filesFASTQ')">
-
           <div class="form__group">
             <BaseInputFileMultiple :label="labelFieldPairs.filesFASTQcontrols"
               @update:modelValue="onInput($event, 'filesFASTQcontrols')"
@@ -118,7 +114,6 @@
         </template>
 
         <template v-if="state.hasTag('filesBAM')">
-
           <div class="form__group">
             <BaseInputFileMultiple :label="labelFieldPairs.filesBAMcontrols"
               @update:modelValue="onInput($event, 'filesBAMcontrols')"
@@ -162,8 +157,8 @@
       </div>
 
     </form>
-
   </template>
+
   <p v-else-if="state.hasTag('submitting')">
     🚀 Submitting...
   </p>
@@ -171,7 +166,7 @@
 </template>
 
 <script>
-import { watch, ref, computed } from "vue";
+import { watch, ref, computed, reactive } from "vue";
 
 import { getInterpretedMachine, getDataFieldValue, getDataFieldErrorMessage, getFileFieldValue, getFileFieldErrorMessage } from "../../machines/submitJobMachine";
 
@@ -220,6 +215,7 @@ export default {
     }
 
     const formDataReview = (state) => {
+      debugger;
       const formDataMap = new Map();
       Object.entries(state.context.formData).forEach(([key, field]) => {
         let fieldValue = field
@@ -231,20 +227,20 @@ export default {
       return formDataMap;
     }
 
-    const methodsSelectorLabels = {
-      "Counts Per Million": "CPM",
-      "Median Ratios": "MedRatios"
-    }
+    const normalizationOptions = reactive([{ method: "CPM", label: "Counts Per Million" }, { method: "MedRatios", label: "Median Ratios" }])
 
+    const normalization = ref(normalizationOptions[0])
 
-    const librariesSelectorLabel = {
-      "AVANA": "AVANA_Library",
-      "Brunello": "Brunello_Library",
-      "GeCKO": "GeCKO_Library_v2",
-      "KY v1.1": "KY_Library_v1.1",
-      "MiniLibCas9": "MiniLibCas9_Library",
-      "Whitehead": "Whitehead_Library"
-    }
+    watch(normalization, () => {
+      send("INPUT", { payload: normalization.value?.method, field: "method" });
+    }, { immediate: true })
+
+    const libraryOptions = reactive([{ library: "AVANA_Library", label: "AVANA" }, { library: "Brunello_Library", label: "Brunello" }, { library: "GeCKO_Library_v2", label: "GeCKO" }, { library: "KY_Library_v1.1", label: "KY v1.1" }, { library: "MiniLibCas9_Library", label: "MiniLibCas9" }, { library: "Whitehead_Library", label: "Whitehead" }])
+    const libraryBuiltin = ref(null)
+
+    watch(libraryBuiltin, () => {
+      send("INPUT", { payload: libraryBuiltin.value?.library, field: "libraryBuiltin" });
+    }, { immediate: true })
 
     const libraryTypeArray = [{ option: 'Default', event: "LIBRARY.DEFAULT" }, { option: 'File', event: "LIBRARY.FILE" }];
     const libraryTypeOptions = libraryTypeArray.map(item => item.option)
@@ -255,7 +251,6 @@ export default {
       const event = libraryTypeArray.find(item => item.option === option)["event"]
       event && send(event)
     }
-
 
     const fileTypeArray = [{ option: 'Raw Counts', event: "FILE.COUNTS" }, { option: 'FASTQ', event: "FILE.FASTQ" }, { option: 'BAM', event: "FILE.BAM" }];
     const fileTypeOptions = fileTypeArray.map(item => item.option)
@@ -276,7 +271,6 @@ export default {
       if (state.value.matches('review')) return progressSteps[4]
     })
 
-
     return {
       state,
       onInput,
@@ -285,21 +279,22 @@ export default {
       submit,
       getDataFieldValue,
       getDataFieldErrorMessage,
+      normalizationOptions,
+      normalization,
       getFileFieldValue,
       getFileFieldErrorMessage,
-      send,
       sendLibraryType,
       sendFileType,
       labelFieldPairs,
       formDataReview,
-      methodsSelectorLabels,
-      librariesSelectorLabel,
       libraryTypeOptions,
       libraryType,
+      libraryOptions,
+      libraryBuiltin,
       fileTypeOptions,
       fileType,
       progressSteps,
-      currentStep
+      currentStep,
     };
   },
 };
