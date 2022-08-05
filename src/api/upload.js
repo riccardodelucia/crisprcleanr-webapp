@@ -11,7 +11,14 @@ const controller = new AbortController();
 
 export default {
   controller,
+  setupAsyncInterceptor(f) {
+    instance.interceptors.request.use(async (config) => {
+      await f();
+      return config;
+    });
+  },
   setupToken(token) {
+    console.log("upload token: ", token);
     instance.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${token}`;
       return config;
@@ -33,6 +40,7 @@ export default {
 
     const config = {
       headers: {
+        "Content-Type": "multipart/form-data",
         "Content-Range": `bytes=0-${file.size}/${file.size}`,
         "X-Upload-Id": jobId,
       },
