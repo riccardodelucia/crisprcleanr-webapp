@@ -8,7 +8,7 @@ JSON_STRING='window.configs = { \
   "VUE_APP_AUTH_CLIENT_ROLES":"'"${VUE_APP_AUTH_CLIENT_ROLES}"'", \
   "VUE_APP_ROOT_URL":"'"${VUE_APP_ROOT_URL}"'", \
   "VUE_APP_FILE_SERVER_URL":"'"${VUE_APP_FILE_SERVER_URL}"'", \
-  "VUE_APP_DASHBOARD":"'"${VUE_APP_DASHBOARD}"'", \
+  "VUE_APP_DASHBOARD_URL":"'"${VUE_APP_DASHBOARD_URL}"'", \
 }'
 sed -i "s@// CONFIGURATIONS_PLACEHOLDER@${JSON_STRING}@" /usr/share/nginx/html/index.html
 

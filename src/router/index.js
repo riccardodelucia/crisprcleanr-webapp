@@ -18,7 +18,7 @@ import CcrAPI from "@/api/ccr.js";
 import getEnv from "@/utils/env";
 import NProgress from "nprogress";
 
-const dashboardURL = getEnv("VUE_APP_DASHBOARD");
+const dashboardURL = getEnv("VUE_APP_DASHBOARD_URL");
 
 export const routes = [
   {
