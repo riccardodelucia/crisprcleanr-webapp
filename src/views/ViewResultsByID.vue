@@ -151,7 +151,7 @@ export default {
     const genesSignatures = ref(null);
 
 
-    if (props.result.status === 'SUCCESS') {
+    if (props.result.status === 'success') {
       CcrAPI.getChart({ id: props.id, chart: "genes_signatures" }).then(
         (response) => {
           genesSignatures.value = response.data;
