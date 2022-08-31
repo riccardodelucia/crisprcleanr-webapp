@@ -9,14 +9,14 @@
       <h3 class="u-margin-bottom-small">Details</h3>
       <ul class="results__list">
         <li v-for="field in resultDataMap" :key="field[1]">
-          <b>{{ field[0] }}:</b> {{ field[1] }}
+          <b>{{  field[0]  }}:</b> {{  field[1]  }}
         </li>
       </ul>
-      <p v-if="result.status === 'PENDING'">Further content will be shown upon successful job completion...</p>
-      <div v-else-if="result.status === 'SUCCESS'" class="results__downloads">
+      <p v-if="result.status === 'pending'">Further content will be shown upon successful job completion...</p>
+      <div v-else-if="result.status === 'success'" class="results__downloads">
         <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
           class="button button--primary button--small" type="button">
-          {{ file }}&nbsp;<span>
+          {{  file  }}&nbsp;<span>
             <BaseIcon name="download" />
           </span>
         </button>
@@ -26,7 +26,7 @@
       </p>
     </div>
 
-    <template v-if="result.status === 'SUCCESS'">
+    <template v-if="result.status === 'success'">
       <div class="widget results__genes-signatures">
         <ContentLoader v-if="!genesSignatures" viewBox="0 0 520 700" :animate="!genesSignatures">
           <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
@@ -87,7 +87,7 @@
   </div>
 
   <BaseModal v-if="modalState != 'closed'" @modal-close="closeModal" :width="image.width">
-    <template v-slot:header>{{ image.label }} </template>
+    <template v-slot:header>{{  image.label  }} </template>
     <template v-slot:body>
       <component v-if="modalState === 'opened'" :is="image.component" :data="data" />
       <div v-else-if="modalState === 'loading'">Loading...</div>
