@@ -2,6 +2,6 @@
 
 source $DOCKER_COMPOSE_ENV
 cd $VM_TARGET_DIR
-docker-compose -p $DOCKER_COMPOSE_PREFIX down
+docker-compose -p $CI_PROJECT_NAME down
 docker-compose pull
-docker-compose -p $DOCKER_COMPOSE_PREFIX up -d
+docker-compose -p $CI_PROJECT_NAME up -d
