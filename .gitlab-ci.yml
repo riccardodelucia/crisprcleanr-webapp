@@ -8,7 +8,14 @@ stages:
 
 variables:
   BUILD: $CI_COMMIT_SHORT_SHA
-  IMAGE_NAME: crisprcleanr_webapp
+
+print pipeline defined variables:
+  stage: .pre
+  script:
+    - echo "CI_COMMIT_SHORT_SHA = $CI_COMMIT_SHORT_SHA"
+    - echo "CI_COMMIT_REF_NAME = $CI_COMMIT_REF_NAME"
+    - echo "CI_REGISTRY_IMAGE = $CI_REGISTRY_IMAGE"
+    - echo "CI_COMMIT_TAG = $CI_COMMIT_TAG"
 
 ####################################################################################################
 # merge request pipeline: run this job only when a merge request is opened to save pipeline runs
@@ -106,6 +113,9 @@ tag image:
     - chmod 644 ~/.ssh/known_hosts
     - apt-get update -y
     - apt-get install -y gettext
+  variables:
+    ENV_FILE: deploy.env
+    TAG: $BUILD
   script:
     - envsubst < templates/$ENV_FILE > .env
     - envsubst < templates/deploy.sh > deploy.sh
@@ -119,8 +129,12 @@ tag image:
 deploy to staging:
   environment: staging
   extends: .deploy to environment
-  variables:
-    ENV_FILE: staging.env
-    TAG: $BUILD
   only:
     - staging
+
+deploy to production:
+  environment: production
+  extends: .deploy to environment
+  only:
+    - production
+  when: manual
