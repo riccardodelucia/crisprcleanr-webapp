@@ -10,7 +10,7 @@ services:
       - .env
     networks:
       app_net:
-        ipv4_address: $CRISPRCLEANR_WEBAPP_IPV4_ADDRESS
+        ipv4_address: $IPV4_CCR_WEBAPP
 
 networks:
   app_net:

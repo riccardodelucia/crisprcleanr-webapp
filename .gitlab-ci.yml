@@ -109,7 +109,7 @@ tag image:
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - ssh-keyscan $VM_NAME >> ~/.ssh/known_hosts
+    - ssh-keyscan $VM_HOSTNAME >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
     - apt-get update -y
     - apt-get install -y gettext
@@ -120,11 +120,11 @@ tag image:
     - envsubst < templates/$ENV_FILE > .env
     - envsubst < templates/deploy.sh > deploy.sh
     - envsubst < templates/docker-compose.deploy.yml > docker-compose.deploy.yml
-    - ssh -l $USER -o StrictHostKeyChecking=no $VM_NAME "mkdir -p $VM_TARGET_DIR"
-    - scp deploy.sh $USER@$VM_NAME:$VM_TARGET_DIR/deploy.sh
-    - scp docker-compose.deploy.yml $USER@$VM_NAME:$VM_TARGET_DIR/docker-compose.yml
-    - scp .env $USER@$VM_NAME:$VM_TARGET_DIR/.env
-    - ssh -l $USER -o StrictHostKeyChecking=no $VM_NAME 'bash -s' < deploy.sh
+    - ssh -l $USER -o StrictHostKeyChecking=no $VM_HOSTNAME "mkdir -p $VM_TARGET_DIR"
+    - scp deploy.sh $USER@$VM_HOSTNAME:$VM_TARGET_DIR/deploy.sh
+    - scp docker-compose.deploy.yml $USER@$VM_HOSTNAME:$VM_TARGET_DIR/docker-compose.yml
+    - scp .env $USER@$VM_HOSTNAME:$VM_TARGET_DIR/.env
+    - ssh -l $USER -o StrictHostKeyChecking=no $VM_HOSTNAME 'bash -s' < deploy.sh
 
 deploy to staging:
   environment: staging

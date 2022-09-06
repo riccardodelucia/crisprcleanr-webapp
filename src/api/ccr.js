@@ -11,7 +11,7 @@ const protectedRoutes = ["jobs", "files"];
 const isProtected = (config) =>
   protectedRoutes.some((item) => config.url.includes(item));
 
-const baseURL = `${getEnv("VUE_APP_CCR_BACKEND_URL")}`;
+const baseURL = `${getEnv("VUE_APP_URL_IORIO_CCR_BACKEND")}`;
 
 const instance = axios.create({
   baseURL: baseURL,

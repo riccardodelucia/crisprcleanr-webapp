@@ -1,7 +1,7 @@
 import axios from "axios";
 import getEnv from "@/utils/env";
 
-const baseURL = `${getEnv("VUE_APP_FILE_SERVER_URL")}`;
+const baseURL = `${getEnv("VUE_APP_URL_IORIO_CCR_FILESERVER")}`;
 
 const instance = axios.create({
   baseURL: baseURL,

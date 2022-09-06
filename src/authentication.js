@@ -6,13 +6,13 @@ import { reactive } from "vue";
 import ccrApi from "@/api/ccr.js";
 import uploadApi from "@/api/upload.js";
 
-const authServerURL = `${getEnv("VUE_APP_AUTH_SERVER_URL")}`;
+const authServerURL = `${getEnv("VUE_APP_URL_AUTH_SERVER")}`;
 
 const realm = getEnv("VUE_APP_AUTH_REALM");
 
 const clientId = getEnv("VUE_APP_AUTH_CLIENT_ID");
 
-const appRootUrl = getEnv("VUE_APP_ROOT_URL");
+const appRootUrl = getEnv("VUE_APP_URL_IORIO_CCR_WEBAPP");
 
 const keycloak = new Keycloak({
   url: authServerURL,
