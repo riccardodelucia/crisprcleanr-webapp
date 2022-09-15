@@ -1,29 +1,25 @@
 import axios from "axios";
 import getEnv from "@/utils/env";
+import { authorize } from "@/authentication";
 
 const baseURL = `${getEnv("VUE_APP_URL_IORIO_CCR_FILESERVER")}`;
 
-const instance = axios.create({
+const authInstance = axios.create({
   baseURL: baseURL,
 });
 
 const controller = new AbortController();
 
+authInstance.interceptors.request.use(function (config) {
+  const redirectUri = window.location.href;
+  return authorize(redirectUri).then((token) => {
+    config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  });
+});
+
 export default {
   controller,
-  setupAsyncInterceptor(f) {
-    instance.interceptors.request.use(async (config) => {
-      await f();
-      return config;
-    });
-  },
-  setupToken(token) {
-    console.log("upload token: ", token);
-    instance.interceptors.request.use((config) => {
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    });
-  },
   uploadFile({
     file,
     id,
@@ -48,7 +44,7 @@ export default {
       onUploadProgress: progressCallback,
     };
 
-    return instance
+    return authInstance
       .post(`upload/`, formData, config)
       .then(uploadedCallback)
       .catch((err) => {

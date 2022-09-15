@@ -2,9 +2,7 @@ import Keycloak from "keycloak-js";
 import getEnv from "@/utils/env";
 import store from "./store";
 import { getRouter } from "@/router/index.js";
-import { reactive } from "vue";
-import ccrApi from "@/api/ccr.js";
-import uploadApi from "@/api/upload.js";
+import { reactive, ref } from "vue";
 
 const authServerURL = `${getEnv("VUE_APP_URL_AUTH_SERVER")}`;
 
@@ -25,15 +23,13 @@ keycloak.onAuthSuccess = function () {
     .loadUserProfile()
     .then((profile) => {
       store.commit("user/SET_USER", profile);
-      ccrApi.setupToken(keycloak.token);
-      uploadApi.setupToken(keycloak.token);
     })
     .catch((error) => {
       store.commit("user/SET_USER", {});
       store.dispatch("notification/add", {
         type: "error",
         title: "Unable to log in",
-        message: error.message,
+        message: error?.message,
         timeout: 5,
       });
     });
@@ -41,42 +37,12 @@ keycloak.onAuthSuccess = function () {
 
 keycloak.onAuthLogout = function () {
   store.commit("user/SET_USER", {});
-  ccrApi.setupToken("");
-  uploadApi.setupToken("");
 };
 
 keycloak.onAuthRefreshSuccess = function () {
   // Do not setup token here, since this async callback is not guaranteed to be executed before the authorized route is called.
   // This could cause the protected route to call the backend before the authentication header is setup in the axios call.
-  //ccrApi.setupToken(keycloak.token);
 };
-
-function authorize(redirectUri) {
-  const expirationTime = 70;
-  if (!keycloak.authenticated) {
-    // The page is protected and the user is not authenticated. Force a login.
-    return keycloak.login({
-      redirectUri,
-    });
-  } else {
-    return keycloak
-      .updateToken(expirationTime)
-      .then(() => {
-        ccrApi.setupToken(keycloak.token);
-        uploadApi.setupToken(keycloak.token);
-        return true;
-      })
-      .catch(() => {
-        console.error("unable to refresh token, logging in");
-        return keycloak.login({ redirectUri });
-      });
-  }
-}
-
-ccrApi.setupAsyncInterceptor(() => {
-  const redirectUri = window.location.href;
-  return authorize(redirectUri);
-});
 
 function login(redirectUri) {
   const absoluteUri = new URL(redirectUri, appRootUrl).toString();
@@ -85,7 +51,6 @@ function login(redirectUri) {
 
 function logout() {
   const absoluteUri = new URL("/", appRootUrl).toString();
-
   return keycloak.logout({ redirectUri: absoluteUri });
 }
 
@@ -93,9 +58,30 @@ const authenticationPlugin = {
   install(app, options) {
     app.provide("login", login);
     app.provide("logout", logout);
-    app.provide("authentication", reactive(keycloak));
+    //app.provide("authentication", reactive(keycloak));
+    app.provide("authenticated", ref(keycloak.authenticated)); // TODO monitor if this works fine
   },
 };
+
+export const authorize = (redirectUri) =>
+  new Promise((resolve, reject) => {
+    const expirationTime = 70;
+    if (!keycloak.authenticated) {
+      login(redirectUri);
+      reject(new Error("Not authenticated"));
+    } else {
+      keycloak
+        .updateToken(expirationTime)
+        .then(() => {
+          const token = keycloak.token;
+          resolve(token);
+        })
+        .catch(() => {
+          logout();
+          reject("Unable to refresh token, logging out");
+        });
+    }
+  });
 
 export const initializeAppWithAuth = function () {
   return keycloak
@@ -106,7 +92,7 @@ export const initializeAppWithAuth = function () {
       router.beforeEach((to) => {
         if (to.matched.some((record) => record.meta.requiresAuth)) {
           const redirectUri = new URL(to.path, appRootUrl).toString();
-          return authorize(redirectUri);
+          return authorize(redirectUri).then(() => true);
         }
         // This page did not require authentication
         return;

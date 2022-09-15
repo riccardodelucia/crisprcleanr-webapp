@@ -9,14 +9,14 @@
       <h3 class="u-margin-bottom-small">Details</h3>
       <ul class="results__list">
         <li v-for="field in resultDataMap" :key="field[1]">
-          <b>{{  field[0]  }}:</b> {{  field[1]  }}
+          <b>{{ field[0] }}:</b> {{ field[1] }}
         </li>
       </ul>
       <p v-if="result.status === 'pending'">Further content will be shown upon successful job completion...</p>
       <div v-else-if="result.status === 'success'" class="results__downloads">
         <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
           class="button button--primary button--small" type="button">
-          {{  file  }}&nbsp;<span>
+          {{ file }}&nbsp;<span>
             <BaseIcon name="download" />
           </span>
         </button>
@@ -87,7 +87,7 @@
   </div>
 
   <BaseModal v-if="modalState != 'closed'" @modal-close="closeModal" :width="image.width">
-    <template v-slot:header>{{  image.label  }} </template>
+    <template v-slot:header>{{ image.label }} </template>
     <template v-slot:body>
       <component v-if="modalState === 'opened'" :is="image.component" :data="data" />
       <div v-else-if="modalState === 'loading'">Loading...</div>
@@ -115,7 +115,6 @@ import { ContentLoader } from "vue-content-loader";
 import imageList from "@/images.json";
 
 import { useStore } from 'vuex'
-
 
 export default {
   name: "ViewResultsByID",
@@ -150,7 +149,6 @@ export default {
     });
     const genesSignatures = ref(null);
 
-
     if (props.result.status === 'success') {
       CcrAPI.getChart({ id: props.id, chart: "genes_signatures" }).then(
         (response) => {
@@ -173,11 +171,10 @@ export default {
         const response = await CcrAPI.getFile({
           id: props.id,
           fileUri: image.imgUri,
-        }).catch((err) => {
-          console.error(`Something went wrong with downloading the file: ${err}`);
-        });
+        })
         return { ...image, src: URL.createObjectURL(response.data) };
       } catch (error) {
+        console.error(`Something went wrong with downloading the file: ${err}`);
         return {
           ...image,
           src: require("@/assets/img/placeholder-image.png"),

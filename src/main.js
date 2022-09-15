@@ -17,6 +17,7 @@ NProgress.configure({ showSpinner: false });
 
 initializeAppWithAuth().then(({ router, authentication }) => {
   const app = createApp(App).use(store).use(router).use(authentication);
+  app.config.unwrapInjectedRef = true;
 
   // directive to catch out-of-element clicks (useful for blurring/ focusing)
   app.directive("click-outside", {

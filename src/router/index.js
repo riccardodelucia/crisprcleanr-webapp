@@ -67,8 +67,8 @@ export const routes = [
         path: "",
         name: "submit",
         component: ViewSubmitJob,
-        beforeEnter: (to, from, next) => {
-          return CcrAPI.getStaticResource("job_config.json")
+        beforeEnter(to, from, next) {
+          CcrAPI.getStaticResource("job_config.json")
             .then((response) => {
               to.params.config = response.data;
               next();
@@ -163,9 +163,9 @@ export const getRouter = function () {
     routes,
   });
 
-  // standard beforeEach handlers we want to setup
-  router.beforeEach(() => {
+  router.beforeEach((to, from) => {
     NProgress.start();
+    CcrAPI.abortAndDeleteAllRequests(from.fullPath);
   });
 
   router.afterEach(() => {

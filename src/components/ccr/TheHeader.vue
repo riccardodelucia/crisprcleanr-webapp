@@ -7,7 +7,7 @@
             <router-link class="header__link" to="/dashboard">
                 <BaseIcon name="grid" />
             </router-link>
-            <a v-if="!authentication.authenticated" to="#" class="header__link" @click="loginUser">Sign in or
+            <a v-if="!authenticated" to="#" class="header__link" @click="loginUser">Sign in or
                 Register</a>
             <BaseUser v-else></BaseUser>
         </template>
@@ -23,7 +23,7 @@ export default {
             type: Object
         }
     },
-    inject: ["login", "authentication"],
+    inject: ["login", "authenticated"],
     methods: {
         loginUser() {
             this.login(this.$route.fullPath);

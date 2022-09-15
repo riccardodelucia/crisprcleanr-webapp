@@ -4,88 +4,135 @@ import lodash from "lodash-es";
 import deepdash from "deepdash-es";
 import camelize from "camelize";
 import getEnv from "@/utils/env";
+import { authorize } from "@/authentication";
 
 const _ = deepdash(lodash);
 
-const protectedRoutes = ["jobs", "files"];
-const isProtected = (config) =>
-  protectedRoutes.some((item) => config.url.includes(item));
-
 const baseURL = `${getEnv("VUE_APP_URL_IORIO_CCR_BACKEND")}`;
 
-const instance = axios.create({
-  baseURL: baseURL,
-  //timeout: 10000,
-});
+// instances need to be separated according to auth to enable correct interceptor auth request on auth-dependent requests
+const instances = new Map();
+const authInstances = new Map();
 
-const controller = new AbortController();
+const createInstance = (auth = false) => {
+  const controller = new AbortController();
+  const instance = axios.create({ signal: controller.signal, baseURL });
 
-// Interceptors are run before/ after each request. They control the NProgress bar.
-instance.interceptors.request.use(function (config) {
-  return config;
-});
+  //setupDefaultInterceptors(instance);
 
-instance.interceptors.response.use(function (config) {
-  return config;
-});
+  instance.interceptors.request.use(function (config) {
+    return config;
+  });
 
-instance.interceptors.response.use(
-  function (response) {
-    //NProgress.done();
+  instance.interceptors.response.use(function (config) {
+    return config;
+  });
 
-    // if this is a multipart file response, there is nothing to camelize
-    if (response.headers["content-type"] === "application/json") {
-      const res = _.mapKeysDeep(response.data, function (value, key) {
-        return camelize(key);
-      });
-      response.data = res;
+  instance.interceptors.response.use(
+    function (response) {
+      //NProgress.done();
+
+      // if this is a multipart file response, there is nothing to camelize
+      if (response.headers["content-type"] === "application/json") {
+        const res = _.mapKeysDeep(response.data, function (value, key) {
+          return camelize(key);
+        });
+        response.data = res;
+      }
+
+      return response;
+    },
+    function (error) {
+      // Any status codes that falls outside the range of 2xx cause this function to trigger
+      // Do something with response error
+      NProgress.done();
+      return Promise.reject(error);
     }
+  );
 
-    return response;
-  },
-  function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    NProgress.done();
-    return Promise.reject(error);
-  }
-);
+  auth &&
+    instance.interceptors.request.use(function (config) {
+      const redirectUri = window.location.href;
+      return authorize(redirectUri).then((token) => {
+        config.headers.Authorization = `Bearer ${token}`;
+        return config;
+      });
+    });
+
+  return {
+    controller,
+    instance,
+  };
+};
+
+const getInstance = ({ path, auth }) => {
+  let instance = auth ? authInstances.get(path) : instances.get(path);
+  if (instance && !instance.controller.aborted) return instance.instance;
+  instance = createInstance(auth);
+  !auth && instances.set(path, instance);
+  auth && authInstances.set(path, instance);
+  return instance.instance;
+};
 
 export default {
-  controller,
-  setupAsyncInterceptor(f) {
-    instance.interceptors.request.use(async (config) => {
-      await f();
-      return config;
-    });
-  },
-  setupToken(token) {
-    instance.interceptors.request.use((config) => {
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    });
+  abortAndDeleteAllRequests(path) {
+    debugger;
+    const instance = instances.get(path);
+    const authInstance = authInstances.get(path);
+    if (instance) {
+      instance.controller.abort();
+      instances.delete(path);
+    }
+    if (authInstance) {
+      authInstance.controller.abort();
+      authInstances.delete(path);
+    }
   },
   submitJob(formData) {
+    const instance = getInstance({
+      path: window.location.pathname,
+      auth: true,
+    });
     return instance.post(`jobs/`, formData);
   },
   getResultsList() {
+    const instance = getInstance({
+      path: window.location.pathname,
+      auth: true,
+    });
     return instance.get(`jobs/`);
   },
   getResultByID(id) {
+    const instance = getInstance({
+      path: window.location.pathname,
+      auth: true,
+    });
     return instance.get(`jobs/${id}`);
   },
   getFile({ id, fileUri }) {
+    const instance = getInstance({
+      path: window.location.pathname,
+      auth: true,
+    });
     return instance.get(`files/${id}/`, {
       responseType: "blob",
       params: { file_uri: fileUri },
     });
   },
   getChart({ id, chart }) {
+    const instance = getInstance({
+      path: window.location.pathname,
+      auth: true,
+    });
     return instance.get(`files/${id}/`, {
       params: { file_uri: `json/${chart}.json` },
     });
   },
   getStaticResource(resource) {
+    const instance = getInstance({
+      path: window.location.pathname,
+      auth: false,
+    });
     return instance.get(`/static/${resource}`);
   },
 };
