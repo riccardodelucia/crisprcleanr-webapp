@@ -157,8 +157,8 @@ export default {
       ).catch((err) => {
         store.dispatch("notification/add", {
           type: "error",
-          title: "Fetch Error",
-          message: "Unable to fetch Genes Signatures Data",
+          title: "Something went wrong... 💥",
+          message: "Unable to fetch Genes Signatures Data from server",
           timeout: 5
         });
         genesSignatures.value = "error"

@@ -18,37 +18,17 @@ const createInstance = (auth = false) => {
   const controller = new AbortController();
   const instance = axios.create({ signal: controller.signal, baseURL });
 
-  //setupDefaultInterceptors(instance);
-
-  instance.interceptors.request.use(function (config) {
-    return config;
-  });
-
-  instance.interceptors.response.use(function (config) {
-    return config;
-  });
-
-  instance.interceptors.response.use(
-    function (response) {
-      //NProgress.done();
-
-      // if this is a multipart file response, there is nothing to camelize
-      if (response.headers["content-type"] === "application/json") {
-        const res = _.mapKeysDeep(response.data, function (value, key) {
-          return camelize(key);
-        });
-        response.data = res;
-      }
-
-      return response;
-    },
-    function (error) {
-      // Any status codes that falls outside the range of 2xx cause this function to trigger
-      // Do something with response error
-      NProgress.done();
-      return Promise.reject(error);
+  instance.interceptors.response.use(function (response) {
+    // if this is a multipart file response, there is nothing to camelize
+    if (response.headers["content-type"] === "application/json") {
+      const res = _.mapKeysDeep(response.data, function (value, key) {
+        return camelize(key);
+      });
+      response.data = res;
     }
-  );
+
+    return response;
+  });
 
   auth &&
     instance.interceptors.request.use(function (config) {
@@ -76,14 +56,13 @@ const getInstance = ({ path, auth }) => {
 
 export default {
   abortAndDeleteAllRequests(path) {
-    debugger;
     const instance = instances.get(path);
     const authInstance = authInstances.get(path);
-    if (instance) {
+    if (instance && !instance.controller.aborted) {
       instance.controller.abort();
       instances.delete(path);
     }
-    if (authInstance) {
+    if (authInstance && !authInstance.controller.aborted) {
       authInstance.controller.abort();
       authInstances.delete(path);
     }

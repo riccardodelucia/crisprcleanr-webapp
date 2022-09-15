@@ -17,6 +17,7 @@ import ViewMessagePage from "@/views/ViewMessagePage.vue";
 import CcrAPI from "@/api/ccr.js";
 import getEnv from "@/utils/env";
 import NProgress from "nprogress";
+import store from "../store";
 
 const dashboardURL = getEnv("VUE_APP_URL_GROUPS_DASHBOARDS");
 
@@ -68,13 +69,20 @@ export const routes = [
         name: "submit",
         component: ViewSubmitJob,
         beforeEnter(to, from, next) {
-          CcrAPI.getStaticResource("job_config.json")
+          return CcrAPI.getStaticResource("job_config.json")
             .then((response) => {
               to.params.config = response.data;
               next();
             })
             .catch((error) => {
-              next({ name: "error", params: { message: error } });
+              store.dispatch("notification/add", {
+                type: "error",
+                title: "Something went wrong... 💥",
+                message: "Unable to load job settings from server",
+                timeout: 5,
+              });
+              NProgress.done();
+              throw error;
             });
         },
       },
@@ -99,7 +107,14 @@ export const routes = [
               next();
             })
             .catch((error) => {
-              next({ name: "error", params: { message: error } });
+              store.dispatch("notification/add", {
+                type: "error",
+                title: "Something went wrong... 💥",
+                message: "Unable to load job results list from server",
+                timeout: 5,
+              });
+              NProgress.done();
+              throw error;
             });
         },
       },
@@ -118,23 +133,20 @@ export const routes = [
               next();
             })
             .catch((error) => {
-              if (error.response) {
-                switch (error.response.status) {
-                  case 404:
-                    next("/404");
-                    break;
-                  default:
-                    next({ name: "error" });
-                    break;
-                }
-              } else next({ name: "error" });
+              store.dispatch("notification/add", {
+                type: "error",
+                title: "Something went wrong... 💥",
+                message: `Unable to load results data for job ${to.params.id}`,
+                timeout: 5,
+              });
+              NProgress.done();
+              throw error;
             });
         },
       },
     ],
   },
-
-  {
+  /*   {
     path: "/error",
     name: "error",
     component: ViewMessagePage,
@@ -143,7 +155,7 @@ export const routes = [
       return;
     },
     props: true,
-  },
+  }, */
   {
     path: "/:catchAll(.*)",
     name: "404",

@@ -1,5 +1,4 @@
 import { createMachine, assign } from "xstate";
-import getEnv from "@/utils/env";
 import uploadAPI from "@/api/upload.js";
 
 ////////////////////////////////////////////////////////////////
@@ -23,8 +22,6 @@ const uploadFile =
         type: "ERROR",
       });
 
-    const controller = new AbortController();
-
     uploadAPI.uploadFile({
       file,
       id,
@@ -32,12 +29,9 @@ const uploadFile =
       progressCallback,
       uploadedCallback,
       errorCallback,
-      controller,
     });
 
-    return () => {
-      controller.abort();
-    };
+    return () => {};
   };
 
 ////////////////////////////////////////////////////////////////
@@ -54,7 +48,8 @@ const assignProgress = assign(({ file }, { progress }) => {
   };
 });
 
-//const sendDeleteUpload = (context) => Upload.deleteUpload(context);
+const abortUpload = (context, event) =>
+  uploadAPI.abortAndDeleteRequest(context.id);
 
 ////////////////////////////////////////////////////////////////
 // GUARDS
@@ -81,7 +76,11 @@ export default createMachine({
       },
       on: {
         PROGRESS: { actions: ["assignProgress"] },
-        ABORT: { target: "aborted" },
+        ABORT: {
+          target: "aborted",
+          cond: "warnAbort",
+          actions: ["abortUpload"],
+        },
         ERROR: { target: "error" },
         UPLOADED: {
           target: "uploaded",
@@ -91,11 +90,11 @@ export default createMachine({
     uploaded: { type: "final" },
     aborted: {
       type: "final",
-      entry: [() => console.log("aborted")],
+      entry: [() => console.log("upload aborted")],
     },
     error: {
       type: "final",
-      entry: [() => console.log("machine in error state")],
+      entry: [() => console.log("upload error")],
     },
     idle: {
       on: {
@@ -105,17 +104,10 @@ export default createMachine({
       },
     },
   },
-  on: {
-    ABORT: {
-      cond: "warnAbort",
-      target: "aborted",
-      //actions: ["sendDeleteUpload"],
-    },
-  },
 }).withConfig({
   services: {
     uploadFile,
   },
-  actions: { assignProgress },
+  actions: { assignProgress, abortUpload },
   guards: { warnAbort },
 });

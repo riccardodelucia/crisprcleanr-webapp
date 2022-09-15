@@ -4,22 +4,40 @@ import { authorize } from "@/authentication";
 
 const baseURL = `${getEnv("VUE_APP_URL_IORIO_CCR_FILESERVER")}`;
 
-const authInstance = axios.create({
-  baseURL: baseURL,
-});
+const authInstances = new Map();
 
-const controller = new AbortController();
+const createInstance = () => {
+  const controller = new AbortController();
+  const instance = axios.create({ signal: controller.signal, baseURL });
 
-authInstance.interceptors.request.use(function (config) {
-  const redirectUri = window.location.href;
-  return authorize(redirectUri).then((token) => {
-    config.headers.Authorization = `Bearer ${token}`;
-    return config;
+  instance.interceptors.request.use(function (config) {
+    const redirectUri = window.location.href;
+    return authorize(redirectUri).then((token) => {
+      config.headers.Authorization = `Bearer ${token}`;
+      return config;
+    });
   });
-});
+
+  return {
+    controller,
+    instance,
+  };
+};
+
+const getInstance = (id) => {
+  const authInstance = createInstance();
+  authInstances.set(id, authInstance);
+  return authInstance.instance;
+};
 
 export default {
-  controller,
+  abortAndDeleteRequest(id) {
+    const authInstance = authInstances.get(id);
+    if (authInstance && authInstance.controller.aborted) {
+      authInstance.controller.abort();
+      authInstances.delete(id);
+    }
+  },
   uploadFile({
     file,
     id,
@@ -27,7 +45,6 @@ export default {
     progressCallback,
     uploadedCallback,
     errorCallback,
-    controller,
   }) {
     const formData = new FormData();
     formData.append("file", file, file.name);
@@ -40,16 +57,14 @@ export default {
         "Content-Range": `bytes=0-${file.size}/${file.size}`,
         "X-Upload-Id": jobId,
       },
-      signal: controller.signal,
       onUploadProgress: progressCallback,
     };
 
-    return authInstance
+    const instance = getInstance(id);
+
+    return instance
       .post(`upload/`, formData, config)
       .then(uploadedCallback)
-      .catch((err) => {
-        console.log("Error! ", err);
-        errorCallback();
-      });
+      .catch(errorCallback);
   },
 };

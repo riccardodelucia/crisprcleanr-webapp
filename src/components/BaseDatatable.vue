@@ -7,29 +7,30 @@
       </div>
     </div>
 
-    <div class="datatable__table">
-      <table class="table">
-        <thead class="table__head">
-          <tr>
-            <th v-for="column in columns" :key="column.name" class="table__head-item" :class="
-              sortable(column)
-                ? currentSortKey === column.name
-                  ? sortOrders[column.name] > 0
-                    ? 'table__head-item--sorting-asc'
-                    : 'table__head-item--sorting-desc'
-                  : 'table__head-item--sorting'
-                : ''
-            " :style="'width:' + column.width" @click="sortable(column) && sortBy(column.name)">
-              {{ column.label }}
-            </th>
-          </tr>
-        </thead>
-        <tbody class="table__body">
-          <slot :row="row" v-for="(row, index) in paginatedItems" :key="index"></slot>
-        </tbody>
-      </table>
-    </div>
-
+    <!--     <div class="datatable__table">
+ -->
+    <table class="table">
+      <thead class="table__head">
+        <tr>
+          <th v-for="column in columns" :key="column.name" class="table__head-item" :class="
+            sortable(column)
+              ? currentSortKey === column.name
+                ? sortOrders[column.name] > 0
+                  ? 'table__head-item--sorting-asc'
+                  : 'table__head-item--sorting-desc'
+                : 'table__head-item--sorting'
+              : ''
+          " :style="'width:' + column.width" @click="sortable(column) && sortBy(column.name)">
+            {{ column.label }}
+          </th>
+        </tr>
+      </thead>
+      <tbody class="table__body">
+        <slot :row="row" v-for="(row, index) in paginatedItems" :key="index"></slot>
+      </tbody>
+    </table>
+    <!--     </div>
+ -->
     <BasePagination class="datatable__pagination" :currentPage="currentPage" :numberOfPages="numberOfPages"
       @paginate="setCurrentPage">
     </BasePagination>
@@ -214,6 +215,7 @@ export default {
 .table {
   border-collapse: collapse;
   width: 100%;
+  overflow: hidden;
 
   &__head {
     text-align: left;
