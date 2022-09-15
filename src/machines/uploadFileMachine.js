@@ -40,12 +40,16 @@ const assignProgress = assign(({ file }, { progress }) => {
   const totalFileBytesUploaded = progress.loaded;
   const percentage = Math.min(
     Math.round((totalFileBytesUploaded * 100) / file.size),
-    100
+    99
   );
   return {
     totalFileBytesUploaded,
     percentage,
   };
+});
+
+const assignProgress100 = assign({
+  percentage: () => 100,
 });
 
 const abortUpload = (context, event) =>
@@ -87,7 +91,7 @@ export default createMachine({
         },
       },
     },
-    uploaded: { type: "final" },
+    uploaded: { type: "final", entry: ["assignProgress100"] },
     aborted: {
       type: "final",
       entry: [() => console.log("upload aborted")],
@@ -108,6 +112,6 @@ export default createMachine({
   services: {
     uploadFile,
   },
-  actions: { assignProgress, abortUpload },
+  actions: { assignProgress, assignProgress100, abortUpload },
   guards: { warnAbort },
 });

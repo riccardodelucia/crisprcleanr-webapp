@@ -12,20 +12,20 @@
             :error="getDataFieldErrorMessage(state, 'title')">
           </BaseInput>
         </div>
+
         <div class="form__group">
-          <BaseInput :label="labelFieldPairs.email" @change="onChange($event, 'email')"
-            :modelValue="getDataFieldValue(state, 'email')" type="email" placeholder="Your email here"
-            :error="getDataFieldErrorMessage(state, 'email')">
-          </BaseInput>
-        </div>
-        <div class="form__group">
-          <BaseInput :label="labelFieldPairs.label" @input="onInput($event, 'label')"
+          <BaseInput :label="labelFieldPairs.label" @update:modelValue="onInput($event, 'label')"
             :modelValue="getDataFieldValue(state, 'label')" type="text" placeholder="Your data label here"
             :error="getDataFieldErrorMessage(state, 'label')">
           </BaseInput>
         </div>
         <div class="form__group">
-          <BaseTextarea :label="labelFieldPairs.notes" @input="onInput($event, 'notes')"
+          <BaseCheckbox :label="labelFieldPairs.sendEmail" option="Send email upon job completion"
+            @update:modelValue="onInput($event, 'sendEmail')" :modelValue="getDataFieldValue(state, 'sendEmail')">
+          </BaseCheckbox>
+        </div>
+        <div class="form__group">
+          <BaseTextarea :label="labelFieldPairs.notes" @update:modelValue="onInput($event, 'notes')"
             :modelValue="getDataFieldValue(state, 'notes')" placeholder="Your notes here" />
         </div>
       </template>
@@ -199,7 +199,7 @@ export default {
 
     const labelFieldPairs = {
       title: "Title",
-      email: "Email (optional)",
+      sendEmail: "Send Email",
       label: "Data label",
       notes: "Notes",
       normMinReads: "Min number of reads in the control sample",

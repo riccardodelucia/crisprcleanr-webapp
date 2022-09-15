@@ -1,7 +1,7 @@
 import { createMachine } from "xstate";
 import { useMachine } from "@xstate/vue";
 import { assign } from "xstate";
-import { string, number, mixed, array } from "yup";
+import { string, number, mixed, array, bool } from "yup";
 import { useField } from "vee-validate";
 import CcrAPI from "@/api/ccr.js";
 import store from "@/store";
@@ -285,7 +285,7 @@ function getFieldValue(context, field) {
 
 const setupGeneralInfoSchema = assign({
   currentSchema: () => {
-    return ["title", "email", "label", "notes"];
+    return ["title", "sendEmail", "label", "notes"];
   },
 });
 
@@ -467,10 +467,9 @@ export const getInterpretedMachine = () => {
     "title",
     string().required("title is required")
   );
-  dataFields["email"] = useField(
-    "email",
-    string().email("must be a valid email").nullable()
-  );
+  dataFields["sendEmail"] = useField("sendEmail", bool(), {
+    initialValue: true,
+  });
   dataFields["label"] = useField(
     "label",
     string().required("label is required")
