@@ -21,6 +21,19 @@ import store from "../store";
 
 const dashboardURL = getEnv("VUE_APP_URL_GROUPS_DASHBOARDS");
 
+const manageRouteError = (from, error, message) => {
+  if (error?.response?.status === 404) return "/inexistent-address"; //this translates into catchAll route
+  store.dispatch("notification/add", {
+    type: "error",
+    title: "Something went wrong... 💥",
+    message,
+    timeout: 5,
+  });
+  NProgress.done();
+  if (from.name !== undefined) return false;
+  return { name: "home" };
+};
+
 export const routes = [
   {
     path: "/test",
@@ -68,22 +81,21 @@ export const routes = [
         path: "",
         name: "submit",
         component: ViewSubmitJob,
-        beforeEnter(to, from, next) {
+        beforeEnter(to, from) {
+          //ALWAYS REMEMBER TO RETURN THE PROMISE TO MAKE THE ROUTE GUARD WAIT FOR THE PROMISE RESULT!!!!
           return CcrAPI.getStaticResource("job_config.json")
             .then((response) => {
               to.params.config = response.data;
-              next();
+              return true;
             })
-            .catch((error) => {
-              store.dispatch("notification/add", {
-                type: "error",
-                title: "Something went wrong... 💥",
-                message: "Unable to load job settings from server",
-                timeout: 5,
-              });
-              NProgress.done();
-              throw error;
-            });
+            .catch((error) =>
+              //THIS ALSO NEEDS TO RETURN THE manageRoute METHOD!!!
+              manageRouteError(
+                from,
+                error,
+                "Unable to load job submission form"
+              )
+            );
         },
       },
     ],
@@ -91,71 +103,52 @@ export const routes = [
   {
     path: "/jobs",
     component: AppLayout,
+    meta: {
+      requiresAuth: true,
+    },
     children: [
       {
         path: "",
         name: "resultsList",
         component: ViewResultsList,
-        meta: {
-          requiresAuth: true,
-        },
         props: true,
-        beforeEnter(to, from, next) {
-          CcrAPI.getResultsList()
+        beforeEnter(to, from) {
+          return CcrAPI.getResultsList()
             .then((response) => {
               to.params.results = response.data;
-              next();
+              return true;
             })
-            .catch((error) => {
-              store.dispatch("notification/add", {
-                type: "error",
-                title: "Something went wrong... 💥",
-                message: "Unable to load job results list from server",
-                timeout: 5,
-              });
-              NProgress.done();
-              throw error;
-            });
+            .catch((error) =>
+              manageRouteError(
+                from,
+                error,
+                "Unable to load job results list from server"
+              )
+            );
         },
       },
       {
         path: ":id",
         name: "resultsId",
         component: ViewResultsByID,
-        meta: {
-          requiresAuth: true,
-        },
         props: true,
-        beforeEnter(to, from, next) {
-          CcrAPI.getResultByID(to.params.id)
+        beforeEnter(to, from) {
+          return CcrAPI.getResultByID(to.params.id)
             .then((response) => {
               to.params.result = response.data;
-              next();
+              return true;
             })
-            .catch((error) => {
-              store.dispatch("notification/add", {
-                type: "error",
-                title: "Something went wrong... 💥",
-                message: `Unable to load results data for job ${to.params.id}`,
-                timeout: 5,
-              });
-              NProgress.done();
-              throw error;
-            });
+            .catch((error) =>
+              manageRouteError(
+                from,
+                error,
+                `Unable to load results data for job ${to.params.id}`
+              )
+            );
         },
       },
     ],
   },
-  /*   {
-    path: "/error",
-    name: "error",
-    component: ViewMessagePage,
-    beforeEnter(to) {
-      to.params.title = "Something went wrong... 💥";
-      return;
-    },
-    props: true,
-  }, */
   {
     path: "/:catchAll(.*)",
     name: "404",

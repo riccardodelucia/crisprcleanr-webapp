@@ -289,7 +289,14 @@ export default {
       const filename = "HT-29@KY_Library_v1.0.tsv";
       return CcrAPI.getStaticResource(filename).then((response) => {
         download(response.data, filename);
-      });
+      }).catch((error) => {
+        store.dispatch("notification/add", {
+          type: "error",
+          title: "Something went wrong... 💥",
+          message: "Unable to download example files",
+          timeout: 5,
+        });
+      })
     },
   },
 };

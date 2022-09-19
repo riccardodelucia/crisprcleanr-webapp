@@ -9,6 +9,7 @@ import { authorize } from "@/authentication";
 const _ = deepdash(lodash);
 
 const baseURL = `${getEnv("VUE_APP_URL_IORIO_CCR_BACKEND")}`;
+const connectionTimeout = `${getEnv("VUE_APP_CONNECTION_TIMEOUT_MS")}`;
 
 // instances need to be separated according to auth to enable correct interceptor auth request on auth-dependent requests
 const instances = new Map();
@@ -16,7 +17,11 @@ const authInstances = new Map();
 
 const createInstance = (auth = false) => {
   const controller = new AbortController();
-  const instance = axios.create({ signal: controller.signal, baseURL });
+  const instance = axios.create({
+    signal: controller.signal,
+    baseURL,
+    timeout: connectionTimeout,
+  });
 
   instance.interceptors.response.use(function (response) {
     // if this is a multipart file response, there is nothing to camelize

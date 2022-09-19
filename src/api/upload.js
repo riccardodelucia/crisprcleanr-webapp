@@ -8,7 +8,12 @@ const authInstances = new Map();
 
 const createInstance = () => {
   const controller = new AbortController();
-  const instance = axios.create({ signal: controller.signal, baseURL });
+
+  // cannot setup a timeout on upload , otherwise large file uploads get canceled
+  const instance = axios.create({
+    signal: controller.signal,
+    baseURL,
+  });
 
   instance.interceptors.request.use(function (config) {
     const redirectUri = window.location.href;
@@ -33,7 +38,7 @@ const getInstance = (id) => {
 export default {
   abortAndDeleteRequest(id) {
     const authInstance = authInstances.get(id);
-    if (authInstance && authInstance.controller.aborted) {
+    if (authInstance && !authInstance.controller.aborted) {
       authInstance.controller.abort();
       authInstances.delete(id);
     }

@@ -57,10 +57,10 @@ const abortUpload = (context, event) =>
 
 ////////////////////////////////////////////////////////////////
 // GUARDS
-const warnAbort = () =>
+/* const warnAbort = () =>
   window.confirm(
     "This action will permanently delete the file upload. Your job will not be able to be computed. Are you sure?"
-  );
+  ); */
 
 export default createMachine({
   context: {
@@ -82,7 +82,7 @@ export default createMachine({
         PROGRESS: { actions: ["assignProgress"] },
         ABORT: {
           target: "aborted",
-          cond: "warnAbort",
+          //cond: "warnAbort",
           actions: ["abortUpload"],
         },
         ERROR: { target: "error" },
@@ -113,5 +113,5 @@ export default createMachine({
     uploadFile,
   },
   actions: { assignProgress, assignProgress100, abortUpload },
-  guards: { warnAbort },
+  //guards: { warnAbort },
 });

@@ -158,7 +158,7 @@ export default {
         store.dispatch("notification/add", {
           type: "error",
           title: "Something went wrong... 💥",
-          message: "Unable to fetch Genes Signatures Data from server",
+          message: "Unable to get Genes Signatures Data from server",
           timeout: 5
         });
         genesSignatures.value = "error"
@@ -174,7 +174,6 @@ export default {
         })
         return { ...image, src: URL.createObjectURL(response.data) };
       } catch (error) {
-        console.error(`Something went wrong with downloading the file: ${err}`);
         return {
           ...image,
           src: require("@/assets/img/placeholder-image.png"),
@@ -208,7 +207,13 @@ export default {
         image.value = img;
         modalState.value = "opened";
       }).catch((err) => {
-        console.error(`Something went wrong with downloading the file: ${err}`);
+        store.dispatch("notification/add", {
+          type: "error",
+          title: "Something went wrong... 💥",
+          message: `Unable to open chart ${img.chart}`,
+          timeout: 5
+        });
+        closeModal()
       });
     };
 
@@ -224,7 +229,12 @@ export default {
           download(response.data, file);
         })
         .catch((err) => {
-          console.error(`Something went wrong with downloading the file: ${err}`);
+          store.dispatch("notification/add", {
+            type: "error",
+            title: "Something went wrong... 💥",
+            message: `Unable to download file ${file}`,
+            timeout: 5
+          });
         });
     };
 
