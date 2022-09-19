@@ -1,7 +1,7 @@
 <template>
   <div class="controls-container">
     <BaseToggleSwitch v-if="data.raw && data.norm" v-model="showNormalizedData"
-      :option="!showNormalizedData ? 'unnormalized' : 'normalized'" />
+      :option="!showNormalizedData ? 'raw' : 'normalized'" />
   </div>
   <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
     <g>
@@ -18,7 +18,8 @@
 import BoxPlotChartFocus from "@/components/ccr/charts/boxplot/BoxPlotChartFocus.vue";
 import BoxPlotChartContext from "@/components/ccr/charts/boxplot/BoxPlotChartContext.vue";
 
-import { extent } from "d3";
+import { augmentedExtent } from "@/composables/chart.js";
+
 
 import { ref, computed, watchEffect } from "vue";
 
@@ -62,7 +63,7 @@ const dataExtent = (data) => {
     .flat()
     .map((item) => item.value)
     .concat();
-  return extent(outliers.concat(dist)).sort((a, b) => b - a);
+  return augmentedExtent(outliers.concat(dist)).sort((a, b) => b - a)
 };
 
 export default {

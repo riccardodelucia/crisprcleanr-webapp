@@ -2,6 +2,9 @@
   <g :transform="`translate(${margin.left}, ${margin.top})`">
     <g :transform="`translate(0, ${innerHeight})`">
       <D3Axis :scale="xScale" position="bottom" />
+      <text :transform="`translate(${innerWidth / 2}, ${xAxisLabelOffset})`" class="axis-label">
+        {{ xLabel }}
+      </text>
     </g>
     <BrushArea :width="innerWidth" :height="innerHeight" v-bind="$attrs" :domain="xDomain" :scale="xScale"
       brushDirection="horizontal">
@@ -86,7 +89,18 @@ export default {
       xScale,
       yScale,
       brush,
+      xAxisLabelOffset: 40,
+      xLabel: "Genomic Positions"
     };
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.axis-label {
+  text-anchor: middle;
+  font-family: sans-serif;
+  font-size: 15px;
+  color: black;
+}
+</style>

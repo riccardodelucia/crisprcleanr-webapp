@@ -2,10 +2,11 @@
   <template v-if="!state.hasTag('submitting') && !state.matches('submitted')">
     <form class="widget job-form" ref="form" @submit.prevent="submit">
       <h2 class="u-margin-bottom-small">Submit a new job</h2>
-      <BaseFormProgressBar :steps="progressSteps" :currentStep="currentStep"></BaseFormProgressBar>
+      <BaseFormProgressBar :steps="progressSteps" :currentStep="currentStep" class="u-margin-bottom-small">
+      </BaseFormProgressBar>
 
       <template v-if="state.matches('enteringGeneralInfo')">
-        <h3 class="u-margin-bottom-small">General Info</h3>
+        <h3 class="u-margin-bottom-small">{{progressSteps[0]}}</h3>
         <div class="form__group">
           <BaseInput :label="labelFieldPairs.title" @update:modelValue="onInput($event, 'title')"
             :modelValue="getDataFieldValue(state, 'title')" type="text" placeholder="Your title here"
@@ -32,7 +33,7 @@
 
 
       <template v-if="state.matches('enteringSettings')">
-        <h3 class="u-margin-bottom-small">Settings</h3>
+        <h3 class="u-margin-bottom-small">{{progressSteps[1]}}</h3>
         <div class="form__group">
           <BaseInput :label="labelFieldPairs.normMinReads" @update:modelValue="onInput($event, 'normMinReads')"
             :modelValue="getDataFieldValue(state, 'normMinReads')" type="number"
@@ -48,7 +49,7 @@
 
 
       <template v-if="state.matches('enteringLibrary')">
-        <h3 class="u-margin-bottom-small">Library</h3>
+        <h3 class="u-margin-bottom-small">{{progressSteps[2]}}</h3>
         <BaseRadioGroup label="Library type" :options="libraryTypeOptions" @update:modelValue="sendLibraryType"
           :modelValue="libraryType">
         </BaseRadioGroup>
@@ -74,9 +75,9 @@
 
 
       <template v-if="state.matches('enteringFiles')">
-        <h3 class="u-margin-bottom-small">Input Files</h3>
+        <h3 class="u-margin-bottom-small">{{progressSteps[3]}}</h3>
 
-        <BaseRadioGroup label="File type" :options="fileTypeOptions" @update:modelValue="sendFileType"
+        <BaseRadioGroup label="Data type" :options="fileTypeOptions" @update:modelValue="sendFileType"
           :modelValue="fileType">
         </BaseRadioGroup>
 
@@ -135,7 +136,7 @@
 
 
       <template v-if="state.matches('review')">
-        <h3 class="u-margin-bottom-small">Review Data</h3>
+        <h3 class="u-margin-bottom-small">{{progressSteps[4]}}</h3>
         <ul v-for="field in formDataReview(state)" :key="field">
           <li>
             <b>{{ field[0] }}:</b> {{ field[1] }}
@@ -146,12 +147,12 @@
       <div class="job-form__button-container">
         <button type="button" class="button button--primary button--large prev-button" @click="previous"
           v-if="!state.matches('enteringGeneralInfo')">
-          Previous
+          Previous Step
         </button>
         <button v-if="!state.matches('review')" type="submit" class="button button--primary button--large next-button">
-          Next
+          Next Step
         </button>
-        <button v-else type="submit" class="button button--primary button--large next-button">
+        <button v-else type="submit" class="button button--secondary button--large submit-button">
           Submit
         </button>
       </div>
@@ -200,13 +201,13 @@ export default {
     const labelFieldPairs = {
       title: "Title",
       sendEmail: "Send Email",
-      label: "Data label",
+      label: "Charts label",
       notes: "Notes",
       normMinReads: "Min number of reads in the control sample",
       method: "Normalization Method",
-      libraryBuiltin: "Default Library",
-      libraryFile: "Library File",
-      fileCounts: "Counts File",
+      libraryBuiltin: "Built-in Library",
+      libraryFile: "External Library File",
+      fileCounts: "sgRNA Counts File",
       nControls: "Number of controls",
       filesFASTQcontrols: "FASTQ Controls",
       filesFASTQsamples: "FASTQ Samples",
@@ -241,9 +242,9 @@ export default {
       send("INPUT", { payload: libraryBuiltin.value?.library, field: "libraryBuiltin" });
     }, { immediate: true })
 
-    const libraryTypeArray = [{ option: 'Default', event: "LIBRARY.DEFAULT" }, { option: 'File', event: "LIBRARY.FILE" }];
+    const libraryTypeArray = [{ option: 'Built-in', event: "LIBRARY.BUILTIN" }, { option: 'Library Annotation File', event: "LIBRARY.FILE" }];
     const libraryTypeOptions = libraryTypeArray.map(item => item.option)
-    const libraryType = ref("Default")
+    const libraryType = ref("Built-in")
 
     const sendLibraryType = (option) => {
       libraryType.value = option
@@ -251,9 +252,9 @@ export default {
       event && send(event)
     }
 
-    const fileTypeArray = [{ option: 'Raw Counts', event: "FILE.COUNTS" }, { option: 'FASTQ', event: "FILE.FASTQ" }, { option: 'BAM', event: "FILE.BAM" }];
+    const fileTypeArray = [{ option: 'sgRNA Counts', event: "FILE.COUNTS" }, { option: 'FASTQ', event: "FILE.FASTQ" }, { option: 'BAM', event: "FILE.BAM" }];
     const fileTypeOptions = fileTypeArray.map(item => item.option)
-    const fileType = ref("Raw Counts")
+    const fileType = ref(fileTypeArray[0].option)
 
     const sendFileType = (option) => {
       fileType.value = option
@@ -261,7 +262,7 @@ export default {
       event && send(event)
     }
 
-    const progressSteps = ["General", "Settings", "Library", "Files", "Review"]
+    const progressSteps = ["Job Info", "Settings", "Library Selection", "Files Upload", "Review"]
     const currentStep = computed(() => {
       if (state.value.matches('enteringGeneralInfo')) return progressSteps[0]
       if (state.value.matches('enteringSettings')) return progressSteps[1]
@@ -311,6 +312,14 @@ export default {
   justify-content: space-between;
   margin-top: 1em;
 }
+
+.prev-button,
+.next-button,
+.submit-button {
+  width: 18rem;
+}
+
+
 
 .next-button {
   margin-left: auto;

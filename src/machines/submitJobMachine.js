@@ -103,7 +103,7 @@ const submitJobMachine = createMachine({
               tags: ["libraryFile"],
               entry: ["setupLibraryFileSchema", "updateExcludedFieldsList"],
               on: {
-                "LIBRARY.DEFAULT": { target: "libraryBuiltin" },
+                "LIBRARY.BUILTIN": { target: "libraryBuiltin" },
               },
             },
             hist: {

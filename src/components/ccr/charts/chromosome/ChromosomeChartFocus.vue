@@ -10,18 +10,11 @@
     <g :transform="`translate(0, ${innerHeight})`">
       <D3Axis :scale="xScale" position="bottom" />
     </g>
-    <!-- Segments are clipped through a clip path, instead of filtering data. This is 
+    <!-- Segments are clipped through a clip path, instead of filtering data. This is
     convenient, since segments are very lightweight to manage, and the filtering algorithm would have
     to trim segment endpoints according to the current selected area. -->
-    <Marks
-      :points="focusData.sgRNAArray"
-      :segments="data.segments"
-      :xScale="xScale"
-      :yScale="yScale"
-      :pointRadius="4"
-      :selections="selections"
-      clip-path="url(#clip-segments)"
-    />
+    <Marks :points="focusData.sgRNAArray" :segments="data.segments" :xScale="xScale" :yScale="yScale" :pointRadius="4"
+      :selections="selections" clip-path="url(#clip-segments)" />
   </g>
 </template>
 
@@ -32,7 +25,7 @@ import D3Axis from "@/components/ccr/charts/D3Axis.vue";
 
 import { computed } from "vue";
 
-import { getInnerChartSizes } from "@/composables/chart.js";
+import { getInnerChartSizes, augmentedExtent } from "@/composables/chart.js";
 
 export default {
   name: "ChromosomeChartFocus",
@@ -70,8 +63,10 @@ export default {
       margin
     );
 
+    const augmentedYExtent = augmentedExtent(props.data.sgRNAArray.map((d) => d.avgLogFC))
+
     const yScale = scaleLinear()
-      .domain(extent(props.data.sgRNAArray.map((d) => d.avgLogFC)))
+      .domain(augmentedYExtent)
       .range([innerHeight, 0]);
 
     const xScale = computed(() => {

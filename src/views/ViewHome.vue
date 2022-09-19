@@ -1,7 +1,8 @@
 <template>
   <div class="hero">
     <div class="hero__container">
-      <img class="hero__logo" src="@/assets/logos/ccr-logo.svg" alt="CRISPRcleanR logo" />
+      <div class="hero__logo"><img src="@/assets/logos/ccr-logo.svg" alt="CRISPRcleanR logo" /></div>
+
       <h1 class="hero__title">Welcome to CRISPRcleanR Web App (Beta)</h1>
       <p class="hero__text">
         CRISPRcleanR is a tool for the unsupervised correction of
@@ -20,10 +21,9 @@
         </button>
         <button class="button button--ghost button--large hero__button--download" type="button"
           @click="downloadSampleData">
-          Download Example File
+          Download Example Files
         </button>
       </div>
-
     </div>
   </div>
   <section class="section section-cards">
@@ -52,7 +52,7 @@
         When your job is <b>completed</b>, your results will be listed in a
         dedicated <b>table</b>, accessible by clicking on the
         <b>Results</b> navigation button on the left bar. Identify your job
-        results in the table and access them by clicking on the <b>eye</b> icon.
+        results in the table and access them by clicking on the <b>Show</b> button.
       </p>
     </div>
     <div class="card-step">
@@ -72,18 +72,14 @@
     <div class="section-security__promo">
       <h2>Your data in a secure place 🔐</h2>
       <p>
-        Your data <b>privacy</b> is very important to us. To use CRISPRcleanR
-        Web App you are required to authenticate. All the data you upload and
-        submit, and related results are <b>protected</b> and accessible to
+        Your data <b>privacy</b> is very important to us. To use CRISPRcleanR Web App you need to create a user account
+        and
+        login. All the data you upload and submit and related results are <b>protected</b> and accessible to
         <b>you only</b>.
       </p>
       <p class="disclaimer">
         <b style="color: red">Disclaimer:</b><br />
-        CRISPRclearR WebApp is in a beta-testing phase. If you are a reviewer of
-        the CRISPRcleanR WebApp manuscript, you will find your access
-        credentials in the cover letter of our submission. If you are not a
-        reviewer of the manuscript but you are still interested in beta-testing
-        CRISPRcleanR WebApp, contact us at
+        CRISPRclearR WebApp is in a beta-testing phase. For any info and bug report please contact the
         <a href="mailto: info_ioriolab@fht.org">Iorio Lab</a>
       </p>
     </div>
@@ -93,37 +89,28 @@
     <h2>How it works ⚙️</h2>
     <div class="section-howitworks__text">
       <p>
-        To start you will need a plain <b>text file</b> containing individual
-        single guide RNAs counts for at least three samples (the first one will
-        be interpreted as derived from a <b>control condition</b>, for example
-        plasmidic DNA). The format of this file should be
-        <b>tab delimited</b> with one row per sgRNA and the following
-        columns/headers:
+        <b>CRISPRcleanR WebApp</b> allows to easily run CRISPRcleanR on your experimental data through an <b>easy-to-use
+          interface</b>. New <b>jobs</b> can be submitted from the <router-link to="/submit">dedicated section
+        </router-link> in the app.
+        A <b>multi-step form</b> will guide you through the job submission, where all relevant information needs to be
+        filled.
+        Not only CRISPRcleanR WebApp natively supports a set of <b>6 built-in sgRNA libraries</b>, but it also provides
+        the
+        possibility of processing data generated with <b>any library</b> (by uploading the corresponding <b>annotation
+          file</b>).
+        Experimental CRISPR data can be provided either as <b>FASTQ/BAM files</b> or <b>pre-computed counts file</b>.
+        Submitted jobs are available from the <router-link to="/submit">results section
+        </router-link>. For each job, a <b>dedicated result page</b> is made available, where you can <b>download</b>
+        all job-related data, together
+        with static plots.
+        Finally, a comprehensive set of <b>interactive charts</b> allows you to get insight over the outcome of your
+        processed
+        data.
       </p>
-      <ul>
-        <li>
-          <b>sgRNA</b>: containing alphanumerical identifiers of the sgRNA under
-          consideration
-        </li>
-        <li>
-          <b>gene</b>: containing HGNC symbols of the genes targeted by the
-          sgRNA under consideration
-        </li>
-      </ul>
-      <p>
-        followed by the columns containing the <b>sgRNAs' counts</b> for the
-        controls and columns for <b>library</b> trasfected samples. Only single
-        guide RNAs included in the selected library will be considered.
-      </p>
-      <p>
-        See, for example, the format of the
-        <b>downloadable dataset</b> example input data at the top of this page.
-        This data encompasses single guide RNA counts derived from screening the
-        <b>HT-29</b> cell lines with the <b>KY_Library_v1.0</b> (which should be
-        selected in the job submission form) and it is part of the
-        <a href="https://score.depmap.sanger.ac.uk/ ">Project Score dataset</a>
-        (<a href="https://academic.oup.com/nar/article/49/D1/D1365/5929235">Dwane et al. 2021</a>,
-        <a href="https://www.nature.com/articles/s41586-019-1103-9">Behan et al. 2019</a>)
+      <p>To start using CRISPRcleanR, follow along the videos provided in the following <b>step sections</b></p>.
+      <p><b>Example data</b> can be <b>downloaded</b> from the current page and used to <b>submit test jobs</b>. A
+        <b>README file</b> included in
+        the example data allows you to better understand <b>accepted file formats and inner structure</b>
       </p>
     </div>
     <img src="@/assets/img/excel.png" alt="excel sheet" />
@@ -131,63 +118,18 @@
       <template v-slot:title>Step 1️⃣ : submit your job</template>
       <template v-slot:content>
         <div class="text-small">
+          <p>
+            Check out this tutorial to know:
+          </p>
+          <ul class="u-margin-bottom-medium">
+            <li>how to <b>sign in/register</b> to CRISPRcleanR Web App</li>
+            <li>how to correctly fill in the <b>Job Submission Form</b></li>
+            <li>the right <b>format</b> for your experimental data and <b>library files</b> (if you are using
+              custom/external libraries).</li>
+          </ul>
           <video controls class="section__video">
             <source src="@/assets/videos/submission.mp4" type="video/mp4" />
           </video>
-          <p>
-            CRISPRcleanR Web App allows you to submit your counts file in
-            <b>.csv</b> and <b>.tsv</b> formats. Each new submission creates a
-            new <b>Job</b>. A job relates to a submitted file along with all
-            related results. Fill in the form with required data, click on
-            <b>Next</b> and you are ready to go. The submitted job will be
-            executed in background for you, in few minutes.
-          </p>
-          <p>
-            You can decide whether to provide an <b>email</b> that will be used
-            to let you know when the job is completed or to note down a direct
-            link to the results
-            <b>(URL revealed at the end of the submission stage)</b>. Your
-            results will be nevertheless always accessible by clicking on the
-            <b>Results</b> navigation button, on the left bar.
-          </p>
-        </div>
-        <div class="text-small">
-          <p>List of currently available input parameters:</p>
-          <ul>
-            <li><b>Title: </b>Give a memorable title to your job</li>
-            <li>
-              <b>Email (optional): </b>You can provide an email where to receive
-              the job outcome upon finish
-            </li>
-            <li>
-              <b>Data Label: </b>Choose a name for labels within charts produced
-              by CRISPRcleanR
-            </li>
-            <li>
-              <b>Library: </b>Choose the library used for the current experiment
-            </li>
-            <li>
-              <b>Minimal number of reads in the control sample (default 30): </b>This parameter defines a filtering
-              threshold value for sgRNAs,
-              based on their average counts in the control sample. Specifically,
-              it indicates the minimal number of counts that each individual
-              sgRNA needs to have in the controls (on average) in order to be
-              processed by CRISPRcleanR
-            </li>
-            <li>
-              <b>Number of controls (default 1): </b>number of controls used for
-              a CRISPR screen
-            </li>
-            <li>
-              <b>Normalization Method (default 'Counts Per Million'): </b>
-              Normalisation method
-            </li>
-            <li><b>Notes (optional): </b>Add your notes in this text field</li>
-            <li>
-              <b>File: </b>The input raw counts file to be pre-processed through
-              CRISPRcleanR
-            </li>
-          </ul>
         </div>
       </template>
     </BaseAccordion>
@@ -195,22 +137,16 @@
       <template v-slot:title>Step 2️⃣: identify and access your results</template>
       <template v-slot:content>
         <div class="text-small">
+          <p>
+            Check out this tutorial to know:
+          </p>
+          <ul class="u-margin-bottom-medium">
+            <li>how to access the <b>Results Section</b></li>
+            <li>how to filter and retrieve specific results using the <b>data table controls</b></li>
+          </ul>
           <video controls class="section__video">
             <source src="@/assets/videos/results.mp4" type="video/mp4" />
           </video>
-          <p>
-            Click on the <b>Results</b> navigation button on the left nav to
-            access all your personal successfully computed and pending results.
-          </p>
-          <p>
-            Results are conveniently <b>paginated</b>. You can navigate through
-            the pages, as well as choosing the number of results per page.
-          </p>
-          <p>
-            <b>Sort</b> results according to the available headers, and
-            conveniently <b>retrieve</b> specific results with the search bar.
-            Any data type of the table columns is a valid search parameter.
-          </p>
         </div>
       </template>
     </BaseAccordion>
@@ -219,29 +155,17 @@
       <template v-slot:title>Step 3️⃣: explore and download your results</template>
       <template v-slot:content>
         <div class="text-small">
+          <p>
+            Check out this tutorial to know:
+          </p>
+          <ul class="u-margin-bottom-medium">
+            <li>how to <b>explore your results</b> through a range of <b>interactive plots</b> provided by CRISPRcleanR
+              Web App</li>
+            <li>how to <b>download</b> all the <b>job data and static plots</b> as zip files</li>
+          </ul>
           <video controls class="section__video">
             <source src="@/assets/videos/result_by_id.mp4" type="video/mp4" />
           </video>
-          <p>
-            Click on the <b>eye icon</b> on the results list to access its
-            details on a <b>dedicated page</b>.
-          </p>
-          <p>
-            All your job <b>details</b> will be conveniently listed on top of
-            the page. Click on the buttons to <b>download</b> zip files
-            containing the job data. The <b>data zip</b> contains all the
-            <b>tabular results</b> produced by CRISPRcleanR Web App, as well as
-            the submitted <b>input file</b>. Two further buttons allow you to
-            download produced <b>images and charts</b>, available in
-            <b>png</b> and <b>pdf</b> formats.
-          </p>
-          <p>
-            Scroll over the page to visualize all related <b>charts</b>. When
-            clicking on an image, a modal window appears, which loads an
-            <b>interactive</b> version of the <b>chart</b>. <b>Hover</b> on the
-            data points and use the provided <b></b> to get insight on your
-            experiment pre-processed data.
-          </p>
         </div>
       </template>
     </BaseAccordion>
@@ -260,9 +184,9 @@
         <div class="text-small">
           <p class="u-margin-bottom-medium">
             Each chart comes with its own sets of <b>controls</b>. For instance,
-            you can find <b>sliders</b> and <b>checkboxes</b> to control major
-            layout settings. Many charts come with a <b>minified graph</b> or
-            <b>context area</b> used to <b>zoom</b> in a specific area of the
+            you can find <b>sliders</b> and <b>checkboxes</b> to control general
+            layout settings. Many charts come with a <b>minified version</b> of the chart
+            (called )<b>context area</b>) used to <b>zoom</b> in a specific area of the
             chart. Within the context/ mingraph, click outside of the selected
             area to reset to full view.
           </p>
@@ -334,9 +258,16 @@ export default {
   &__logo {
     grid-column: 1 / 2;
     grid-row: 1/ -1;
+    display: flex;
+    align-items: center;
 
     @media only screen and (max-width: 880px) {
       height: 20rem;
+    }
+
+    img {
+      width: 100%;
+      height: 100%
     }
   }
 

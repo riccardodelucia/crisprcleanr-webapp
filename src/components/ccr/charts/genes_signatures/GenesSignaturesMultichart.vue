@@ -1,5 +1,5 @@
 <template>
-  <BaseSelect label="Choose a Genes Set" :options="genesSetsOptions" v-model="genesSet">
+  <BaseSelect label="Reference Genes Set" :options="genesSetsOptions" v-model="genesSet">
   </BaseSelect>
   <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
     <GenesSignaturesChartFocus :data="chartData" :width="chartFocusWidth" :height="height" :yDomain="yDomainFocus"

@@ -13,13 +13,16 @@
         </li>
       </ul>
       <p v-if="result.status === 'pending'">Further content will be shown upon successful job completion...</p>
-      <div v-else-if="result.status === 'success'" class="results__downloads">
-        <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
-          class="button button--primary button--small" type="button">
-          {{ file }}&nbsp;<span>
-            <BaseIcon name="download" />
-          </span>
-        </button>
+      <div v-else-if="result.status === 'success'">
+        <h3>Results Download</h3>
+        <div class="results__downloads">
+          <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
+            class="button button--primary button--small" type="button">
+            {{ file }}&nbsp;<span>
+              <BaseIcon name="download" />
+            </span>
+          </button>
+        </div>
       </div>
       <p class="results__msg" v-else>
         Job finished in error status. No further content is available.
@@ -54,7 +57,7 @@
 
 
       <BaseAccordion class="widget widget--color1 results__thumbnails">
-        <template v-slot:title>Normalization</template>
+        <template v-slot:title>Normalised Counts and Depletion Fold-Changes Charts</template>
         <template v-slot:content>
           <div class="thumbnails__content">
             <BaseThumbnail v-for="item in imageListByCathegory.normImages" :key="item.filename"
@@ -74,7 +77,7 @@
       </BaseAccordion>
 
       <BaseAccordion class="widget widget--color3 results__thumbnails">
-        <template v-slot:title>QC Assessment</template>
+        <template v-slot:title>QC Assessment Charts</template>
         <template v-slot:content>
           <div class="thumbnails__content">
             <BaseThumbnail v-for="item in imageListByCathegory.qcImages" :key="item.filename"

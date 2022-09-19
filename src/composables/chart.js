@@ -20,3 +20,14 @@ export const setupTooltip = function () {
   };
   return { setTooltipContent, onMouseOver };
 };
+
+export const augmentedExtent = (data, augmentation = 0.05) => {
+  const scaleMin = Math.min(...data);
+  const scaleMax = Math.max(...data);
+
+  const standardExtent = Math.abs(scaleMax - scaleMin);
+  return [
+    scaleMin - standardExtent * augmentation,
+    scaleMax + standardExtent * augmentation,
+  ];
+};

@@ -1,14 +1,13 @@
 <template>
     <BaseHeader>
         <template v-slot:logo><a href="https://humantechnopole.it/en/research-groups/iorio-group/" target="_blank"
-                class="header__logo-link"><img src="@/assets/logos/iorio-white.svg" alt="Iorio logo"
+                class="header__logo-link"><img src="@/assets/logos/iorio-logo-white.svg" alt="Iorio logo"
                     class="header__logo logo-iorio" /></a></template>
         <template v-slot:nav>
             <router-link class="header__link" to="/dashboard">
                 <BaseIcon name="grid" />
             </router-link>
-            <a v-if="!authenticated" to="#" class="header__link" @click="loginUser">Sign in or
-                Register</a>
+            <a v-if="!authenticated" to="#" class="header__link" @click="loginUser">Sign in or Register</a>
             <BaseUser v-else></BaseUser>
         </template>
     </BaseHeader>

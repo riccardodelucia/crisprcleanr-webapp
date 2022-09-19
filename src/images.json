@@ -4,7 +4,7 @@
     "chart": "fcs",
     "filename": "fcs",
     "section": "norm",
-    "label": "Log Fold Changes",
+    "label": "sgRNA logFCs",
     "component": "BoxPlotMultichart",
     "width": "120rem"
   },

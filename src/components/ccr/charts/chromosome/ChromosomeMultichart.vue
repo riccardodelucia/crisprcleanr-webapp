@@ -1,7 +1,7 @@
 <template>
   <div class="controls-container">
-    <BaseCheckbox v-model="selections.segments" option="segments" />
-    <BaseCheckbox v-model="selections.guides" option="guides" />
+    <BaseCheckbox v-model="selections.guides" option="sgRNA log FCs" />
+    <BaseCheckbox v-model="selections.segments" option="Equal logFCs segments" />
 
     <div class="controls-container__normalization">
       <BaseToggleSwitch v-model="showNormalizedData"

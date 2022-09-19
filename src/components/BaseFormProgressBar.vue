@@ -1,8 +1,10 @@
 <template>
-    <div class="form-progress">
-        <div class="form-progress__bar" :style="{ width: progress }"></div>
-        <div v-for="(step, index) in steps" :key="step" class="form-progress__step"
-            :class="{ 'form-progress__step--active': index <= currentStepIndex }" :data-title="step">{{ index + 1 }}
+    <div class="form-progress-container">
+        <div class="form-progress">
+            <div class="form-progress__bar" :style="{ width: progress }"></div>
+            <div v-for="(step, index) in steps" :key="step" class="form-progress__step"
+                :class="{ 'form-progress__step--active': index <= currentStepIndex }" :data-title="step">{{ index + 1 }}
+            </div>
         </div>
     </div>
 </template>
@@ -39,12 +41,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.form-progress-container {
+    min-height: 12rem;
+}
+
 .form-progress {
     display: flex;
     justify-content: space-between;
     padding: 1em 0;
     position: relative;
-    margin-bottom: 2em;
     counter-reset: step;
     color: var(--color-grey-medium);
 
@@ -80,6 +85,7 @@ export default {
         justify-content: center;
         position: relative;
         transition: background-color 0.2s ease-out, color 0.2s ease-out;
+        text-align: center;
 
         &--active {
             background-color: var(--color-blue-lighter);
