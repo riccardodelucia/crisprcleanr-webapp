@@ -81,22 +81,6 @@ export const routes = [
         path: "",
         name: "submit",
         component: ViewSubmitJob,
-        beforeEnter(to, from) {
-          //ALWAYS REMEMBER TO RETURN THE PROMISE TO MAKE THE ROUTE GUARD WAIT FOR THE PROMISE RESULT!!!!
-          return CcrAPI.getStaticResource("job_config.json")
-            .then((response) => {
-              to.params.config = response.data;
-              return true;
-            })
-            .catch((error) =>
-              //THIS ALSO NEEDS TO RETURN THE manageRoute METHOD!!!
-              manageRouteError(
-                from,
-                error,
-                "Unable to load job submission form"
-              )
-            );
-        },
       },
     ],
   },

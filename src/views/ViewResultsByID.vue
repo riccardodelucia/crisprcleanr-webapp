@@ -302,7 +302,7 @@ export default {
 .results {
   display: grid;
   grid-template-columns: minmax(min-content, 50rem) 50rem 1fr;
-  grid-template-rows: repeat(4, min-content) repeat(4, 1fr);
+  grid-template-rows: repeat(8, min-content);
   grid-column-gap: 1.2em;
   grid-row-gap: 1.5em;
   margin-top: 1em;
