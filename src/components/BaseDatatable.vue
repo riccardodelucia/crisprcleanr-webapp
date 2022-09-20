@@ -1,15 +1,11 @@
 <template>
   <div class="widget datatable">
     <div class="datatable__controls">
-      <BaseSearchBar class="datatable__search" @search="setSearch"></BaseSearchBar>
-      <div class="datatable__select">
-        <BaseSelect v-model="pageSize" :options="[5, 10, 20]"></BaseSelect>
-      </div>
+      <BaseSearchBar :modelValue="search" @update:modelValue="setSearch"></BaseSearchBar>
+      <BaseSelect style="width:6rem" v-model="pageSize" :options="[5, 10, 20]"></BaseSelect>
     </div>
 
-    <!--     <div class="datatable__table">
- -->
-    <table class="table">
+    <table class="datatable__table table">
       <thead class="table__head">
         <tr>
           <th v-for="column in columns" :key="column.name" class="table__head-item" :class="
@@ -29,8 +25,6 @@
         <slot :row="row" v-for="(row, index) in paginatedItems" :key="index"></slot>
       </tbody>
     </table>
-    <!--     </div>
- -->
     <BasePagination class="datatable__pagination" :currentPage="currentPage" :numberOfPages="numberOfPages"
       @paginate="setCurrentPage">
     </BasePagination>
@@ -175,6 +169,7 @@ export default {
       currentSortKey,
       pageSize,
       currentPage,
+      search,
       filteredItemsTotal,
       numberOfPages,
       paginatedItems,
@@ -192,7 +187,7 @@ export default {
   &__controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5em;
+    justify-content: space-between;
   }
 
   &__search {
@@ -216,6 +211,7 @@ export default {
   border-collapse: collapse;
   width: 100%;
   overflow: hidden;
+  table-layout: fixed;
 
   &__head {
     text-align: left;
@@ -273,22 +269,10 @@ export default {
   }
 
   &__body {
-    tr:hover {
-      background-color: var(--color-grey-lighter);
-    }
-
     &>tr>td {
       padding: 0.3em 0.5em;
-    }
-
-    &>tr>td>a {
-      transition: all 0.2s;
-
-      color: inherit;
-
-      &:hover {
-        color: var(--color-green-light);
-      }
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 

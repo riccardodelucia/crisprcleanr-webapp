@@ -4,13 +4,12 @@
     <BaseDatatable :columns="columns" :rows="results">
       <template v-slot:default="slotProps">
         <tr>
+          <td v-if="!isMobile">{{ slotProps.row.id }}</td>
           <td v-if="!isMobile">
             {{ date(slotProps.row.dateTime) }}
           </td>
-          <td v-if="!isMobile">{{ slotProps.row.email }}</td>
           <td>{{ slotProps.row.title }}</td>
           <td>{{ slotProps.row.status }}</td>
-
           <td>
             <button class="button button--ghost button--large" @click="$router.push(`/jobs/${slotProps.row.id}`)">
               Show
@@ -46,25 +45,24 @@ export default {
     watchEffect(() => {
       if (!isMobile.value) {
         columns.value = [
+          { width: "30%", label: "Job ID", name: "id", type: "string" },
           {
-            width: "25%",
+            width: "20%",
             label: "Submission Date",
             name: "dateTime",
             type: "date",
           },
-          { width: "30%", label: "Email", name: "email", type: "string" },
+          { width: "30%", label: "Title", name: "title", type: "string" },
+          { width: "10%", label: "Status", name: "status", type: "string" },
 
-          { width: "20%", label: "Title", name: "title", type: "string" },
-          { width: "20%", label: "Status", name: "status", type: "string" },
-
-          { width: "5%", label: "Actions", name: "actions", isSortable: false },
+          { width: "10%", label: "Actions", name: "actions", isSortable: false },
         ];
       } else {
         columns.value = [
-          { width: "50%", label: "Title", name: "title" },
-          { width: "20%", label: "Status", name: "status" },
+          { width: "30%", label: "Title", name: "title" },
+          { width: "30%", label: "Status", name: "status" },
           {
-            width: "30%",
+            width: "40%",
             label: "Actions",
             name: "actions",
             isSortable: false,

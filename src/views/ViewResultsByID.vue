@@ -7,26 +7,33 @@
   <div class="results">
     <div class="widget results__details">
       <h3 class="u-margin-bottom-small">Details</h3>
-      <ul class="results__list">
+      <ul>
         <li v-for="field in resultDataMap" :key="field[1]">
           <b>{{ field[0] }}:</b> {{ field[1] }}
         </li>
       </ul>
-      <p v-if="result.status === 'pending'">Further content will be shown upon successful job completion...</p>
-      <div v-else-if="result.status === 'success'">
-        <h3>Results Download</h3>
-        <div class="results__downloads">
-          <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)"
-            class="button button--primary button--small" type="button">
-            {{ file }}&nbsp;<span>
-              <BaseIcon name="download" />
-            </span>
-          </button>
-        </div>
-      </div>
-      <p class="results__msg" v-else>
+      <p class="u-margin-top-small" v-if="result.status === 'pending'">Further content will be shown upon successful job
+        completion...</p>
+      <p class="results__msg" v-else-if="result.status === 'error'">
         Job finished in error status. No further content is available.
       </p>
+    </div>
+
+    <div class="widget results__notes">
+      <h3 class="u-margin-bottom-small">Notes</h3>
+      <p>{{notes}}</p>
+    </div>
+
+    <div v-if="result.status === 'success'" class="widget results__downloads">
+      <h3 class="u-margin-bottom-small">Downloads</h3>
+      <div class="results__download-buttons-container">
+        <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)" class="button button--primary"
+          type="button">
+          {{ file }}&nbsp;<span>
+            <BaseIcon name="download" />
+          </span>
+        </button>
+      </div>
     </div>
 
     <template v-if="result.status === 'success'">
@@ -246,7 +253,6 @@ export default {
       title: "Title",
       email: "Email",
       label: "Data label",
-      notes: "Notes",
       status: "Status",
       dateTime: "Date Time",
       nControls: "Number of controls",
@@ -263,15 +269,16 @@ export default {
 
     const resultDataMap = new Map();
     Object.entries(props.result).forEach(([key, field]) => {
-      if (field && labelFieldPairs[key]) {
+      if (key !== "notes" && field && labelFieldPairs[key]) {
         let fieldValue = field
         if (Array.isArray(field)) {
           fieldValue = field.join(", ")
         }
         resultDataMap.set(labelFieldPairs[key], fieldValue)
       }
-
     })
+
+    const notes = props.result.notes;
 
     return {
       fileList,
@@ -284,7 +291,8 @@ export default {
       date,
       genesSignatures,
       imageListByCathegory,
-      resultDataMap
+      resultDataMap,
+      notes
     };
   },
 };
@@ -294,6 +302,7 @@ export default {
 .results {
   display: grid;
   grid-template-columns: minmax(min-content, 50rem) 50rem 1fr;
+  grid-template-rows: repeat(4, min-content) repeat(4, 1fr);
   grid-column-gap: 1.2em;
   grid-row-gap: 1.5em;
   margin-top: 1em;
@@ -306,28 +315,34 @@ export default {
     gap: 1.5em;
   }
 
-  &__msg {
-    grid-column: 1 / 2;
-  }
-
   &__details {
     grid-column: 1 / 2;
+    grid-row: 1 / 4;
   }
 
-  &__list {
-    padding: 1em 0;
-  }
+  &__notes {
+    grid-column: 1 / 2;
 
-  &__downloads {
-    padding: 1em 0;
-    display: flex;
-    gap: 1em;
-    flex-wrap: wrap;
+    p {
+      max-height: 30rem;
+      overflow-y: scroll;
+    }
   }
 
   &__genes-signatures {
     grid-column: 2 / 3;
+    grid-row: 1 / 5;
     max-width: 60rem;
+  }
+
+  &__downloads {
+    grid-column: 1 / 3;
+  }
+
+  &__download-buttons-container {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
   }
 
   &__thumbnails {

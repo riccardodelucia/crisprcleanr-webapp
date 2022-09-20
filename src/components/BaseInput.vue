@@ -1,6 +1,6 @@
 <template>
   <div class="input-field">
-    <label class="input-field__label" v-if="label">
+    <label class="input-field__label">
       {{ label }}
       <input class="input" :class="{ 'input--error': error }" :value="modelValue" v-bind="$attrs"
         @input.stop="onInput" />

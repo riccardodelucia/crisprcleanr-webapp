@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <BaseInput @input="updateValue"></BaseInput>
+    <BaseInput v-bind="$attrs" type="text" placeholder="Search for job" :modelValue="modelValue"></BaseInput>
     <BaseIcon name="search" class="search__icon"></BaseIcon>
   </div>
 </template>
@@ -9,7 +9,7 @@
 export default {
   name: "BaseSearchBar",
   props: {
-    value: [String, Number],
+    modelValue: [String, Number],
   },
   methods: {
     updateValue(e) {
@@ -24,13 +24,13 @@ export default {
   position: relative;
 
   input {
-    padding-left: 5rem;
+    padding-right: 5rem;
   }
 
   &__icon {
     color: var(--color-grey-dark);
     position: absolute;
-    left: 1em;
+    right: 1em;
     top: 1.5em;
   }
 }

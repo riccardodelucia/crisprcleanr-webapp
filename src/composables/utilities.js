@@ -8,7 +8,7 @@ export const date = (dateTime) => {
 export const download = function (data, filename) {
   const link = document.createElement("a");
 
-  link.href = window.URL.createObjectURL(new Blob([data]));
+  link.href = window.URL.createObjectURL(data); // data must be instaceof Blob
 
   link.setAttribute("download", filename);
 

@@ -204,13 +204,15 @@
 
 import CcrAPI from "@/api/ccr.js";
 import { download } from "@/composables/utilities.js";
+import store from "@/store";
+
 
 export default {
   title: "CRISPRcleanR",
   name: "ViewCRISPRcleanRHome",
   methods: {
     downloadSampleData() {
-      const filename = "HT-29@KY_Library_v1.0.tsv";
+      const filename = "CRISPRcleanR_WebApp_example_files.zip";
       return CcrAPI.getStaticResource(filename).then((response) => {
         download(response.data, filename);
       }).catch((error) => {

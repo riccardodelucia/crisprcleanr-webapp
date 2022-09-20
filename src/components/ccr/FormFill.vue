@@ -227,7 +227,7 @@ export default {
       return formDataMap;
     }
 
-    const normalizationOptions = reactive([{ method: "CPM", label: "Counts Per Million" }, { method: "MedRatios", label: "Median Ratios" }])
+    const normalizationOptions = reactive([{ method: "CPM", label: "Scaling By Total Numbers Of Reads" }, { method: "MedRatios", label: "Median Ratios" }])
 
     const normalization = ref(normalizationOptions[0])
 

@@ -1,5 +1,4 @@
 import axios from "axios";
-import NProgress from "nprogress";
 import lodash from "lodash-es";
 import deepdash from "deepdash-es";
 import camelize from "camelize";
@@ -117,6 +116,6 @@ export default {
       path: window.location.pathname,
       auth: false,
     });
-    return instance.get(`/static/${resource}`);
+    return instance.get(`/static/${resource}`, { responseType: "blob" });
   },
 };
