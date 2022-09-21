@@ -80,7 +80,9 @@
       <p class="disclaimer">
         <b style="color: red">Disclaimer:</b><br />
         CRISPRclearR WebApp is in a beta-testing phase. For any info and bug report please contact the
-        <a href="mailto: info_ioriolab@fht.org">Iorio Lab</a>
+        <a href="mailto: info_ioriolab@fht.org">Iorio Lab</a>.
+        If you are a reviewer of the CRISPRcleanR WebApp manuscript, you will find your access credentials in the cover
+        letter of our submission.
       </p>
     </div>
     <img src="@/assets/img/login.png" alt="login form" />
