@@ -227,7 +227,7 @@ export default {
       return formDataMap;
     }
 
-    const normalizationOptions = reactive([{ method: "CPM", label: "Scaling By Total Numbers Of Reads" }, { method: "MedRatios", label: "Median Ratios" }])
+    const normalizationOptions = reactive([{ method: "ScalingByTotalReads", label: "Scaling By Total Numbers Of Reads" }, { method: "MedRatios", label: "Median Ratios" }])
 
     const normalization = ref(normalizationOptions[0])
 
@@ -235,7 +235,7 @@ export default {
       send("INPUT", { payload: normalization.value?.method, field: "method" });
     }, { immediate: true })
 
-    const libraryOptions = reactive([{ library: "AVANA_Library", label: "AVANA" }, { library: "Brunello_Library", label: "Brunello" }, { library: "GeCKO_Library_v2", label: "GeCKO" }, { library: "KY_Library_v1.1", label: "KY v1.1" }, { library: "MiniLibCas9_Library", label: "MiniLibCas9" }, { library: "Whitehead_Library", label: "Whitehead" }])
+    const libraryOptions = reactive([{ library: "AVANA_Library", label: "AVANA" }, { library: "Brunello_Library", label: "Brunello" }, { library: "GeCKO_Library_v2", label: "GeCKO" }, { library: "KY_Library_v1.0", label: "KY v1.0" }, { library: "KY_Library_v1.1", label: "KY v1.1" }, { library: "MiniLibCas9_Library", label: "MiniLibCas9" }, { library: "Whitehead_Library", label: "Whitehead" }])
     const libraryBuiltin = ref(null)
 
     watch(libraryBuiltin, () => {
