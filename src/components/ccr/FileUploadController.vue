@@ -7,7 +7,7 @@
       <span>{{ filename }}</span>
     </div>
     <span v-if="state.matches('uploading') || state.matches('uploaded')" class="upload-controller__percentage">{{
-        state.context.percentage
+    state.context.percentage
     }}%</span>
     <BaseIcon v-if="state.matches('uploading')" class="upload-controller__icon upload-controller__icon--delete"
       name="trash-2" width="20px" height="20px" @click="abort">
@@ -42,12 +42,12 @@ export default {
   },
   setup(props) {
     const store = useStore();
-    const { file, id, jobId, filename } = props.upload
+    const { file, fileId, jobId: uploadId, filename } = props.upload
     const { state, send } = useMachine(uploadFileMachine, {
       context: {
         file,
-        jobId,
-        id
+        uploadId,
+        fileId
       },
     });
 

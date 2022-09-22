@@ -29,43 +29,44 @@ const createInstance = () => {
   };
 };
 
-const getInstance = (id) => {
-  const authInstance = createInstance();
-  authInstances.set(id, authInstance);
-  return authInstance.instance;
+const getInstance = (uploadId) => {
+  let instance = authInstances.get(uploadId);
+  if (instance && !instance.controller.aborted) return instance.instance;
+  instance = createInstance();
+  authInstances.set(uploadId, instance);
+  return instance.instance;
 };
 
 export default {
-  abortAndDeleteRequest(id) {
-    const authInstance = authInstances.get(id);
+  abortAndDeleteRequest(uploadId) {
+    const authInstance = authInstances.get(uploadId);
     if (authInstance && !authInstance.controller.aborted) {
       authInstance.controller.abort();
-      authInstances.delete(id);
+      authInstances.delete(uploadId);
     }
   },
   uploadFile({
     file,
-    id,
-    jobId,
+    uploadId,
+    fileId,
     progressCallback,
     uploadedCallback,
     errorCallback,
   }) {
     const formData = new FormData();
     formData.append("file", file, file.name);
-    formData.append("jobId", jobId);
-    formData.append("id", id);
 
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
         "Content-Range": `bytes=0-${file.size}/${file.size}`,
-        "X-Upload-Id": jobId,
+        "X-Upload-Id": uploadId,
+        "X-File-Id": fileId,
       },
       onUploadProgress: progressCallback,
     };
 
-    const instance = getInstance(id);
+    const instance = getInstance(uploadId); // this links all job's uploads with a single abort controller
 
     return instance
       .post(`upload/`, formData, config)

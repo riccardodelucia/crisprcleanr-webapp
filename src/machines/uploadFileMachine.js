@@ -4,7 +4,7 @@ import uploadAPI from "@/api/upload.js";
 ////////////////////////////////////////////////////////////////
 // SERVICES
 const uploadFile =
-  ({ file, id, jobId }, event) =>
+  ({ file, fileId, uploadId }, event) =>
   (callback) => {
     const progressCallback = (progress) =>
       callback({
@@ -24,8 +24,8 @@ const uploadFile =
 
     uploadAPI.uploadFile({
       file,
-      id,
-      jobId,
+      fileId,
+      uploadId,
       progressCallback,
       uploadedCallback,
       errorCallback,
@@ -52,8 +52,8 @@ const assignProgress100 = assign({
   percentage: () => 100,
 });
 
-const abortUpload = (context, event) =>
-  uploadAPI.abortAndDeleteRequest(context.id);
+const abortUpload = ({ uploadId }, event) =>
+  uploadAPI.abortAndDeleteRequest(uploadId);
 
 ////////////////////////////////////////////////////////////////
 // GUARDS
@@ -65,9 +65,8 @@ const abortUpload = (context, event) =>
 export default createMachine({
   context: {
     file: null,
-    id: "",
-    filename: "",
-    jobId: "",
+    fileId: "",
+    uploadId: "",
     totalFileBytesUploaded: 0,
     percentage: 0,
   },

@@ -1,16 +1,13 @@
 export const namespaced = true;
 export const state = {
-  uploads: [
-    /*  { jobId: "1234abcd", file: {}, startByte: 0 },
-    { jobId: "1234abcde", file: {}, startByte: 0 }, */
-  ],
+  uploads: [],
 };
 
 let nextId = 1;
 
 export const mutations = {
-  PUSH(state, file) {
-    state.uploads.push({ ...file, storeItemId: nextId++ });
+  PUSH(state, upload) {
+    state.uploads.push({ ...upload, storeItemId: nextId++ });
   },
   DELETE(state, uploadToRemove) {
     state.uploads = state.uploads.filter(
@@ -22,8 +19,8 @@ export const mutations = {
 export const getters = {};
 
 export const actions = {
-  add({ commit }, file) {
-    commit("PUSH", file);
+  add({ commit }, upload) {
+    commit("PUSH", upload);
   },
   remove({ commit }, upload) {
     commit("DELETE", upload);
