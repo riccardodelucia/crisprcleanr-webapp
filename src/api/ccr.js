@@ -4,6 +4,7 @@ import deepdash from "deepdash-es";
 import camelize from "camelize";
 import getEnv from "@/utils/env";
 import { authorize } from "@/authentication";
+import NProgress from "nprogress";
 
 const _ = deepdash(lodash);
 
@@ -20,6 +21,16 @@ const createInstance = (auth = false) => {
     signal: controller.signal,
     baseURL,
     timeout: connectionTimeout,
+  });
+
+  instance.interceptors.request.use(function (config) {
+    NProgress.start();
+    return config;
+  });
+
+  instance.interceptors.response.use(function (config) {
+    NProgress.done();
+    return config;
   });
 
   instance.interceptors.response.use(function (response) {
