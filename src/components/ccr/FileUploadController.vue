@@ -20,8 +20,19 @@
         class="upload-controller__progress-bar-container">
         <div class="upload-controller__progress-bar" :style="{ width: state.context.percentage + '%' }"></div>
       </div>
-      <span class="upload-controller__status-message" v-else-if="state.matches('error')">Upload error</span>
-      <span v-else-if="state.matches('aborted')" class="upload-controller__status-message">Upload canceled</span>
+
+
+
+
+      <!-- <div v-else-if="state.matches('uploaded')" class="upload-controller__progress-bar-container">
+        <span class="upload-controller__status-message">Click on the <BaseIcon name="x-circle" width="10px"
+            height="10px">
+          </BaseIcon> button</span>
+      </div> -->
+      <span class="upload-controller__status-message" v-else-if="state.matches('error')">
+        {{state.context.errorMessage}}</span>
+      <span v-else-if="state.matches('aborted')"
+        class="upload-controller__status-message">{{state.context.errorMessage}}</span>
     </div>
   </div>
 </template>

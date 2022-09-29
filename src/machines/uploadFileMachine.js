@@ -17,9 +17,10 @@ const uploadFile =
         type: "UPLOADED",
       });
 
-    const errorCallback = () =>
+    const errorCallback = (error) =>
       callback({
         type: "ERROR",
+        payload: { error },
       });
 
     uploadAPI.uploadFile({
@@ -52,6 +53,15 @@ const assignProgress100 = assign({
   percentage: () => 100,
 });
 
+const assignErrorMessage = assign({
+  errorMessage: (context, event) =>
+    event.payload.error?.message || "Upload error",
+});
+
+const assignAbortMessage = assign({
+  errorMessage: () => "canceled",
+});
+
 const abortUpload = ({ uploadId }, event) =>
   uploadAPI.abortAndDeleteRequest(uploadId);
 
@@ -69,6 +79,7 @@ export default createMachine({
     uploadId: "",
     totalFileBytesUploaded: 0,
     percentage: 0,
+    errorMessage: "", //filled only if an error occurs during the upload
   },
   initial: "uploading",
   states: {
@@ -84,7 +95,10 @@ export default createMachine({
           //cond: "warnAbort",
           actions: ["abortUpload"],
         },
-        ERROR: { target: "error" },
+        ERROR: {
+          target: "error",
+          actions: [(context, event) => console.log(event)],
+        },
         UPLOADED: {
           target: "uploaded",
         },
@@ -93,11 +107,11 @@ export default createMachine({
     uploaded: { type: "final", entry: ["assignProgress100"] },
     aborted: {
       type: "final",
-      entry: [() => console.log("upload aborted")],
+      entry: [assignAbortMessage],
     },
     error: {
       type: "final",
-      entry: [() => console.log("upload error")],
+      entry: [assignErrorMessage],
     },
     idle: {
       on: {
@@ -111,6 +125,12 @@ export default createMachine({
   services: {
     uploadFile,
   },
-  actions: { assignProgress, assignProgress100, abortUpload },
+  actions: {
+    assignProgress,
+    assignProgress100,
+    assignErrorMessage,
+    assignAbortMessage,
+    abortUpload,
+  },
   //guards: { warnAbort },
 });
