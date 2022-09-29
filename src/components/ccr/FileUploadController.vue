@@ -16,12 +16,17 @@
       height="20px" @click="removeUpload">
     </BaseIcon>
     <div class="upload-controller__status">
-      <div v-if="state.matches('uploading') || state.matches('uploaded')"
-        class="upload-controller__progress-bar-container">
+      <div v-if="state.matches('uploading')" class="upload-controller__progress-bar-container">
         <div class="upload-controller__progress-bar" :style="{ width: state.context.percentage + '%' }"></div>
       </div>
-      <span class="upload-controller__status-message" v-else-if="state.matches('error')">Upload error</span>
-      <span v-else-if="state.matches('aborted')" class="upload-controller__status-message">Upload canceled</span>
+      <div v-else-if="state.matches('uploaded')" class="upload-controller__uploaded-msg-container">
+        <span class="upload-controller__status-message">Uploaded. Click &nbsp;</span>
+        <BaseIcon name="x-circle" width="10px" height="10px">
+        </BaseIcon>
+        <span class="upload-controller__status-message"> &nbsp; to close</span>
+      </div>
+      <span v-else-if="state.matches('aborted') || state.matches('error')"
+        class="upload-controller__status-message">{{state.context.errorMessage}}</span>
     </div>
   </div>
 </template>
@@ -109,8 +114,6 @@ export default {
     }
   }
 
-
-
   &__file {
     grid-column: 1/ 2;
     white-space: nowrap;
@@ -146,6 +149,11 @@ export default {
     background-color: rgb(2, 212, 2);
     height: 5px;
     transition: width .2s ease-in-out;
+  }
+
+  &__uploaded-msg-container {
+    display: flex;
+    align-items: center;
   }
 }
 </style>

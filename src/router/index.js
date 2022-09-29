@@ -16,20 +16,19 @@ import ViewMessagePage from "@/views/ViewMessagePage.vue";
 
 import CcrAPI from "@/api/ccr.js";
 import getEnv from "@/utils/env";
-import NProgress from "nprogress";
 import store from "../store";
 
 const dashboardURL = getEnv("VUE_APP_URL_GROUPS_DASHBOARDS");
 
-const manageRouteError = (from, error, message) => {
-  if (error?.response?.status === 404) return "/inexistent-address"; //this translates into catchAll route
-  store.dispatch("notification/add", {
-    type: "error",
-    title: "Something went wrong... 💥",
+const manageRouteError = (from, error, title) => {
+  debugger;
+  if (error?.response?.status === 404) return "/404"; //this translates into catchAll route
+  const message = error?.message;
+  store.dispatch("notification/sendErrorNotification", {
+    title,
     message,
-    timeout: 5,
   });
-  NProgress.done();
+  // when this is the first page visited on the app (e.g. copying the URL in the browser bar)
   if (from.name !== undefined) return false;
   return { name: "home" };
 };
@@ -153,12 +152,12 @@ export const getRouter = function () {
   });
 
   router.beforeEach((to, from) => {
-    NProgress.start();
+    store.dispatch("progressBar/increase");
     CcrAPI.abortAndDeleteAllRequests(from.fullPath);
   });
 
   router.afterEach(() => {
-    NProgress.done();
+    store.dispatch("progressBar/decrease");
   });
 
   return router;

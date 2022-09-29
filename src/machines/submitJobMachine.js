@@ -377,10 +377,9 @@ const compileFormData = assign((context, event) => {
 });
 
 const sendErrorNotification = (_, event) => {
-  store.dispatch("notification/add", {
-    type: "error",
-    title: "Submission Error",
-    message: event.data.message,
+  store.dispatch("notification/sendErrorNotification", {
+    title: "Job Submission Error",
+    message: event?.data?.message,
   });
 };
 
@@ -392,8 +391,7 @@ const sendSuccessNotification = (
     },
   }
 ) => {
-  store.dispatch("notification/add", {
-    type: "success",
+  store.dispatch("notification/sendSuccessNotification", {
     title: "Job Submitted",
     message: `Job ID: ${jobId}`,
   });
