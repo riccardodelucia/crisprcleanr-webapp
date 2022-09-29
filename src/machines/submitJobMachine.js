@@ -391,8 +391,7 @@ const sendSuccessNotification = (
     },
   }
 ) => {
-  store.dispatch("notification/add", {
-    type: "success",
+  store.dispatch("notification/sendSuccessNotification", {
     title: "Job Submitted",
     message: `Job ID: ${jobId}`,
   });

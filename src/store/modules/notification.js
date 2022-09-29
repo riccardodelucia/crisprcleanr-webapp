@@ -53,11 +53,16 @@ export const actions = {
     };
     dispatch("add", notification);
   },
-  sendNotification: (
+  sendSuccessNotification: (
     { dispatch },
-    { type = "success", title = "", message = "", timeout = 0 }
+    { title = "Success!", message = "Successful request", timeout = 0 }
   ) => {
-    const notification = { type, title, message, timeout: timeout * 1000 };
+    const notification = {
+      type: "success",
+      title,
+      message,
+      timeout: timeout * 1000,
+    };
     dispatch("add", notification);
   },
 };
