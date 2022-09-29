@@ -25,12 +25,10 @@ const createInstance = (auth = false) => {
 
   instance.interceptors.request.use(
     function (config) {
-      //debugger;
       store.dispatch("progressBar/increase");
       return config;
     },
     function () {
-      //debugger;
       store.dispatch("progressBar/decrease");
       return Promise.reject(error);
     }
@@ -38,12 +36,10 @@ const createInstance = (auth = false) => {
 
   instance.interceptors.response.use(
     function (config) {
-      //debugger;
       store.dispatch("progressBar/decrease");
       return config;
     },
     function (error) {
-      //debugger;
       store.dispatch("progressBar/decrease");
       return Promise.reject(error);
     }
