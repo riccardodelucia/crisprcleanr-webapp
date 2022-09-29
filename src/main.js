@@ -7,13 +7,13 @@ import camelCase from "lodash/camelCase";
 import "@/assets/scss/main.scss";
 import "@/assets/scss/vendor/nprogress.scss";
 
-import NProgress from "nprogress";
+import nProgress from "nprogress";
 
 import { initializeAppWithAuth } from "@/authentication.js";
 
 import "tippy.js/dist/tippy.css"; // optional for styling
 
-NProgress.configure({ showSpinner: false });
+nProgress.configure({ showSpinner: false });
 
 initializeAppWithAuth().then(({ router, authentication }) => {
   const app = createApp(App).use(store).use(router).use(authentication);

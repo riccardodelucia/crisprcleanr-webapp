@@ -4,7 +4,7 @@ import deepdash from "deepdash-es";
 import camelize from "camelize";
 import getEnv from "@/utils/env";
 import { authorize } from "@/authentication";
-import NProgress from "nprogress";
+import store from "@/store";
 
 const _ = deepdash(lodash);
 
@@ -23,15 +23,31 @@ const createInstance = (auth = false) => {
     timeout: connectionTimeout,
   });
 
-  instance.interceptors.request.use(function (config) {
-    NProgress.start();
-    return config;
-  });
+  instance.interceptors.request.use(
+    function (config) {
+      //debugger;
+      store.dispatch("progressBar/increase");
+      return config;
+    },
+    function () {
+      //debugger;
+      store.dispatch("progressBar/decrease");
+      return Promise.reject(error);
+    }
+  );
 
-  instance.interceptors.response.use(function (config) {
-    NProgress.done();
-    return config;
-  });
+  instance.interceptors.response.use(
+    function (config) {
+      //debugger;
+      store.dispatch("progressBar/decrease");
+      return config;
+    },
+    function (error) {
+      //debugger;
+      store.dispatch("progressBar/decrease");
+      return Promise.reject(error);
+    }
+  );
 
   instance.interceptors.response.use(function (response) {
     // if this is a multipart file response, there is nothing to camelize
