@@ -21,7 +21,6 @@ import store from "../store";
 const dashboardURL = getEnv("VUE_APP_URL_GROUPS_DASHBOARDS");
 
 const manageRouteError = (from, error, title) => {
-  debugger;
   if (error?.response?.status === 404) return "/404"; //this translates into catchAll route
   const message = error?.message;
   store.dispatch("notification/sendErrorNotification", {

@@ -1,6 +1,6 @@
 <template>
-  <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')" width="100%" height="100%"
-    @mouseover="onMouseOver" @mousemove="onMouseOver" @mouseleave="onMouseLeave">
+  <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')" @mouseover="onMouseOver"
+    @mousemove="onMouseOver" @mouseleave="onMouseLeave" width="100%" height="100%">
     <g ref="chart" :transform="`translate(${margin.left}, ${margin.top})`">
       <D3Axis :scale="yScale" position="left" />
       <text :transform="`translate(${-yAxisLabelOffset}, ${
