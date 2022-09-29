@@ -114,8 +114,6 @@ export default {
     }
   }
 
-
-
   &__file {
     grid-column: 1/ 2;
     white-space: nowrap;

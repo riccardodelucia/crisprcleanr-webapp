@@ -165,11 +165,10 @@ export default {
           genesSignatures.value = response.data;
         }
       ).catch((err) => {
-        store.dispatch("notification/add", {
-          type: "error",
-          title: "Something went wrong... 💥",
-          message: "Unable to get Genes Signatures Data from server",
-          timeout: 5
+        const message = err?.message
+        store.dispatch("notification/sendErrorNotification", {
+          title: "Unable to donwload genes signatures data",
+          message
         });
         genesSignatures.value = "error"
       });
@@ -217,11 +216,10 @@ export default {
         image.value = img;
         modalState.value = "opened";
       }).catch((err) => {
-        store.dispatch("notification/add", {
-          type: "error",
-          title: "Something went wrong... 💥",
-          message: `Unable to open chart ${img.chart}`,
-          timeout: 5
+        const message = err?.message
+        store.dispatch("notification/sendErrorNotification", {
+          title: `Unable to open chart ${img.chart}`,
+          message,
         });
         closeModal()
       });
@@ -238,12 +236,11 @@ export default {
         .then((response) => {
           download(response.data, file);
         })
-        .catch((err) => {
-          store.dispatch("notification/add", {
-            type: "error",
-            title: "Something went wrong... 💥",
-            message: `Unable to download file ${file}`,
-            timeout: 5
+        .catch((error) => {
+          const message = error?.message
+          store.dispatch("notification/sendErrorNotification", {
+            title: `Unable to download file ${file}`,
+            message
           });
         });
     };

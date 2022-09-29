@@ -26,11 +26,9 @@ keycloak.onAuthSuccess = function () {
     })
     .catch((error) => {
       store.commit("user/SET_USER", {});
-      store.dispatch("notification/add", {
-        type: "error",
+      store.dispatch("notification/sendErrorNotification", {
         title: "Unable to log in",
         message: error?.message,
-        timeout: 5,
       });
     });
 };
