@@ -97,7 +97,6 @@ export default createMachine({
         },
         ERROR: {
           target: "error",
-          actions: [(context, event) => console.log(event)],
         },
         UPLOADED: {
           target: "uploaded",
@@ -107,11 +106,11 @@ export default createMachine({
     uploaded: { type: "final", entry: ["assignProgress100"] },
     aborted: {
       type: "final",
-      entry: [assignAbortMessage],
+      entry: ["assignAbortMessage"],
     },
     error: {
       type: "final",
-      entry: [assignErrorMessage],
+      entry: ["assignErrorMessage"],
     },
     idle: {
       on: {

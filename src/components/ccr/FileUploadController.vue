@@ -25,7 +25,7 @@
         </BaseIcon>
         <span class="upload-controller__status-message"> &nbsp; to close</span>
       </div>
-      <span v-else-if="state.matches('aborted')"
+      <span v-else-if="state.matches('aborted') || state.matches('error')"
         class="upload-controller__status-message">{{state.context.errorMessage}}</span>
     </div>
   </div>
