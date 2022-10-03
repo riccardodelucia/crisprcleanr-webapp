@@ -5,8 +5,8 @@
 
       <h1 class="hero__title">Welcome to CRISPRcleanR Web App (Beta)</h1>
       <p class="hero__text">
-        CRISPRcleanR is a tool for the unsupervised correction of
-        gene-independent effects in CRISPR knockout screens encompassing
+        CRISPRcleanR WebApp is an interactive, user-friendly web application to CRISPRcleanR: a tool for the
+        unsupervised correction of gene-independent effects in CRISPR knockout screens encompassing
         pre-processing and normalization of single-guide RNA counts,
         pre/post-correction quality-control assessment and interactive
         visualizations.
@@ -21,7 +21,7 @@
         </button>
         <button class="button button--ghost button--large hero__button--download" type="button"
           @click="downloadSampleData">
-          Download Example Files
+          Example Input Files
         </button>
       </div>
     </div>
@@ -72,7 +72,7 @@
     <div class="section-security__promo">
       <h2>Your data in a secure place 🔐</h2>
       <p>
-        Your data <b>privacy</b> is very important to us. To use CRISPRcleanR Web App you need to create a user account
+        Your data <b>privacy</b> is very important to us. To use CRISPRcleanR WebApp you need to create a user account
         and
         login. All the data you upload and submit and related results are <b>protected</b> and accessible to
         <b>you only</b>.
@@ -101,27 +101,28 @@
         possibility of processing data generated with <b>any library</b> (by uploading the corresponding <b>annotation
           file</b>).
         Experimental CRISPR data can be provided either as <b>FASTQ/BAM files</b> or <b>pre-computed counts file</b>.
-        Submitted jobs are available from the <router-link to="/submit">results section
-        </router-link>. For each job, a <b>dedicated result page</b> is made available, where you can <b>download</b>
+        Submitted jobs are available from the <router-link to="/submit">results section</router-link>.
+        For each job, a <b>dedicated result page</b> is made available, where you can <b>download</b>
         all job-related data, together
         with static plots.
         Finally, a comprehensive set of <b>interactive charts</b> allows you to get insight over the outcome of your
         processed
         data.
       </p>
-      <p>To start using CRISPRcleanR, follow along the videos provided in the following <b>step sections</b></p>.
-      <p><b>Example data</b> can be <b>downloaded</b> from the current page and used to <b>submit test jobs</b>. A
+      <p>To start using CRISPRcleanR, follow along the videos provided in the following <b>step sections</b>.</p>
+      <p><b>Example input files</b> can be <b>downloaded</b> from the current page and used to <b>submit test jobs</b>.
+        A
         <b>README file</b> included in
-        the example data allows you to better understand <b>accepted file formats and inner structure</b>
+        the example data allows you to better understand <b>accepted file formats and their inner structure</b>
       </p>
     </div>
-    <img src="@/assets/img/excel.png" alt="excel sheet" />
+    <img src="@/assets/img/multistep-form.png" alt="Multistep form" />
     <BaseAccordion class="section-howitworks__accordion">
       <template v-slot:title>Step 1️⃣ : submit your job</template>
       <template v-slot:content>
         <div class="text-small">
           <p>
-            Check out this tutorial to know:
+            Check out this tutorial to learn:
           </p>
           <ul class="u-margin-bottom-medium">
             <li>how to <b>sign in/register</b> to CRISPRcleanR Web App</li>
@@ -140,7 +141,7 @@
       <template v-slot:content>
         <div class="text-small">
           <p>
-            Check out this tutorial to know:
+            Check out this tutorial to learn:
           </p>
           <ul class="u-margin-bottom-medium">
             <li>how to access the <b>Results Section</b></li>
@@ -158,7 +159,7 @@
       <template v-slot:content>
         <div class="text-small">
           <p>
-            Check out this tutorial to know:
+            Check out this tutorial to learn:
           </p>
           <ul class="u-margin-bottom-medium">
             <li>how to <b>explore your results</b> through a range of <b>interactive plots</b> provided by CRISPRcleanR
@@ -188,8 +189,8 @@
             Each chart comes with its own sets of <b>controls</b>. For instance,
             you can find <b>sliders</b> and <b>checkboxes</b> to control general
             layout settings. Many charts come with a <b>minified version</b> of the chart
-            (called )<b>context area</b>) used to <b>zoom</b> in a specific area of the
-            chart. Within the context/ mingraph, click outside of the selected
+            (called <b>context area</b>) used to <b>zoom</b> in a specific area of the
+            chart. Within the context/minigraph, click outside of the selected
             area to reset to full view.
           </p>
 
@@ -425,11 +426,17 @@ export default {
   }
 
   img {
-    width: 100%;
+    width: 60%;
     grid-row: 1 / -1;
     grid-column: 1 / 2;
+    box-shadow: var(--shadow-1);
+
+    @media only screen and (max-width: 880px) {
+      width: 100%;
+    }
 
     @media only screen and (max-width: 700px) {
+      width: 100%;
       grid-column: 1 / -1;
       grid-row: 3 / 4;
     }

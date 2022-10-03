@@ -206,7 +206,7 @@ export default {
       normMinReads: "Min number of reads in the control sample",
       method: "Normalization Method",
       libraryBuiltin: "Built-in Library",
-      libraryFile: "External Library File",
+      libraryFile: "Library Annotation File",
       fileCounts: "sgRNA Counts File",
       nControls: "Number of controls",
       filesFASTQcontrols: "FASTQ Controls",
@@ -242,7 +242,7 @@ export default {
       send("INPUT", { payload: libraryBuiltin.value?.library, field: "libraryBuiltin" });
     }, { immediate: true })
 
-    const libraryTypeArray = [{ option: 'Built-in', event: "LIBRARY.BUILTIN" }, { option: 'Library Annotation File', event: "LIBRARY.FILE" }];
+    const libraryTypeArray = [{ option: 'Built-in', event: "LIBRARY.BUILTIN" }, { option: 'Other Library', event: "LIBRARY.FILE" }];
     const libraryTypeOptions = libraryTypeArray.map(item => item.option)
     const libraryType = ref("Built-in")
 
