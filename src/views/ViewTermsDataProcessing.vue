@@ -1,6 +1,6 @@
 <template>
   <div class="terms">
-    <h1 class="terms__title">CRISPRcleanR Web-App (Beta)</h1>
+    <h1 class="terms__title">CRISPRcleanR WebApp (Beta)</h1>
     <h2 class="terms__subtitle">
       Information on the processing of personal data pursuant to Article 13 of
       Regulation (EU) 2016/679 of the European Parliament and of the Council
@@ -9,15 +9,15 @@
     <p>
       <b>Human Technopole Foundation</b>, with registered offices in Viale Rita
       Levi-Montalcini 1, 20157, Milano (MI), Italia, Tel. +39/02 30247001,
-      e-mail: gdpr@fht.org (hereinafter, also “<b>HT</b>” or “<b>Foundation</b>”
+      e-mail: <a href="mailto:dpo@fht.org">dpo@fht.org.</a> (hereinafter, also “<b>HT</b>” or “<b>Foundation</b>”
       or “<b>Data Controller</b>”), makes available to all interested users
       (hereinafter, also “<b>Users</b>” and, individually “<b>User</b>” or “<b>Data subjects</b>” and, individually
-      “<b>Data subject</b>”), a Web-App, named
+      “<b>Data subject</b>”), a WebApp, named
       “CRISPRcleanR Web App (Beta)”, aimed at allowing users, free of charge,
       the unsupervised correction of gene-independent effects in CRISPR knockout
       screens encompassing pre-processing and normalization of single-guide RNA
       counts, pre/post-correction quality-control assessment and interactive
-      visualizations (hereinafter, also “<b>Web-App</b>”).
+      visualizations (hereinafter, also “<b>WebApp</b>”).
     </p>
 
     <p>
@@ -26,7 +26,7 @@
       pursuant to articles 13 of Regulation (EU) 2016/679 (hereinafter, also
       "GDPR") and of Legislative Decree 196/2003, as amended by Legislative
       Decree 101/2018 (hereinafter, "<b>Privacy Code</b>"), to the data subjects
-      whose personal data are processed within the Web-App.
+      whose personal data are processed within the WebApp.
     </p>
 
     <p>
@@ -48,7 +48,7 @@
       Purposes and legal basis of the data processing
     </h3>
     <p>
-      The Web-App allows the user to access to a Reserved Area by entering his
+      The WebApp allows the user to access to a Reserved Area by entering his
       username and password.
     </p>
     <p>
@@ -58,15 +58,15 @@
     <ul>
       <li class="terms__list-item">
         submit his job with the experiment metadata and details (clicking on the
-        button “Submit New Job”);
+        button “Submit”);
       </li>
       <li class="terms__list-item">
         identify and access his results (clicking on the button “Results”).
       </li>
     </ul>
     <p>
-      When the user submits his job, he can optionally enter his personal
-      e-mail.
+      When the user submits his job, he can
+      optionally choose to receive job's results at his registered e-mail address.
     </p>
     <p>
       Personal data are processed by HT exclusively to offer a service to the
@@ -91,7 +91,7 @@
       <li class="terms__list-item">
         Authentication credentials (username and related password);
       </li>
-      <li class="terms__list-item">E-mail address (which is optional).</li>
+      <li class="terms__list-item">E-mail address.</li>
     </ul>
     <p>
       HT processes the data to provide to the data subject the authenticated

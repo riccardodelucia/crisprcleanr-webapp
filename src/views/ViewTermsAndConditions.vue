@@ -1,6 +1,6 @@
 <template>
   <div class="terms">
-    <h1 class="terms__title">CRISPRcleanR Web-App (Beta)</h1>
+    <h1 class="terms__title">CRISPRcleanR WebApp (Beta)</h1>
     <h2 class="terms__subtitle">Terms and Conditions</h2>
 
     <p>
@@ -9,84 +9,69 @@
       e-mail: <a href="mailto:gdpr@fht.org">gdpr@fht.org</a> (hereinafter, also
       “<b>HT</b>” or “<b>Foundation</b>”), makes available to all interested
       users (hereinafter, also “<b>Users</b>” and, individually “<b>User</b>”),
-      a Web-App, named “CRISPRcleanR WebApp (Beta version)”, aimed at allowing
+      a WebApp, named “CRISPRcleanR WebApp (Beta version)”, aimed at allowing
       users, free of charge, the unsupervised correction of gene-independent
       effects observed in “CRISPR” knockout screens, encompassing pre-processing
       and normalization of single-guide RNA counts, pre/post-correction
       quality-control assessment and interactive visualizations (hereinafter,
-      also “<b>Web-App</b>”).
+      also “<b>WebApp</b>”).
     </p>
     <p>
       This document contains the general terms and conditions governing the
       relationship between HT and the users (hereinafter, also "<b>Terms and Conditions</b>" or "<b>T&C</b>"), within
-      the scope of the Web-App's functionalities.
+      the scope of the WebApp's functionalities.
     </p>
     <p>
-      Access to the Reserved Area of the Web-App is subject to acceptance of
+      Access to the Reserved Area of the WebApp is subject to acceptance of
       this document.
     </p>
 
     <h3 class="terms__article">
-      Art. 1<br />(Granting of the license for the use of the Web-App)
+      Art. 1<br />(Granting of the license for the use of the WebApp)
     </h3>
     <ol class="terms__list">
       <li class="terms__list-item">
-        HT grants users the license to use the Web-App in its “Beta version”,
+        HT grants users the license to use the WebApp in its “Beta version”,
         considering that it is still in an experimental phase, on a
         non-exclusive, non-transferable, revocable, royalty-free, indefinite
         basis, and, in any case, in compliance with the provisions of this
         document.
       </li>
       <li class="terms__list-item">
-        The license related to the use of the Web-App is granted only to
+        The license related to the use of the WebApp is granted only to
         non-commercial entities and for non-commercial uses.
       </li>
       <li class="terms__list-item">
-        The use of the Web-App for commercial purposes, it will be necessary to
-        draw up a specific contract.
-      </li>
-      <li class="terms__list-item">
-        HT grants users the license to use the Web-App in its “Beta version”,
-        considering that it is still in an experimental phase, on a
-        non-exclusive, non-transferable, revocable, royalty-free, indefinite
-        basis, and, in any case, in compliance with the provisions of this
-        document.
-      </li>
-      <li class="terms__list-item">
-        The license related to the use of the Web-App is granted only to
-        non-commercial entities and for non-commercial uses.
-      </li>
-      <li class="terms__list-item">
-        The use of the Web-App for commercial purposes, it will be necessary to
+        For the use of the WebApp for commercial purposes, it will be necessary to
         draw up a specific contract.
       </li>
     </ol>
 
     <h3 class="terms__article">
-      Art. 2<br />(Access to the reserved area of the Web-App)
+      Art. 2<br />(Access to the reserved area of the WebApp)
     </h3>
     <ol class="terms__list">
       <li class="terms__list-item">
-        In order to take advantage of the features offered by the Web-App, users
+        In order to take advantage of the features offered by the WebApp, users
         need to access a reserved area, for whose access they must enter a
         username and related password.
       </li>
       <li class="terms__list-item">
         Users undertake to diligently keep the access credentials, so as not to
-        allow third parties to access the Web-App itself.
+        allow third parties to access the WebApp itself.
       </li>
     </ol>
 
     <h3 class="terms__article">
-      Art. 3<br />(Use of the reserved area of the Web-App)
+      Art. 3<br />(Use of the reserved area of the WebApp)
     </h3>
     <ol class="terms__list">
       <li class="terms__list-item">
         Users who access the Reserved Area will be able to:
         <ul class="terms__list terms__list--indent">
           <li class="terms__list-item">
-            submit their job with the experiment metadata and details (clicking
-            on the button “Submit New Job”);
+            submit their jobs with the experiment metadata and details (clicking
+            on the button “Submit”);
           </li>
           <li class="terms__list-item">
             identify and access the results (clicking on the button “Results”).
@@ -94,49 +79,49 @@
         </ul>
       </li>
       <li class="terms__list-item">
-        In the Reserved Area, choosing the option “Submit New Job”, users can
-        optionally insert their e-mail address.
+        In the Reserved Area, when the user submits his job, he can
+        optionally choose to receive job's results at his registered e-mail address.
       </li>
     </ol>
 
     <h3 class="terms__article">Art. 4<br />(Obligation of the users)</h3>
     <ol class="terms__list">
       <li class="terms__list-item">
-        For the purposes of using the Web-App, users guarantee compliance with
+        For the purposes of using the WebApp, users guarantee compliance with
         these T&C and current legislation.
       </li>
       <li class="terms__list-item">
-        In using the Web-App, users must refrain from:
+        In using the WebApp, users must refrain from:
         <ul class="terms__list terms__list--indent">
           <li class="terms__list-item">
-            using the Web-App for commercial purposes;
+            using the WebApp for commercial purposes;
           </li>
           <li class="terms__list-item">
             carry out actions contrary to current legislation and, in
             particular, aimed at interfering with the correct functioning of the
-            Web-App and/or with the security measures of the Web-App and/or its
+            WebApp and/or with the security measures of the WebApp and/or its
             licensors;
           </li>
           <li class="terms__list-item">
-            upload illegal material on the Web-App;
+            upload illegal material on the WebApp;
           </li>
           <li class="terms__list-item">
             carry out actions aimed at identifying the source code of the
-            Web-App (e.g., reverse engineering, decompilation, disassembly);
+            WebApp (e.g., reverse engineering, decompilation, disassembly);
           </li>
           <li class="terms__list-item">
             copy, duplicate, sell, exploit, store, modify, reproduce, adapt,
             rework, even if only in part, any element constituting part of the
-            Web-App or that is reproduced therein;
+            WebApp or that is reproduced therein;
           </li>
           <li class="terms__list-item">
             use any robot, spider, search application an/or site retrieval, or
             any other device, process or automatic means to access, retrieve,
-            scrap or index any portion of the Web-App or its contents;
+            scrape or index any portion of the WebApp or its contents;
           </li>
           <li class="terms__list-item">
             carry out actions aimed at interfering with the correct functioning
-            of the Web-App and/or with the security measures of the Web-App or
+            of the WebApp and/or with the security measures of the WebApp or
             insert material that may damage the functioning of a computer (e.g.,
             viruses, worms or trojans);
           </li>
@@ -155,14 +140,14 @@
             Legislative Decree 101/2018 (hereinafter, "Privacy Code").
           </li>
           <li class="terms__list-item">
-            Users may report to HT the possible presence on the Web-App of any
+            Users may report to HT the possible presence on the WebApp of any
             event contrary, even if only potentially, to these Terms and
             Conditions, and to current legislation.
           </li>
           <li class="terms__list-item">
             Users must take all necessary measures (e.g., antivirus) on their
             computer and connectivity devices to ensure the prevention of
-            accidents or in any case security problems in using the Web-App.
+            accidents or in any case security problems in using the WebApp.
           </li>
         </ul>
       </li>
@@ -171,7 +156,7 @@
     <h3 class="terms__article">Art. 5<br />(Obligations of HT)</h3>
     <ol class="terms__list">
       <li class="terms__list-item">
-        HT makes the Web-App available to users, within the terms indicated in
+        HT makes the WebApp available to users, within the terms indicated in
         this document.
       </li>
       <li class="terms__list-item">
@@ -180,26 +165,26 @@
         advantage, not even of a non-economic nature.
       </li>
       <li class="terms__list-item">
-        HT offers the Web-App accessible in its current state, under the terms
+        HT offers the WebApp accessible in its current state, under the terms
         stated in these Terms and Conditions, and, therefore, does not provide
         guaranties other than those indicated in this document.
       </li>
       <li class="terms__list-item">
         HT, also through the use of third parties, will also take care of the
-        maintenance and management of the Web-App within the limits set out in
+        maintenance and management of the WebApp within the limits set out in
         this document.
       </li>
       <li class="terms__list-item">
         Technical factors, such as bandwidth, network configurations and
         computer browser settings, can affect the speed and accessibility of the
-        Web-App. HT does not guarantee the continuous, uninterrupted or
+        WebApp. HT does not guarantee the continuous, uninterrupted or
         error-free operation or compatibility with the browser or with any other
         part of the data subject's computer system.
       </li>
     </ol>
 
     <h3 class="terms__article">
-      Art. 6<br />(Responsibilities deriving from the use of the Web-App)
+      Art. 6<br />(Responsibilities deriving from the use of the WebApp)
     </h3>
     <ol class="terms__list">
       <li class="terms__list-item">
@@ -208,17 +193,17 @@
         data contained in the works uploaded by them.
       </li>
       <li class="terms__list-item">
-        HT will in no case be responsible for the correctness of the Web-App
+        HT will in no case be responsible for the correctness of the WebApp
         results. HT will in no case be responsible for any consequences deriving
         from the decisions taken by the users. Moreover, users should refrain
         from taking medical decisions or change patient management based on the
-        output deriving from the use of the Web-App.
+        output deriving from the use of the WebApp.
       </li>
       <li class="terms__list-item">
         Users will be exclusively responsible for any direct and/or indirect
         damages, of any type and kind, arising from or otherwise connected to
         the activities of users themselves and/or to the use they will make of
-        the Web-App.
+        the WebApp.
       </li>
       <li class="terms__list-item">
         Users will have the obligation to fully indemnify HT from any request
@@ -233,12 +218,12 @@
     <ol class="terms__list">
       <li class="terms__list-item">
         HT reserves the right to unilaterally change the T&Cs at any time,
-        giving adequate notice to users when accessing the Web-App and
+        giving adequate notice to users when accessing the WebApp and
         specifying the reasons justifying the update.
       </li>
       <li class="terms__list-item">
         The new conditions must be accepted by users on their access to the
-        Web-App, with the forms and methods that will be indicated when the new
+        WebApp, with the forms and methods that will be indicated when the new
         conditions are released.
       </li>
     </ol>
@@ -247,7 +232,7 @@
     <ol class="terms__list">
       <li class="terms__list-item">
         All contents and graphics (images, sounds, texts, logos, source code,
-        etc.) forming part of the Web-App are the exclusive property of HT or of
+        etc.) forming part of the WebApp are the exclusive property of HT or of
         third parties identified on the site that have authorized their use by
         HT, and so are protected by the law.
       </li>
@@ -267,28 +252,28 @@
     <ol class="terms__list">
       <li class="terms__list-item">
         HT, in its role of Data Controller of the personal data of the user
-        (authentication credentials and, if indicated by the user, e-mail), will
+        (authentication credentials and e-mail), will
         process the data in accordance with the legislation on data protection,
         pursuant to GDPR and Legislative Decree 196/2003. In this regard, please
-        refer to the specific information relating to the use of the Web-App,
-        available at the link <a href="https://iorio-apps.fht.org"></a>
+        refer to the specific information relating to the use of the WebApp,
+        available at the link <a href="https://crisprcleanr-webapp.fht.org/terms-and-conditions"></a>
       </li>
     </ol>
 
     <h3 class="terms__article">
-      Art. 10<br />(Suspension and interruption of the Web-App)
+      Art. 10<br />(Suspension and interruption of the WebApp)
     </h3>
     <ol class="terms__list">
       <li class="terms__list-item">
         HT reserves the unquestionable right to add, remove features or services
         or suspend or interrupt, in whole or in part, the operation of the
-        Web-App, both temporarily and permanently. In the cases referred to in
+        WebApp, both temporarily and permanently. In the cases referred to in
         this paragraph, HT will provide users with specific motivated
         communication, with adequate notice, except in cases of urgency.
       </li>
       <li class="terms__list-item">
         HT reserves the unquestionable right to block, suspend, revoke, for a
-        fixed or indefinite period, access to the Web-App to users' accounts, in
+        fixed or indefinite period, access to the WebApp to users' accounts, in
         the event that it becomes aware of facts, acts, or circumstances
         relating to the violation of present T&C, or current legislation. In the
         event of indefinite revocation, the relationship between HT and the user
@@ -300,7 +285,7 @@
         rights expressly provided for by the legislation on the protection of
         personal data, as specified in the Privacy Policy; (ii) where possible,
         it will make available to the user, at the request of the same, the
-        contents that have been provided by him while using the Web-App.
+        contents that have been provided by him while using the WebApp.
       </li>
       <li class="terms__list-item">
         Apart from the provisions of the previous paragraph, the user is aware
@@ -322,7 +307,7 @@
     <h3 class="terms__article">Art. 12<br />(Final provisions)</h3>
     <ol class="terms__list">
       <li class="terms__list-item">
-        This document is governed by Italian law.
+        This document is governed by the Italian law.
       </li>
       <li class="terms__list-item">
         For anything not expressly provided for here, please refer to the

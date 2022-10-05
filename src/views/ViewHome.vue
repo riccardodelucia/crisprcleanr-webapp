@@ -13,7 +13,7 @@
       </p>
       <div class="hero__button-container"><button @click="$router.push({ name: 'submit' })"
           class="button button--primary button--large hero__button--submit" type="button">
-          Submit Job
+          Submit New Job
         </button>
         <button @click="$router.push({ name: 'resultsList' })"
           class="button button--secondary button--large hero__button--results" type="button">
