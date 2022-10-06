@@ -15,10 +15,9 @@ import ViewTermsDataProcessing from "@/views/ViewTermsDataProcessing.vue";
 import ViewMessagePage from "@/views/ViewMessagePage.vue";
 
 import CcrAPI from "@/api/ccr.js";
-import getEnv from "@/utils/env";
 import store from "../store";
 
-const dashboardURL = getEnv("VUE_APP_URL_GROUPS_DASHBOARDS");
+// const dashboardURL = getEnv("VUE_APP_URL_IORIO_DASHBOARD");
 
 const manageRouteError = (from, error, title) => {
   if (error?.response?.status === 404) return "/404"; //this translates into catchAll route
@@ -37,12 +36,12 @@ export const routes = [
     path: "/test",
     component: ViewTest,
   },
-  {
+  /* {
     path: "/dashboard",
     beforeEnter() {
       window.location.href = dashboardURL;
     },
-  },
+  }, */
   {
     path: "/",
     redirect: "/home",
