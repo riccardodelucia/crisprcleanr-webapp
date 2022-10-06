@@ -1,7 +1,7 @@
 <template>
   <div class="hero">
     <div class="hero__container">
-      <div class="hero__logo"><img src="@/assets/logos/ccr-logo.svg" alt="CRISPRcleanR logo" /></div>
+      <div class="hero__logo"><img src="@/assets/logos/ccr-webapp-logo.svg" alt="CRISPRcleanR logo" /></div>
 
       <h1 class="hero__title">Welcome to CRISPRcleanR Web App (Beta)</h1>
       <p class="hero__text">
@@ -131,7 +131,7 @@
               custom/external libraries).</li>
           </ul>
           <video controls class="section__video">
-            <source src="@/assets/videos/submission.mp4" type="video/mp4" />
+            <source src="@/assets/videos/step_1_compressed.mp4" type="video/mp4" />
           </video>
         </div>
       </template>
@@ -148,7 +148,7 @@
             <li>how to filter and retrieve specific results using the <b>data table controls</b></li>
           </ul>
           <video controls class="section__video">
-            <source src="@/assets/videos/results.mp4" type="video/mp4" />
+            <source src="@/assets/videos/step_2_compressed.mp4" type="video/mp4" />
           </video>
         </div>
       </template>
@@ -167,40 +167,13 @@
             <li>how to <b>download</b> all the <b>job data and static plots</b> as zip files</li>
           </ul>
           <video controls class="section__video">
-            <source src="@/assets/videos/result_by_id.mp4" type="video/mp4" />
+            <source src="@/assets/videos/step_3_compressed.mp4" type="video/mp4" />
           </video>
         </div>
       </template>
     </BaseAccordion>
   </section>
-  <section class="section section-charts">
-    <h2>Interactive Charts 📊</h2>
-    <p>
-      By <b>clicking</b> on each <b>image thumbnail</b> on the job results page
-      you will be able to access a magnified and interactively explorable
-      version of it. Depending on which image component your mouse pointer will
-      move over, a tooltip will reveal different data/results’ details.
-    </p>
-    <BaseAccordion>
-      <template v-slot:title>Chart example</template>
-      <template v-slot:content>
-        <div class="text-small">
-          <p class="u-margin-bottom-medium">
-            Each chart comes with its own sets of <b>controls</b>. For instance,
-            you can find <b>sliders</b> and <b>checkboxes</b> to control general
-            layout settings. Many charts come with a <b>minified version</b> of the chart
-            (called <b>context area</b>) used to <b>zoom</b> in a specific area of the
-            chart. Within the context/minigraph, click outside of the selected
-            area to reset to full view.
-          </p>
 
-          <video controls class="section__video">
-            <source src="@/assets/videos/charts.mp4" type="video/mp4" />
-          </video>
-        </div>
-      </template>
-    </BaseAccordion>
-  </section>
 </template>
 
 <script>
