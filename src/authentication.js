@@ -2,7 +2,7 @@ import Keycloak from "keycloak-js";
 import getEnv from "@/utils/env";
 import store from "./store";
 import { getRouter } from "@/router/index.js";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 
 const authServerURL = `${getEnv("VUE_APP_URL_AUTH_SERVER")}`;
 
@@ -56,7 +56,6 @@ const authenticationPlugin = {
   install(app, options) {
     app.provide("login", login);
     app.provide("logout", logout);
-    //app.provide("authentication", reactive(keycloak));
     app.provide("authenticated", ref(keycloak.authenticated)); // TODO monitor if this works fine
   },
 };
@@ -75,7 +74,7 @@ export const authorize = (redirectUri) =>
           resolve(token);
         })
         .catch(() => {
-          logout();
+          login(redirectUri);
           reject("Unable to refresh token, logging out");
         });
     }
