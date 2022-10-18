@@ -74,7 +74,8 @@ export default {
       width: 0;
       height: 0;
       border: 5px solid transparent;
-      border-color: var(--color-text-dark-blue) transparent transparent transparent;
+      border-color: var(--color-text-dark-blue) transparent transparent
+        transparent;
     }
   }
 

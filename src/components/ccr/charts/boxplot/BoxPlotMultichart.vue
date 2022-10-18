@@ -1,15 +1,30 @@
 <template>
   <div class="controls-container">
-    <BaseToggleSwitch v-if="data.raw && data.norm" v-model="showNormalizedData"
-      :option="!showNormalizedData ? 'raw' : 'normalized'" />
+    <BaseToggleSwitch
+      v-if="data.raw && data.norm"
+      v-model="showNormalizedData"
+      :option="!showNormalizedData ? 'raw' : 'normalized'"
+    />
   </div>
-  <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
+  <svg
+    preserveAspectRatio="xMinYMin meet"
+    :viewBox="[0, 0, width, height].join(' ')"
+  >
     <g>
-      <BoxPlotChartFocus :data="selectedChartData" :width="chartFocusWidth" :height="height" :yDomain="yDomainFocus" />
+      <BoxPlotChartFocus
+        :data="selectedChartData"
+        :width="chartFocusWidth"
+        :height="height"
+        :yDomain="yDomainFocus"
+      />
     </g>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
-      <BoxPlotChartContext :width="chartContextWidth" :height="height" @brush="brushed" :yDomain="yDomainContext">
-      </BoxPlotChartContext>
+      <BoxPlotChartContext
+        :width="chartContextWidth"
+        :height="height"
+        @brush="brushed"
+        :yDomain="yDomainContext"
+      ></BoxPlotChartContext>
     </g>
   </svg>
 </template>
@@ -19,7 +34,6 @@ import BoxPlotChartFocus from "@/components/ccr/charts/boxplot/BoxPlotChartFocus
 import BoxPlotChartContext from "@/components/ccr/charts/boxplot/BoxPlotChartContext.vue";
 
 import { augmentedExtent } from "@/composables/chart.js";
-
 
 import { ref, computed, watchEffect } from "vue";
 
@@ -63,7 +77,7 @@ const dataExtent = (data) => {
     .flat()
     .map((item) => item.value)
     .concat();
-  return augmentedExtent(outliers.concat(dist)).sort((a, b) => b - a)
+  return augmentedExtent(outliers.concat(dist)).sort((a, b) => b - a);
 };
 
 export default {

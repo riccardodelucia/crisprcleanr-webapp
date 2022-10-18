@@ -18,12 +18,13 @@
     </p>
     <p>
       This document contains the general terms and conditions governing the
-      relationship between HT and the users (hereinafter, also "<b>Terms and Conditions</b>" or "<b>T&C</b>"), within
-      the scope of the WebApp's functionalities.
+      relationship between HT and the users (hereinafter, also "<b
+        >Terms and Conditions</b
+      >" or "<b>T&C</b>"), within the scope of the WebApp's functionalities.
     </p>
     <p>
-      Access to the Reserved Area of the WebApp is subject to acceptance of
-      this document.
+      Access to the Reserved Area of the WebApp is subject to acceptance of this
+      document.
     </p>
 
     <h3 class="terms__article">
@@ -42,8 +43,8 @@
         non-commercial entities and for non-commercial uses.
       </li>
       <li class="terms__list-item">
-        For the use of the WebApp for commercial purposes, it will be necessary to
-        draw up a specific contract.
+        For the use of the WebApp for commercial purposes, it will be necessary
+        to draw up a specific contract.
       </li>
     </ol>
 
@@ -79,8 +80,8 @@
         </ul>
       </li>
       <li class="terms__list-item">
-        In the Reserved Area, when the user submits his job, he can
-        optionally choose to receive job's results at his registered e-mail address.
+        In the Reserved Area, when the user submits his job, he can optionally
+        choose to receive job's results at his registered e-mail address.
       </li>
     </ol>
 
@@ -106,8 +107,8 @@
             upload illegal material on the WebApp;
           </li>
           <li class="terms__list-item">
-            carry out actions aimed at identifying the source code of the
-            WebApp (e.g., reverse engineering, decompilation, disassembly);
+            carry out actions aimed at identifying the source code of the WebApp
+            (e.g., reverse engineering, decompilation, disassembly);
           </li>
           <li class="terms__list-item">
             copy, duplicate, sell, exploit, store, modify, reproduce, adapt,
@@ -218,8 +219,8 @@
     <ol class="terms__list">
       <li class="terms__list-item">
         HT reserves the right to unilaterally change the T&Cs at any time,
-        giving adequate notice to users when accessing the WebApp and
-        specifying the reasons justifying the update.
+        giving adequate notice to users when accessing the WebApp and specifying
+        the reasons justifying the update.
       </li>
       <li class="terms__list-item">
         The new conditions must be accepted by users on their access to the
@@ -252,11 +253,12 @@
     <ol class="terms__list">
       <li class="terms__list-item">
         HT, in its role of Data Controller of the personal data of the user
-        (authentication credentials and e-mail), will
-        process the data in accordance with the legislation on data protection,
-        pursuant to GDPR and Legislative Decree 196/2003. In this regard, please
-        refer to the specific information relating to the use of the WebApp,
-        available at the link <a href="https://crisprcleanr-webapp.fht.org/terms-and-conditions"></a>
+        (authentication credentials and e-mail), will process the data in
+        accordance with the legislation on data protection, pursuant to GDPR and
+        Legislative Decree 196/2003. In this regard, please refer to the
+        specific information relating to the use of the WebApp, available at the
+        link
+        <a href="https://crisprcleanr-webapp.fht.org/terms-and-conditions"></a>
       </li>
     </ol>
 
@@ -322,17 +324,19 @@
     <p class="terms__update">
       This Privacy Policy is updated to April 14, 2022.
     </p>
-    <div class="terms__button-container"><button class="button button--primary button--large" type="button"
-        @click="$router.push({ name: 'home' })">
+    <div class="terms__button-container">
+      <button
+        class="button button--primary button--large"
+        type="button"
+        @click="$router.push({ name: 'home' })"
+      >
         Back to Home
       </button>
     </div>
-
   </div>
 </template>
 
 <script>
-
 export default {
   name: "ViewCRISPRcleanRTermsAndConditions",
 };
@@ -350,11 +354,11 @@ export default {
   }
 
   &__title {
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
 
   &__subtitle {
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
 
   &__article {

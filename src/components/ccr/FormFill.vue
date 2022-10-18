@@ -2,141 +2,194 @@
   <template v-if="!state.hasTag('submitting') && !state.matches('submitted')">
     <form class="widget job-form" ref="form" @submit.prevent="submit">
       <h2 class="u-margin-bottom-small">Submit a new job</h2>
-      <BaseFormProgressBar :steps="progressSteps" :currentStep="currentStep" class="u-margin-bottom-small">
+      <BaseFormProgressBar
+        :steps="progressSteps"
+        :currentStep="currentStep"
+        class="u-margin-bottom-small"
+      >
       </BaseFormProgressBar>
 
       <template v-if="state.matches('enteringGeneralInfo')">
-        <h3 class="u-margin-bottom-small">{{progressSteps[0]}}</h3>
+        <h3 class="u-margin-bottom-small">{{ progressSteps[0] }}</h3>
         <div class="form__group">
-          <BaseInput :label="labelFieldPairs.title" @update:modelValue="onInput($event, 'title')"
-            :modelValue="getDataFieldValue(state, 'title')" type="text" placeholder="Your title here"
-            :error="getDataFieldErrorMessage(state, 'title')">
+          <BaseInput
+            :label="labelFieldPairs.title"
+            @update:modelValue="onInput($event, 'title')"
+            :modelValue="getDataFieldValue(state, 'title')"
+            type="text"
+            placeholder="Your title here"
+            :error="getDataFieldErrorMessage(state, 'title')"
+          >
           </BaseInput>
         </div>
 
         <div class="form__group">
-          <BaseInput :label="labelFieldPairs.label" @update:modelValue="onInput($event, 'label')"
-            :modelValue="getDataFieldValue(state, 'label')" type="text" placeholder="Your data label here"
-            :error="getDataFieldErrorMessage(state, 'label')">
+          <BaseInput
+            :label="labelFieldPairs.label"
+            @update:modelValue="onInput($event, 'label')"
+            :modelValue="getDataFieldValue(state, 'label')"
+            type="text"
+            placeholder="Your data label here"
+            :error="getDataFieldErrorMessage(state, 'label')"
+          >
           </BaseInput>
         </div>
         <div class="form__group">
-          <BaseCheckbox :label="labelFieldPairs.sendEmail" option="Send email upon job completion"
-            @update:modelValue="onInput($event, 'sendEmail')" :modelValue="getDataFieldValue(state, 'sendEmail')">
+          <BaseCheckbox
+            :label="labelFieldPairs.sendEmail"
+            option="Send email upon job completion"
+            @update:modelValue="onInput($event, 'sendEmail')"
+            :modelValue="getDataFieldValue(state, 'sendEmail')"
+          >
           </BaseCheckbox>
         </div>
         <div class="form__group">
-          <BaseTextarea :label="labelFieldPairs.notes" @update:modelValue="onInput($event, 'notes')"
-            :modelValue="getDataFieldValue(state, 'notes')" placeholder="Your notes here" />
+          <BaseTextarea
+            :label="labelFieldPairs.notes"
+            @update:modelValue="onInput($event, 'notes')"
+            :modelValue="getDataFieldValue(state, 'notes')"
+            placeholder="Your notes here"
+          />
         </div>
       </template>
 
-
       <template v-if="state.matches('enteringSettings')">
-        <h3 class="u-margin-bottom-small">{{progressSteps[1]}}</h3>
+        <h3 class="u-margin-bottom-small">{{ progressSteps[1] }}</h3>
         <div class="form__group">
-          <BaseInput :label="labelFieldPairs.normMinReads" @update:modelValue="onInput($event, 'normMinReads')"
-            :modelValue="getDataFieldValue(state, 'normMinReads')" type="number"
-            :error="getDataFieldErrorMessage(state, 'normMinReads')">
+          <BaseInput
+            :label="labelFieldPairs.normMinReads"
+            @update:modelValue="onInput($event, 'normMinReads')"
+            :modelValue="getDataFieldValue(state, 'normMinReads')"
+            type="number"
+            :error="getDataFieldErrorMessage(state, 'normMinReads')"
+          >
           </BaseInput>
         </div>
         <div class="form__group">
-          <BaseSelect :label="labelFieldPairs.method" :options="normalizationOptions" v-model="normalization"
-            :error="getDataFieldErrorMessage(state, 'method')">
+          <BaseSelect
+            :label="labelFieldPairs.method"
+            :options="normalizationOptions"
+            v-model="normalization"
+            :error="getDataFieldErrorMessage(state, 'method')"
+          >
           </BaseSelect>
         </div>
       </template>
 
-
       <template v-if="state.matches('enteringLibrary')">
-        <h3 class="u-margin-bottom-small">{{progressSteps[2]}}</h3>
-        <BaseRadioGroup label="Library type" :options="libraryTypeOptions" @update:modelValue="sendLibraryType"
-          :modelValue="libraryType">
+        <h3 class="u-margin-bottom-small">{{ progressSteps[2] }}</h3>
+        <BaseRadioGroup
+          label="Library type"
+          :options="libraryTypeOptions"
+          @update:modelValue="sendLibraryType"
+          :modelValue="libraryType"
+        >
         </BaseRadioGroup>
         <template v-if="state.hasTag('libraryBuiltin')">
           <div class="form__group">
-            <BaseSelect :label="labelFieldPairs.libraryBuiltin" :options="libraryOptions" v-model="libraryBuiltin"
-              :error="getDataFieldErrorMessage(state, 'libraryBuiltin')">
+            <BaseSelect
+              :label="labelFieldPairs.libraryBuiltin"
+              :options="libraryOptions"
+              v-model="libraryBuiltin"
+              :error="getDataFieldErrorMessage(state, 'libraryBuiltin')"
+            >
             </BaseSelect>
           </div>
         </template>
 
-
         <template v-if="state.hasTag('libraryFile')">
           <div class="form__group">
-            <BaseInputFile :label="labelFieldPairs.libraryFile" @update:modelValue="onInput($event, 'libraryFile')"
+            <BaseInputFile
+              :label="labelFieldPairs.libraryFile"
+              @update:modelValue="onInput($event, 'libraryFile')"
               :modelValue="getFileFieldValue(state, 'libraryFile')"
-              :error="getFileFieldErrorMessage(state, 'libraryFile')">
+              :error="getFileFieldErrorMessage(state, 'libraryFile')"
+            >
             </BaseInputFile>
           </div>
         </template>
-
       </template>
 
-
       <template v-if="state.matches('enteringFiles')">
-        <h3 class="u-margin-bottom-small">{{progressSteps[3]}}</h3>
+        <h3 class="u-margin-bottom-small">{{ progressSteps[3] }}</h3>
 
-        <BaseRadioGroup label="Data type" :options="fileTypeOptions" @update:modelValue="sendFileType"
-          :modelValue="fileType">
+        <BaseRadioGroup
+          label="Data type"
+          :options="fileTypeOptions"
+          @update:modelValue="sendFileType"
+          :modelValue="fileType"
+        >
         </BaseRadioGroup>
 
         <template v-if="state.hasTag('fileCounts')">
           <div class="form__group">
-            <BaseInputFile :label="labelFieldPairs.fileCounts" @update:modelValue="onInput($event, 'fileCounts')"
+            <BaseInputFile
+              :label="labelFieldPairs.fileCounts"
+              @update:modelValue="onInput($event, 'fileCounts')"
               :modelValue="getFileFieldValue(state, 'fileCounts')"
-              :error="getFileFieldErrorMessage(state, 'fileCounts')">
+              :error="getFileFieldErrorMessage(state, 'fileCounts')"
+            >
             </BaseInputFile>
           </div>
           <div class="form__group">
-            <BaseInput :label="labelFieldPairs.nControls" @update:modelValue="onInput($event, 'nControls')"
-              :modelValue="getDataFieldValue(state, 'nControls')" type="number"
-              :error="getDataFieldErrorMessage(state, 'nControls')">
+            <BaseInput
+              :label="labelFieldPairs.nControls"
+              @update:modelValue="onInput($event, 'nControls')"
+              :modelValue="getDataFieldValue(state, 'nControls')"
+              type="number"
+              :error="getDataFieldErrorMessage(state, 'nControls')"
+            >
             </BaseInput>
           </div>
         </template>
 
         <template v-if="state.hasTag('filesFASTQ')">
           <div class="form__group">
-            <BaseInputFileMultiple :label="labelFieldPairs.filesFASTQcontrols"
+            <BaseInputFileMultiple
+              :label="labelFieldPairs.filesFASTQcontrols"
               @update:modelValue="onInput($event, 'filesFASTQcontrols')"
               :modelValue="getFileFieldValue(state, 'filesFASTQcontrols')"
-              :error="getFileFieldErrorMessage(state, 'filesFASTQcontrols')">
+              :error="getFileFieldErrorMessage(state, 'filesFASTQcontrols')"
+            >
             </BaseInputFileMultiple>
           </div>
 
           <div class="form__group">
-            <BaseInputFileMultiple :label="labelFieldPairs.filesFASTQsamples"
+            <BaseInputFileMultiple
+              :label="labelFieldPairs.filesFASTQsamples"
               @update:modelValue="onInput($event, 'filesFASTQsamples')"
               :modelValue="getFileFieldValue(state, 'filesFASTQsamples')"
-              :error="getFileFieldErrorMessage(state, 'filesFASTQsamples')">
+              :error="getFileFieldErrorMessage(state, 'filesFASTQsamples')"
+            >
             </BaseInputFileMultiple>
           </div>
         </template>
 
         <template v-if="state.hasTag('filesBAM')">
           <div class="form__group">
-            <BaseInputFileMultiple :label="labelFieldPairs.filesBAMcontrols"
+            <BaseInputFileMultiple
+              :label="labelFieldPairs.filesBAMcontrols"
               @update:modelValue="onInput($event, 'filesBAMcontrols')"
               :modelValue="getFileFieldValue(state, 'filesBAMcontrols')"
-              :error="getFileFieldErrorMessage(state, 'filesBAMcontrols')">
+              :error="getFileFieldErrorMessage(state, 'filesBAMcontrols')"
+            >
             </BaseInputFileMultiple>
           </div>
 
           <div class="form__group">
-            <BaseInputFileMultiple :label="labelFieldPairs.filesBAMsamples"
+            <BaseInputFileMultiple
+              :label="labelFieldPairs.filesBAMsamples"
               @update:modelValue="onInput($event, 'filesBAMsamples')"
               :modelValue="getFileFieldValue(state, 'filesBAMsamples')"
-              :error="getFileFieldErrorMessage(state, 'filesBAMsamples')">
+              :error="getFileFieldErrorMessage(state, 'filesBAMsamples')"
+            >
             </BaseInputFileMultiple>
           </div>
-
         </template>
       </template>
 
-
       <template v-if="state.matches('review')">
-        <h3 class="u-margin-bottom-small">{{progressSteps[4]}}</h3>
+        <h3 class="u-margin-bottom-small">{{ progressSteps[4] }}</h3>
         <ul v-for="field in formDataReview(state)" :key="field">
           <li>
             <b>{{ field[0] }}:</b> {{ field[1] }}
@@ -145,31 +198,45 @@
       </template>
 
       <div class="job-form__button-container">
-        <button type="button" class="button button--primary button--large prev-button" @click="previous"
-          v-if="!state.matches('enteringGeneralInfo')">
+        <button
+          type="button"
+          class="button button--primary button--large prev-button"
+          @click="previous"
+          v-if="!state.matches('enteringGeneralInfo')"
+        >
           Previous Step
         </button>
-        <button v-if="!state.matches('review')" type="submit" class="button button--primary button--large next-button">
+        <button
+          v-if="!state.matches('review')"
+          type="submit"
+          class="button button--primary button--large next-button"
+        >
           Next Step
         </button>
-        <button v-else type="submit" class="button button--secondary button--large submit-button">
+        <button
+          v-else
+          type="submit"
+          class="button button--secondary button--large submit-button"
+        >
           Submit
         </button>
       </div>
-
     </form>
   </template>
 
-  <p v-else-if="state.hasTag('submitting')">
-    🚀 Submitting...
-  </p>
-
+  <p v-else-if="state.hasTag('submitting')">🚀 Submitting...</p>
 </template>
 
 <script>
 import { watch, ref, computed, reactive } from "vue";
 
-import { getInterpretedMachine, getDataFieldValue, getDataFieldErrorMessage, getFileFieldValue, getFileFieldErrorMessage } from "../../machines/submitJobMachine";
+import {
+  getInterpretedMachine,
+  getDataFieldValue,
+  getDataFieldErrorMessage,
+  getFileFieldValue,
+  getFileFieldErrorMessage,
+} from "../../machines/submitJobMachine";
 
 export default {
   name: "FormFill",
@@ -177,7 +244,6 @@ export default {
     config: { type: Object },
   },
   setup(props, { emit }) {
-
     const { state, send } = getInterpretedMachine();
 
     const onInput = (event, field) => {
@@ -195,8 +261,8 @@ export default {
     const previous = () => send("PREVIOUS");
 
     watch(state, () => {
-      if (state.value.matches("submitted")) emit("submitted")
-    })
+      if (state.value.matches("submitted")) emit("submitted");
+    });
 
     const labelFieldPairs = {
       title: "Title",
@@ -212,64 +278,109 @@ export default {
       filesFASTQcontrols: "FASTQ Controls",
       filesFASTQsamples: "FASTQ Samples",
       filesBAMcontrols: "BAM Controls",
-      filesBAMsamples: "BAM Samples"
-    }
+      filesBAMsamples: "BAM Samples",
+    };
 
     const formDataReview = (state) => {
       const formDataMap = new Map();
       Object.entries(state.context.formData).forEach(([key, field]) => {
-        let fieldValue = field
+        let fieldValue = field;
         if (Array.isArray(field)) {
-          fieldValue = field.join(", ")
+          fieldValue = field.join(", ");
         }
-        formDataMap.set(labelFieldPairs[key], fieldValue)
-      })
+        formDataMap.set(labelFieldPairs[key], fieldValue);
+      });
       return formDataMap;
-    }
+    };
 
-    const normalizationOptions = reactive([{ method: "ScalingByTotalReads", label: "Scaling By Total Numbers Of Reads" }, { method: "MedRatios", label: "Median Ratios" }])
+    const normalizationOptions = reactive([
+      {
+        method: "ScalingByTotalReads",
+        label: "Scaling By Total Numbers Of Reads",
+      },
+      { method: "MedRatios", label: "Median Ratios" },
+    ]);
 
-    const normalization = ref(normalizationOptions[0])
+    const normalization = ref(normalizationOptions[0]);
 
-    watch(normalization, () => {
-      send("INPUT", { payload: normalization.value?.method, field: "method" });
-    }, { immediate: true })
+    watch(
+      normalization,
+      () => {
+        send("INPUT", {
+          payload: normalization.value?.method,
+          field: "method",
+        });
+      },
+      { immediate: true }
+    );
 
-    const libraryOptions = reactive([{ library: "AVANA_Library", label: "AVANA" }, { library: "Brunello_Library", label: "Brunello" }, { library: "GeCKO_Library_v2", label: "GeCKO" }, { library: "KY_Library_v1.0", label: "KY v1.0" }, { library: "KY_Library_v1.1", label: "KY v1.1" }, { library: "MiniLibCas9_Library", label: "MiniLibCas9" }, { library: "Whitehead_Library", label: "Whitehead" }])
-    const libraryBuiltin = ref(null)
+    const libraryOptions = reactive([
+      { library: "AVANA_Library", label: "AVANA" },
+      { library: "Brunello_Library", label: "Brunello" },
+      { library: "GeCKO_Library_v2", label: "GeCKO" },
+      { library: "KY_Library_v1.0", label: "KY v1.0" },
+      { library: "KY_Library_v1.1", label: "KY v1.1" },
+      { library: "MiniLibCas9_Library", label: "MiniLibCas9" },
+      { library: "Whitehead_Library", label: "Whitehead" },
+    ]);
+    const libraryBuiltin = ref(null);
 
-    watch(libraryBuiltin, () => {
-      send("INPUT", { payload: libraryBuiltin.value?.library, field: "libraryBuiltin" });
-    }, { immediate: true })
+    watch(
+      libraryBuiltin,
+      () => {
+        send("INPUT", {
+          payload: libraryBuiltin.value?.library,
+          field: "libraryBuiltin",
+        });
+      },
+      { immediate: true }
+    );
 
-    const libraryTypeArray = [{ option: 'Built-in', event: "LIBRARY.BUILTIN" }, { option: 'Other Library', event: "LIBRARY.FILE" }];
-    const libraryTypeOptions = libraryTypeArray.map(item => item.option)
-    const libraryType = ref("Built-in")
+    const libraryTypeArray = [
+      { option: "Built-in", event: "LIBRARY.BUILTIN" },
+      { option: "Other Library", event: "LIBRARY.FILE" },
+    ];
+    const libraryTypeOptions = libraryTypeArray.map((item) => item.option);
+    const libraryType = ref("Built-in");
 
     const sendLibraryType = (option) => {
-      libraryType.value = option
-      const event = libraryTypeArray.find(item => item.option === option)["event"]
-      event && send(event)
-    }
+      libraryType.value = option;
+      const event = libraryTypeArray.find((item) => item.option === option)[
+        "event"
+      ];
+      event && send(event);
+    };
 
-    const fileTypeArray = [{ option: 'sgRNA Counts', event: "FILE.COUNTS" }, { option: 'FASTQ', event: "FILE.FASTQ" }, { option: 'BAM', event: "FILE.BAM" }];
-    const fileTypeOptions = fileTypeArray.map(item => item.option)
-    const fileType = ref(fileTypeArray[0].option)
+    const fileTypeArray = [
+      { option: "sgRNA Counts", event: "FILE.COUNTS" },
+      { option: "FASTQ", event: "FILE.FASTQ" },
+      { option: "BAM", event: "FILE.BAM" },
+    ];
+    const fileTypeOptions = fileTypeArray.map((item) => item.option);
+    const fileType = ref(fileTypeArray[0].option);
 
     const sendFileType = (option) => {
-      fileType.value = option
-      const event = fileTypeArray.find(item => item.option === option)["event"]
-      event && send(event)
-    }
+      fileType.value = option;
+      const event = fileTypeArray.find((item) => item.option === option)[
+        "event"
+      ];
+      event && send(event);
+    };
 
-    const progressSteps = ["Job Info", "Settings", "Library Selection", "Files Upload", "Review"]
+    const progressSteps = [
+      "Job Info",
+      "Settings",
+      "Library Selection",
+      "Files Upload",
+      "Review",
+    ];
     const currentStep = computed(() => {
-      if (state.value.matches('enteringGeneralInfo')) return progressSteps[0]
-      if (state.value.matches('enteringSettings')) return progressSteps[1]
-      if (state.value.matches('enteringLibrary')) return progressSteps[2]
-      if (state.value.matches('enteringFiles')) return progressSteps[3]
-      if (state.value.matches('review')) return progressSteps[4]
-    })
+      if (state.value.matches("enteringGeneralInfo")) return progressSteps[0];
+      if (state.value.matches("enteringSettings")) return progressSteps[1];
+      if (state.value.matches("enteringLibrary")) return progressSteps[2];
+      if (state.value.matches("enteringFiles")) return progressSteps[3];
+      if (state.value.matches("review")) return progressSteps[4];
+    });
 
     return {
       state,
@@ -318,8 +429,6 @@ export default {
 .submit-button {
   width: 18rem;
 }
-
-
 
 .next-button {
   margin-left: auto;

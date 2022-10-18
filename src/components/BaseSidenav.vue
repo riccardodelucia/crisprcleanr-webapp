@@ -4,20 +4,36 @@
       <div class="menu__item"></div>
     </div>
   </div>
-  <div v-if="showSideNav && collapsible" class="overlay" @click="manageSidenav(false)"></div>
+  <div
+    v-if="showSideNav && collapsible"
+    class="overlay"
+    @click="manageSidenav(false)"
+  ></div>
 
-  <nav class="sidenav" :class="{
-    'sidenav--collapsible': collapsible,
-    'sidenav--active': showSideNav,
-  }">
+  <nav
+    class="sidenav"
+    :class="{
+      'sidenav--collapsible': collapsible,
+      'sidenav--active': showSideNav,
+    }"
+  >
     <div class="sidenav__title">{{ sidenavObject.title }}</div>
     <ul class="sidenav__list">
-      <li v-for="link in sidenavObject.links" class="sidenav__item" :key="link.id" @click="linkClick(link.url)"
-        :class="{ 'sidenav__item--active': $route.path.includes(link.url) }">
+      <li
+        v-for="link in sidenavObject.links"
+        class="sidenav__item"
+        :key="link.id"
+        @click="linkClick(link.url)"
+        :class="{ 'sidenav__item--active': $route.path.includes(link.url) }"
+      >
         <span class="sidenav__label">{{ link.label }}</span>
       </li>
     </ul>
-    <div v-if="collapsible" class="sidenav__close" @click="manageSidenav(false)">
+    <div
+      v-if="collapsible"
+      class="sidenav__close"
+      @click="manageSidenav(false)"
+    >
       <span>hide</span>
       <BaseIcon name="chevrons-left"></BaseIcon>
     </div>
@@ -34,8 +50,8 @@ export default {
   props: {
     sidenavObject: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   setup() {
     const router = useRouter();
@@ -103,7 +119,7 @@ export default {
 
       &:after {
         background-color: white;
-        transform: translateY(.8rem);
+        transform: translateY(0.8rem);
       }
     }
   }

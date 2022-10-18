@@ -13,8 +13,15 @@
     <!-- Segments are clipped through a clip path, instead of filtering data. This is
     convenient, since segments are very lightweight to manage, and the filtering algorithm would have
     to trim segment endpoints according to the current selected area. -->
-    <Marks :points="focusData.sgRNAArray" :segments="data.segments" :xScale="xScale" :yScale="yScale" :pointRadius="4"
-      :selections="selections" clip-path="url(#clip-segments)" />
+    <Marks
+      :points="focusData.sgRNAArray"
+      :segments="data.segments"
+      :xScale="xScale"
+      :yScale="yScale"
+      :pointRadius="4"
+      :selections="selections"
+      clip-path="url(#clip-segments)"
+    />
   </g>
 </template>
 
@@ -63,7 +70,9 @@ export default {
       margin
     );
 
-    const augmentedYExtent = augmentedExtent(props.data.sgRNAArray.map((d) => d.avgLogFC))
+    const augmentedYExtent = augmentedExtent(
+      props.data.sgRNAArray.map((d) => d.avgLogFC)
+    );
 
     const yScale = scaleLinear()
       .domain(augmentedYExtent)

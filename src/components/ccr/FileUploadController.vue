@@ -1,32 +1,64 @@
 <template>
   <div class="uploads__file upload-controller">
     <div class="upload-controller__file">
-      <BaseIcon v-if="state.matches('uploaded')" class="upload-controller__icon upload-controller__icon--uploaded"
-        name="check-circle" width="20px" height="20px">
+      <BaseIcon
+        v-if="state.matches('uploaded')"
+        class="upload-controller__icon upload-controller__icon--uploaded"
+        name="check-circle"
+        width="20px"
+        height="20px"
+      >
       </BaseIcon>
       <span>{{ filename }}</span>
     </div>
-    <span v-if="state.matches('uploading') || state.matches('uploaded')" class="upload-controller__percentage">{{
-    state.context.percentage
-    }}%</span>
-    <BaseIcon v-if="state.matches('uploading')" class="upload-controller__icon upload-controller__icon--delete"
-      name="trash-2" width="20px" height="20px" @click="abort">
+    <span
+      v-if="state.matches('uploading') || state.matches('uploaded')"
+      class="upload-controller__percentage"
+      >{{ state.context.percentage }}%</span
+    >
+    <BaseIcon
+      v-if="state.matches('uploading')"
+      class="upload-controller__icon upload-controller__icon--delete"
+      name="trash-2"
+      width="20px"
+      height="20px"
+      @click="abort"
+    >
     </BaseIcon>
-    <BaseIcon v-else class="upload-controller__icon upload-controller__icon--remove" name="x-circle" width="20px"
-      height="20px" @click="removeUpload">
+    <BaseIcon
+      v-else
+      class="upload-controller__icon upload-controller__icon--remove"
+      name="x-circle"
+      width="20px"
+      height="20px"
+      @click="removeUpload"
+    >
     </BaseIcon>
     <div class="upload-controller__status">
-      <div v-if="state.matches('uploading')" class="upload-controller__progress-bar-container">
-        <div class="upload-controller__progress-bar" :style="{ width: state.context.percentage + '%' }"></div>
+      <div
+        v-if="state.matches('uploading')"
+        class="upload-controller__progress-bar-container"
+      >
+        <div
+          class="upload-controller__progress-bar"
+          :style="{ width: state.context.percentage + '%' }"
+        ></div>
       </div>
-      <div v-else-if="state.matches('uploaded')" class="upload-controller__uploaded-msg-container">
-        <span class="upload-controller__status-message">Uploaded. Click &nbsp;</span>
-        <BaseIcon name="x-circle" width="10px" height="10px">
-        </BaseIcon>
+      <div
+        v-else-if="state.matches('uploaded')"
+        class="upload-controller__uploaded-msg-container"
+      >
+        <span class="upload-controller__status-message"
+          >Uploaded. Click &nbsp;</span
+        >
+        <BaseIcon name="x-circle" width="10px" height="10px"> </BaseIcon>
         <span class="upload-controller__status-message"> &nbsp; to close</span>
       </div>
-      <span v-else-if="state.matches('aborted') || state.matches('error')"
-        class="upload-controller__status-message">{{state.context.errorMessage}}</span>
+      <span
+        v-else-if="state.matches('aborted') || state.matches('error')"
+        class="upload-controller__status-message"
+        >{{ state.context.errorMessage }}</span
+      >
     </div>
   </div>
 </template>
@@ -34,8 +66,7 @@
 <script>
 import { useMachine } from "@xstate/vue";
 import uploadFileMachine from "@/machines/uploadFileMachine.js";
-import { useStore } from 'vuex'
-
+import { useStore } from "vuex";
 
 export default {
   name: "BaseFileUploadController",
@@ -47,19 +78,19 @@ export default {
   },
   setup(props) {
     const store = useStore();
-    const { file, fileId, jobId: uploadId, filename } = props.upload
+    const { file, fileId, jobId: uploadId, filename } = props.upload;
     const { state, send } = useMachine(uploadFileMachine, {
       context: {
         file,
         uploadId,
-        fileId
+        fileId,
       },
     });
 
-    const pause = () => send("PAUSE")
-    const resume = () => send("RESUME")
-    const abort = () => send("ABORT")
-    const removeUpload = () => store.dispatch('uploads/remove', props.upload)
+    const pause = () => send("PAUSE");
+    const resume = () => send("RESUME");
+    const abort = () => send("ABORT");
+    const removeUpload = () => store.dispatch("uploads/remove", props.upload);
 
     return {
       state,
@@ -67,9 +98,9 @@ export default {
       pause,
       resume,
       abort,
-      removeUpload
-    }
-  }
+      removeUpload,
+    };
+  },
 };
 </script>
 
@@ -82,7 +113,7 @@ export default {
 
   column-gap: 1em;
 
-  padding: .3em .2em;
+  padding: 0.3em 0.2em;
 
   &__icon {
     cursor: pointer;
@@ -121,7 +152,7 @@ export default {
     text-overflow: ellipsis;
     display: flex;
     align-items: center;
-    gap: .2em;
+    gap: 0.2em;
   }
 
   &__percentage {
@@ -148,7 +179,7 @@ export default {
   &__progress-bar {
     background-color: rgb(2, 212, 2);
     height: 5px;
-    transition: width .2s ease-in-out;
+    transition: width 0.2s ease-in-out;
   }
 
   &__uploaded-msg-container {

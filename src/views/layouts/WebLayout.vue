@@ -15,11 +15,8 @@
 <script>
 import TheHeader from "@/components/ccr/TheHeader";
 
-
 export default {
   name: "WebLayout",
-  components: { TheHeader }
+  components: { TheHeader },
 };
 </script>
-
-

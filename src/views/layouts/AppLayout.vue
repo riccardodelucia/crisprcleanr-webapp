@@ -13,15 +13,13 @@ import sidenavObject from "@/sidenav.json";
 
 import TheHeader from "@/components/ccr/TheHeader";
 
-
 export default {
   name: "AppLayout",
   components: { TheHeader },
   data() {
-    return { sidenavObject }
-  }
+    return { sidenavObject };
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

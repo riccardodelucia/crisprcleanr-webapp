@@ -1,16 +1,16 @@
 <template>
-
   <div class="input-field">
     <label class="input-field__label" v-if="label">{{ label }}</label>
     <div class="file">
-      <label class="button button--primary button--small">Choose a File
-        <input type="file" @change.stop="updateFile" style="display: none;" />
+      <label class="button button--primary button--small"
+        >Choose a File
+        <input type="file" @change.stop="updateFile" style="display: none" />
       </label>
       <span class="file__name">{{ fileName }}</span>
     </div>
     <div class="input-field__error" v-if="error">
-      <BaseIcon name="alert-circle" width="16px" height="16px"></BaseIcon><small>{{ error
-      }}</small>
+      <BaseIcon name="alert-circle" width="16px" height="16px"></BaseIcon
+      ><small>{{ error }}</small>
     </div>
   </div>
 </template>
@@ -44,5 +44,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

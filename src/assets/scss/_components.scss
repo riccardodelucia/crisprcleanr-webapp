@@ -9,18 +9,18 @@
 ///////////////////////////////////////////////
 // INPUT ELEMENTS
 
-.input-field{
-  padding: .3em 0;
-  min-width:5rem;
+.input-field {
+  padding: 0.3em 0;
+  min-width: 5rem;
 
-  &__error{
+  &__error {
     display: flex;
     align-items: center;
-    gap: .3em;
-    padding-top: .1em;
+    gap: 0.3em;
+    padding-top: 0.1em;
     color: red;
 
-    small{
+    small {
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -31,56 +31,56 @@
     font-weight: bold;
     cursor: pointer;
     display: block;
-    padding-bottom: .2em;
+    padding-bottom: 0.2em;
   }
 }
 
 .radio-group {
-  padding: 0 .5em;
+  padding: 0 0.5em;
   display: flex;
   gap: 2em;
   user-select: none;
 
   &__element {
-      display: flex;
-      gap: .5em;
-      cursor: pointer;
+    display: flex;
+    gap: 0.5em;
+    cursor: pointer;
   }
 
   &__input {
-      width: 3rem;
-      height: 3rem;
-      background-color: white;
-      position: relative;
-      display: inline-block;
+    width: 3rem;
+    height: 3rem;
+    background-color: white;
+    position: relative;
+    display: inline-block;
+    border-radius: 50%;
+    border: 2px solid var(--color-blue-lighter);
+    padding: 0.2em;
+
+    &:after {
+      content: "";
+      position: absolute;
+      left: 0.5rem;
+      top: 0.5rem;
+      width: 1.6rem;
+      height: 1.6rem;
       border-radius: 50%;
-      border: 2px solid var(--color-blue-lighter);
-      padding: .2em;
+      background-color: var(--color-blue-lighter);
+      display: none;
+    }
 
+    &--selected {
       &:after {
-          content: "";
-          position: absolute;
-          left: .5rem;
-          top: 0.5rem;
-          width: 1.6rem;
-          height: 1.6rem;
-          border-radius: 50%;
-          background-color: var(--color-blue-lighter);
-          display: none;
+        display: block;
       }
-
-      &--selected {
-          &:after {
-              display: block;
-          }
-      }
+    }
   }
 }
 
 .checkbox {
-  padding: 0 .5em;
+  padding: 0 0.5em;
   display: flex;
-  gap: .5em;
+  gap: 0.5em;
   cursor: pointer;
   user-select: none;
 
@@ -96,7 +96,7 @@
     &:after {
       content: "";
       position: absolute;
-      left: .8rem;
+      left: 0.8rem;
       top: 0.3rem;
       width: 1rem;
       height: 1.5rem;
@@ -118,36 +118,36 @@
   }
 }
 
-.file{
+.file {
   background-color: var(--color-grey-light);
   display: flex;
   align-items: baseline;
-  padding: .75rem 1rem;
-  gap: .3em;
+  padding: 0.75rem 1rem;
+  gap: 0.3em;
 
-  &__name{
+  &__name {
     display: flex;
-    gap: .3em;
+    gap: 0.3em;
 
-    span{
+    span {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
   }
 
-  &__remove{
+  &__remove {
     color: red;
     cursor: pointer;
   }
 
-  &__list{
+  &__list {
     background-color: var(--color-grey-light);
     position: relative;
     padding: 1rem;
 
-    &::before{
-      content: '';
+    &::before {
+      content: "";
       //width: calc(100% - 2rem);
       width: 100%;
       border-bottom: solid 2px var(--color-blue-lighter);
@@ -160,8 +160,8 @@
   }
 }
 
-
-.input, .textarea {
+.input,
+.textarea {
   font-family: inherit;
   color: inherit;
   font-size: 1.6rem;
@@ -180,12 +180,12 @@
     border-bottom: 2px solid var(--color-blue-lighter);
   }
 
-  &--error{
+  &--error {
     border-bottom: 2px solid red;
   }
 }
 
-.textarea{
+.textarea {
   height: 6rem;
   min-height: 4.5rem;
   resize: vertical;
@@ -199,11 +199,11 @@
 
   outline: none;
 
-  &--error{
+  &--error {
     border-bottom: 2px solid red;
   }
 
-  &__overlay{
+  &__overlay {
     position: absolute;
     left: 0;
     right: 0;
@@ -211,13 +211,13 @@
     bottom: 0;
   }
 
-  &__input{
+  &__input {
     cursor: pointer;
     background-color: var(--color-grey-light);
     height: 4.5rem;
   }
 
-  &__selection{
+  &__selection {
     cursor: pointer;
     user-select: none;
     width: 100%;
@@ -236,7 +236,7 @@
       position: absolute;
       content: "";
       top: 20px;
-      right: .5rem;
+      right: 0.5rem;
       width: 0;
       height: 0;
       border: 5px solid transparent;
@@ -244,7 +244,7 @@
     }
   }
 
-  &__options{
+  &__options {
     position: absolute;
     left: 0;
     right: 0;
@@ -258,14 +258,11 @@
     min-height: 4.5rem;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
       background-color: var(--color-blue-light);
       color: white;
     }
   }
-
-
-
 }
 
 ///////////////////////////////////////////////
@@ -356,7 +353,6 @@
   background-color: white;
   padding: 0.5rem;
 
-
   transition: all 0.5s;
 
   cursor: pointer;
@@ -393,7 +389,7 @@
 
 ///////////////////////////////////////////////
 // WIDGET
-.widget{
+.widget {
   box-shadow: var(--shadow-2);
   padding: 1.5em 1.5em;
   background-color: white;
@@ -424,7 +420,7 @@
 
 /////////////////////////////////////////////////
 // FIXED CONTAINER
-.fixed-container{
+.fixed-container {
   position: fixed;
   right: 1em;
   bottom: 1em;
@@ -434,7 +430,7 @@
 }
 
 // UPLOADS
-.uploads{
+.uploads {
   border-radius: 4px;
   width: 40rem;
   padding: 1em 1.2em;
@@ -458,7 +454,6 @@
     position: relative;
     border-radius: 4px;
     color: white;
-
 
     &--success {
       background-color: #43d787;

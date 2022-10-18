@@ -2,7 +2,10 @@
   <div class="input-field">
     <label class="input-field__label" v-if="label">{{ label }}</label>
     <label class="toggle">
-      <div class="toggle__input" :class="{ 'toggle__input--selected': modelValue }"></div>
+      <div
+        class="toggle__input"
+        :class="{ 'toggle__input--selected': modelValue }"
+      ></div>
       <input hidden type="checkbox" @click="onClick" />
       {{ option }}
     </label>
@@ -36,7 +39,7 @@ export default {
 <style lang="scss">
 .toggle {
   display: flex;
-  gap: .5em;
+  gap: 0.5em;
   cursor: pointer;
   user-select: none;
 
@@ -51,7 +54,7 @@ export default {
     &:after {
       content: "";
       position: absolute;
-      left: .5rem;
+      left: 0.5rem;
       top: 0.4rem;
       width: 1.8rem;
       height: 1.8rem;

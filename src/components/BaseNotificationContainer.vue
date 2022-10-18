@@ -1,7 +1,10 @@
 <template>
   <div class="notification">
-    <BaseNotificationBar v-for="notification in notifications" :key="notification.storeItemId"
-      :notification="notification">
+    <BaseNotificationBar
+      v-for="notification in notifications"
+      :key="notification.storeItemId"
+      :notification="notification"
+    >
     </BaseNotificationBar>
   </div>
 </template>

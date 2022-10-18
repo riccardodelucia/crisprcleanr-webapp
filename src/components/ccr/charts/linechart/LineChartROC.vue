@@ -1,19 +1,40 @@
 <template>
   <div class="linechart-container">
-    <LineChart :data="chartData" :xDomain="xDomain" :xLabel="xLabel" :yDomain="yDomain" :yLabel="yLabel">
+    <LineChart
+      :data="chartData"
+      :xDomain="xDomain"
+      :xLabel="xLabel"
+      :yDomain="yDomain"
+      :yLabel="yLabel"
+    >
       <template v-slot:default="{ lineChartProps }">
         <g>
-          <line class="chart__line chart__line--dashed" :x1="0" :y1="lineChartProps.scales.yScale(metrics.recall)"
-            :x2="lineChartProps.sizes.innerWidth" :y2="lineChartProps.scales.yScale(metrics.recall)" />
-          <line class="chart__line" :x1="0" :y1="lineChartProps.sizes.innerHeight" :x2="lineChartProps.sizes.innerWidth"
-            :y2="0" />
+          <line
+            class="chart__line chart__line--dashed"
+            :x1="0"
+            :y1="lineChartProps.scales.yScale(metrics.recall)"
+            :x2="lineChartProps.sizes.innerWidth"
+            :y2="lineChartProps.scales.yScale(metrics.recall)"
+          />
+          <line
+            class="chart__line"
+            :x1="0"
+            :y1="lineChartProps.sizes.innerHeight"
+            :x2="lineChartProps.sizes.innerWidth"
+            :y2="0"
+          />
         </g>
       </template>
     </LineChart>
     <div>
       <ul class="metrics__list">
-        <li class="metrics__element" v-for="[key, value] in Object.entries(metrics)" :key="key">
-          <b>{{ `${key}: `}}</b>{{`${value}`}}
+        <li
+          class="metrics__element"
+          v-for="[key, value] in Object.entries(metrics)"
+          :key="key"
+        >
+          <b>{{ `${key}: ` }}</b
+          >{{ `${value}` }}
         </li>
       </ul>
     </div>

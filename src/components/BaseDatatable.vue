@@ -1,32 +1,54 @@
 <template>
   <div class="widget datatable">
     <div class="datatable__controls">
-      <BaseSearchBar :modelValue="search" @update:modelValue="setSearch"></BaseSearchBar>
-      <BaseSelect style="width:6rem" v-model="pageSize" :options="[5, 10, 20]"></BaseSelect>
+      <BaseSearchBar
+        :modelValue="search"
+        @update:modelValue="setSearch"
+      ></BaseSearchBar>
+      <BaseSelect
+        style="width: 6rem"
+        v-model="pageSize"
+        :options="[5, 10, 20]"
+      ></BaseSelect>
     </div>
 
     <table class="datatable__table table">
       <thead class="table__head">
         <tr>
-          <th v-for="column in columns" :key="column.name" class="table__head-item" :class="
-            sortable(column)
-              ? currentSortKey === column.name
-                ? sortOrders[column.name] > 0
-                  ? 'table__head-item--sorting-asc'
-                  : 'table__head-item--sorting-desc'
-                : 'table__head-item--sorting'
-              : ''
-          " :style="'width:' + column.width" @click="sortable(column) && sortBy(column.name)">
+          <th
+            v-for="column in columns"
+            :key="column.name"
+            class="table__head-item"
+            :class="
+              sortable(column)
+                ? currentSortKey === column.name
+                  ? sortOrders[column.name] > 0
+                    ? 'table__head-item--sorting-asc'
+                    : 'table__head-item--sorting-desc'
+                  : 'table__head-item--sorting'
+                : ''
+            "
+            :style="'width:' + column.width"
+            @click="sortable(column) && sortBy(column.name)"
+          >
             {{ column.label }}
           </th>
         </tr>
       </thead>
       <tbody class="table__body">
-        <slot :row="row" v-for="(row, index) in paginatedItems" :key="index"></slot>
+        <slot
+          :row="row"
+          v-for="(row, index) in paginatedItems"
+          :key="index"
+        ></slot>
       </tbody>
     </table>
-    <BasePagination class="datatable__pagination" :currentPage="currentPage" :numberOfPages="numberOfPages"
-      @paginate="setCurrentPage">
+    <BasePagination
+      class="datatable__pagination"
+      :currentPage="currentPage"
+      :numberOfPages="numberOfPages"
+      @paginate="setCurrentPage"
+    >
     </BasePagination>
   </div>
 </template>
@@ -269,14 +291,14 @@ export default {
   }
 
   &__body {
-    &>tr>td {
+    & > tr > td {
       padding: 0.3em 0.5em;
       text-overflow: ellipsis;
       overflow: hidden;
     }
   }
 
-  &__body>tr>td,
+  &__body > tr > td,
   &__head-item {
     border-bottom: 1px solid var(--color-grey-light);
   }

@@ -1,12 +1,29 @@
 <template>
-  <BaseSelect label="Reference Genes Set" :options="genesSetsOptions" v-model="genesSet">
+  <BaseSelect
+    label="Reference Genes Set"
+    :options="genesSetsOptions"
+    v-model="genesSet"
+  >
   </BaseSelect>
-  <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
-    <GenesSignaturesChartFocus :data="chartData" :width="chartFocusWidth" :height="height" :yDomain="yDomainFocus"
-      :genesSet="genesSet.genesSet"></GenesSignaturesChartFocus>
+  <svg
+    preserveAspectRatio="xMinYMin meet"
+    :viewBox="[0, 0, width, height].join(' ')"
+  >
+    <GenesSignaturesChartFocus
+      :data="chartData"
+      :width="chartFocusWidth"
+      :height="height"
+      :yDomain="yDomainFocus"
+      :genesSet="genesSet.genesSet"
+    ></GenesSignaturesChartFocus>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
-      <GenesSignaturesChartContext :data="chartData" :width="chartContextWidth" :height="height"
-        :yDomain="yDomainContext" @brush="brushed"></GenesSignaturesChartContext>
+      <GenesSignaturesChartContext
+        :data="chartData"
+        :width="chartContextWidth"
+        :height="height"
+        :yDomain="yDomainContext"
+        @brush="brushed"
+      ></GenesSignaturesChartContext>
     </g>
   </svg>
 </template>
@@ -17,7 +34,6 @@ import { ref, reactive } from "vue";
 
 import GenesSignaturesChartFocus from "@/components/ccr/charts/genes_signatures/GenesSignaturesChartFocus.vue";
 import GenesSignaturesChartContext from "@/components/ccr/charts/genes_signatures/GenesSignaturesChartContext.vue";
-
 
 const setupChart = (data) => {
   const genes = data.curve
@@ -79,7 +95,15 @@ export default {
       yDomainFocus.value = extent;
     };
 
-    const genesSetsOptions = reactive([{ label: "Proteasome", genesSet: "Proteasome" }, { label: "Spliceosome", genesSet: "Spliceosome" }, { label: "Ribosomal Proteins", genesSet: "RibosomalProteins" }, { label: "DNA Replication", genesSet: "DNAReplication" }, { label: "RNA Polymerase", genesSet: "RNAPolymerase" }, { label: "BAGEL Essentials", genesSet: "BAGELEssential" }, { label: "BAGEL Non Essential", genesSet: "BAGELNonEssential" }])
+    const genesSetsOptions = reactive([
+      { label: "Proteasome", genesSet: "Proteasome" },
+      { label: "Spliceosome", genesSet: "Spliceosome" },
+      { label: "Ribosomal Proteins", genesSet: "RibosomalProteins" },
+      { label: "DNA Replication", genesSet: "DNAReplication" },
+      { label: "RNA Polymerase", genesSet: "RNAPolymerase" },
+      { label: "BAGEL Essentials", genesSet: "BAGELEssential" },
+      { label: "BAGEL Non Essential", genesSet: "BAGELNonEssential" },
+    ]);
     const genesSet = ref(genesSetsOptions[0]);
 
     const chartFocusWidth = 450;
@@ -96,7 +120,7 @@ export default {
       yDomainContext,
       brushed,
       genesSet,
-      genesSetsOptions
+      genesSetsOptions,
     };
   },
 };

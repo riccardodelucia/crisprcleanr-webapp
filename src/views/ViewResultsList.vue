@@ -11,7 +11,10 @@
           <td>{{ slotProps.row.title }}</td>
           <td>{{ slotProps.row.status }}</td>
           <td>
-            <button class="button button--ghost button--large" @click="$router.push(`/jobs/${slotProps.row.id}`)">
+            <button
+              class="button button--ghost button--large"
+              @click="$router.push(`/jobs/${slotProps.row.id}`)"
+            >
               Show
             </button>
           </td>
@@ -22,7 +25,6 @@
 </template>
 
 <script>
-
 import { date } from "@/composables/utilities.js";
 import { ref, watchEffect } from "vue";
 import { resizeListener } from "@/composables/utilities.js";
@@ -55,7 +57,12 @@ export default {
           { width: "30%", label: "Title", name: "title", type: "string" },
           { width: "10%", label: "Status", name: "status", type: "string" },
 
-          { width: "10%", label: "Actions", name: "actions", isSortable: false },
+          {
+            width: "10%",
+            label: "Actions",
+            name: "actions",
+            isSortable: false,
+          },
         ];
       } else {
         columns.value = [

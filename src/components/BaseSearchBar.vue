@@ -1,6 +1,11 @@
 <template>
   <div class="search">
-    <BaseInput v-bind="$attrs" type="text" placeholder="Search for job" :modelValue="modelValue"></BaseInput>
+    <BaseInput
+      v-bind="$attrs"
+      type="text"
+      placeholder="Search for job"
+      :modelValue="modelValue"
+    ></BaseInput>
     <BaseIcon name="search" class="search__icon"></BaseIcon>
   </div>
 </template>
