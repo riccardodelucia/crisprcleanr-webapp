@@ -385,12 +385,10 @@ const sendErrorNotification = (_, event) => {
 
 const sendSuccessNotification = (
   _,
-  {
-    data: {
-      data: { jobId },
-    },
-  }
+
+  { data: { data: filesList } }
 ) => {
+  const jobId = filesList[0].jobId;
   store.dispatch("notification/sendSuccessNotification", {
     title: "Job Submitted",
     message: `Job ID: ${jobId}`,
@@ -398,14 +396,7 @@ const sendSuccessNotification = (
 };
 
 const makeUploadFilesList = assign(
-  (
-    { fileFields },
-    {
-      data: {
-        data: { filesList },
-      },
-    }
-  ) => {
+  ({ fileFields }, { data: { data: filesList } }) => {
     const candidates = Object.values(fileFields).reduce((acc, field) => {
       const {
         value: { value },

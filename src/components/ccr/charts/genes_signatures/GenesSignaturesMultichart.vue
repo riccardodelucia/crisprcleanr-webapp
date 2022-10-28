@@ -1,29 +1,12 @@
 <template>
-  <BaseSelect
-    label="Reference Genes Set"
-    :options="genesSetsOptions"
-    v-model="genesSet"
-  >
+  <BaseSelect label="Reference Genes Set" :options="genesSetsOptions" v-model="genesSet">
   </BaseSelect>
-  <svg
-    preserveAspectRatio="xMinYMin meet"
-    :viewBox="[0, 0, width, height].join(' ')"
-  >
-    <GenesSignaturesChartFocus
-      :data="chartData"
-      :width="chartFocusWidth"
-      :height="height"
-      :yDomain="yDomainFocus"
-      :genesSet="genesSet.genesSet"
-    ></GenesSignaturesChartFocus>
+  <svg preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
+    <GenesSignaturesChartFocus :data="chartData" :width="chartFocusWidth" :height="height" :yDomain="yDomainFocus"
+      :genesSet="genesSet.genesSet"></GenesSignaturesChartFocus>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
-      <GenesSignaturesChartContext
-        :data="chartData"
-        :width="chartContextWidth"
-        :height="height"
-        :yDomain="yDomainContext"
-        @brush="brushed"
-      ></GenesSignaturesChartContext>
+      <GenesSignaturesChartContext :data="chartData" :width="chartContextWidth" :height="height"
+        :yDomain="yDomainContext" @brush="brushed"></GenesSignaturesChartContext>
     </g>
   </svg>
 </template>

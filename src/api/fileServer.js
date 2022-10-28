@@ -1,6 +1,10 @@
 import axios from "axios";
 import getEnv from "@/utils/env";
+import lodash from "lodash-es";
+import deepdash from "deepdash-es";
+import camelize from "camelize";
 import { authorize } from "@/authentication";
+const _ = deepdash(lodash);
 
 const baseURL = `${getEnv("VUE_APP_URL_IORIO_CCR_FILESERVER")}`;
 
@@ -21,6 +25,17 @@ const createInstance = () => {
       config.headers.Authorization = `Bearer ${token}`;
       return config;
     });
+  });
+  instance.interceptors.response.use(function (response) {
+    // if this is a multipart file response, there is nothing to camelize
+    if (response.headers["content-type"] === "application/json") {
+      const res = _.mapKeysDeep(response.data, function (value, key) {
+        return camelize(key);
+      });
+      response.data = res;
+    }
+
+    return response;
   });
 
   return {
@@ -47,8 +62,7 @@ export default {
   },
   uploadFile({
     file,
-    uploadId,
-    fileId,
+    objectKey,
     progressCallback,
     uploadedCallback,
     errorCallback,
@@ -60,17 +74,22 @@ export default {
       headers: {
         "Content-Type": "multipart/form-data",
         "Content-Range": `bytes=0-${file.size}/${file.size}`,
-        "X-Upload-Id": uploadId,
-        "X-File-Id": fileId,
+        "X-Object-Key": objectKey,
       },
       onUploadProgress: progressCallback,
     };
 
-    const instance = getInstance(uploadId); // this links all job's uploads with a single abort controller
+    const instance = getInstance(objectKey); // this links all job's uploads with a single abort controller
 
     return instance
       .post(`upload/`, formData, config)
       .then(uploadedCallback)
       .catch(errorCallback);
+  },
+  downloadFile({ objectKey, blob = false }) {
+    const instance = getInstance(objectKey);
+    const options = { params: { "object-key": objectKey } };
+    if (blob) options.responseType = "blob";
+    return instance.get(`/download`, options);
   },
 };

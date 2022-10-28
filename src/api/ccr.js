@@ -28,7 +28,7 @@ const createInstance = (auth = false) => {
       store.dispatch("progressBar/increase");
       return config;
     },
-    function () {
+    function (error) {
       store.dispatch("progressBar/decrease");
       return Promise.reject(error);
     }
@@ -114,25 +114,6 @@ export default {
       auth: true,
     });
     return instance.get(`jobs/${id}`);
-  },
-  getFile({ id, fileUri }) {
-    const instance = getInstance({
-      path: window.location.pathname,
-      auth: true,
-    });
-    return instance.get(`files/${id}/`, {
-      responseType: "blob",
-      params: { file_uri: fileUri },
-    });
-  },
-  getChart({ id, chart }) {
-    const instance = getInstance({
-      path: window.location.pathname,
-      auth: true,
-    });
-    return instance.get(`files/${id}/`, {
-      params: { file_uri: `json/${chart}.json` },
-    });
   },
   getStaticResource(resource) {
     const instance = getInstance({

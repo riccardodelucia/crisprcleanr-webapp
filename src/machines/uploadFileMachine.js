@@ -1,10 +1,10 @@
 import { createMachine, assign } from "xstate";
-import uploadAPI from "@/api/upload.js";
+import fileServerAPI from "@/api/fileServer.js";
 
 ////////////////////////////////////////////////////////////////
 // SERVICES
 const uploadFile =
-  ({ file, fileId, uploadId }, event) =>
+  ({ file, objectKey }) =>
   (callback) => {
     const progressCallback = (progress) =>
       callback({
@@ -23,10 +23,9 @@ const uploadFile =
         payload: { error },
       });
 
-    uploadAPI.uploadFile({
+    fileServerAPI.uploadFile({
       file,
-      fileId,
-      uploadId,
+      objectKey,
       progressCallback,
       uploadedCallback,
       errorCallback,
@@ -63,7 +62,7 @@ const assignAbortMessage = assign({
 });
 
 const abortUpload = ({ uploadId }, event) =>
-  uploadAPI.abortAndDeleteRequest(uploadId);
+  fileServerAPI.abortAndDeleteRequest(uploadId);
 
 ////////////////////////////////////////////////////////////////
 // GUARDS
@@ -75,8 +74,7 @@ const abortUpload = ({ uploadId }, event) =>
 export default createMachine({
   context: {
     file: null,
-    fileId: "",
-    uploadId: "",
+    objectKey: "",
     totalFileBytesUploaded: 0,
     percentage: 0,
     errorMessage: "", //filled only if an error occurs during the upload

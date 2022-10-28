@@ -1,6 +1,6 @@
 [
   {
-    "imgUri": "thumb/fcs.png",
+    "imgUri": "fcs.png",
     "chart": "fcs",
     "filename": "fcs",
     "section": "norm",
@@ -9,7 +9,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/normCounts.png",
+    "imgUri": "normCounts.png",
     "chart": "normCounts",
     "filename": "normCounts",
     "section": "norm",
@@ -18,7 +18,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/PrRc_by_sgRNA.png",
+    "imgUri": "PrRc_by_sgRNA.png",
     "chart": "PrRc_by_sgRNA",
     "filename": "PrRc_by_sgRNA",
     "section": "qc",
@@ -27,7 +27,7 @@
     "width": "80rem"
   },
   {
-    "imgUri": "thumb/PrRc_by_gene.png",
+    "imgUri": "PrRc_by_gene.png",
     "chart": "PrRc_by_gene",
     "filename": "PrRc_by_gene",
     "section": "qc",
@@ -36,7 +36,7 @@
     "width": "80rem"
   },
   {
-    "imgUri": "thumb/ROC_by_sgRNA.png",
+    "imgUri": "ROC_by_sgRNA.png",
     "chart": "ROC_by_sgRNA",
     "filename": "ROC_by_sgRNA",
     "section": "qc",
@@ -45,7 +45,7 @@
     "width": "80rem"
   },
   {
-    "imgUri": "thumb/ROC_by_gene.png",
+    "imgUri": "ROC_by_gene.png",
     "chart": "ROC_by_gene",
     "filename": "ROC_by_gene",
     "section": "qc",
@@ -54,7 +54,7 @@
     "width": "80rem"
   },
   {
-    "imgUri": "thumb/1.png",
+    "imgUri": "1.png",
     "chart": "1",
     "filename": "1",
     "section": "chr",
@@ -63,7 +63,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/2.png",
+    "imgUri": "2.png",
     "chart": "2",
     "filename": "2",
     "section": "chr",
@@ -72,7 +72,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/3.png",
+    "imgUri": "3.png",
     "chart": "3",
     "filename": "3",
     "section": "chr",
@@ -81,7 +81,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/4.png",
+    "imgUri": "4.png",
     "chart": "4",
     "filename": "4",
     "section": "chr",
@@ -90,7 +90,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/5.png",
+    "imgUri": "5.png",
     "chart": "5",
     "filename": "5",
     "section": "chr",
@@ -99,7 +99,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/6.png",
+    "imgUri": "6.png",
     "chart": "6",
     "filename": "6",
     "section": "chr",
@@ -108,7 +108,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/7.png",
+    "imgUri": "7.png",
     "chart": "7",
     "filename": "7",
     "section": "chr",
@@ -117,7 +117,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/8.png",
+    "imgUri": "8.png",
     "chart": "8",
     "filename": "8",
     "section": "chr",
@@ -126,7 +126,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/9.png",
+    "imgUri": "9.png",
     "chart": "9",
     "filename": "9",
     "section": "chr",
@@ -135,7 +135,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/10.png",
+    "imgUri": "10.png",
     "chart": "10",
     "filename": "10",
     "section": "chr",
@@ -144,7 +144,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/11.png",
+    "imgUri": "11.png",
     "chart": "11",
     "filename": "11",
     "section": "chr",
@@ -153,7 +153,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/12.png",
+    "imgUri": "12.png",
     "chart": "12",
     "filename": "12",
     "section": "chr",
@@ -162,7 +162,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/13.png",
+    "imgUri": "13.png",
     "chart": "13",
     "filename": "13",
     "section": "chr",
@@ -171,7 +171,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/14.png",
+    "imgUri": "14.png",
     "chart": "14",
     "filename": "14",
     "section": "chr",
@@ -180,7 +180,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/15.png",
+    "imgUri": "15.png",
     "chart": "15",
     "filename": "15",
     "section": "chr",
@@ -189,7 +189,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/16.png",
+    "imgUri": "16.png",
     "chart": "16",
     "filename": "16",
     "section": "chr",
@@ -198,7 +198,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/17.png",
+    "imgUri": "17.png",
     "chart": "17",
     "filename": "17",
     "section": "chr",
@@ -207,7 +207,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/18.png",
+    "imgUri": "18.png",
     "chart": "18",
     "filename": "18",
     "section": "chr",
@@ -216,7 +216,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/19.png",
+    "imgUri": "19.png",
     "chart": "19",
     "filename": "19",
     "section": "chr",
@@ -225,7 +225,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/20.png",
+    "imgUri": "20.png",
     "chart": "20",
     "filename": "20",
     "section": "chr",
@@ -234,7 +234,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/21.png",
+    "imgUri": "21.png",
     "chart": "21",
     "filename": "21",
     "section": "chr",
@@ -243,7 +243,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/22.png",
+    "imgUri": "22.png",
     "chart": "22",
     "filename": "22",
     "section": "chr",
@@ -252,7 +252,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/23.png",
+    "imgUri": "23.png",
     "chart": "23",
     "filename": "23",
     "section": "chr",
@@ -261,7 +261,7 @@
     "width": "120rem"
   },
   {
-    "imgUri": "thumb/24.png",
+    "imgUri": "24.png",
     "chart": "24",
     "filename": "24",
     "section": "chr",
