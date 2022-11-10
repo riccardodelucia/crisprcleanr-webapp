@@ -1,6 +1,6 @@
 <template>
   <div class="input-field">
-    <label class="input-field__label" v-if="label">{{ label }}</label>
+    <label v-if="label" class="input-field__label">{{ label }}</label>
     <label class="toggle">
       <div
         class="toggle__input"
@@ -17,20 +17,21 @@ export default {
   props: {
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     option: {
       type: String,
-      default: "",
+      default: '',
     },
     modelValue: {
       type: Boolean,
       required: true,
     },
   },
+  emits: ['update:modelValue'],
   methods: {
     onClick() {
-      this.$emit("update:modelValue", !this.modelValue);
+      this.$emit('update:modelValue', !this.modelValue);
     },
   },
 };
@@ -52,7 +53,7 @@ export default {
     position: relative;
 
     &:after {
-      content: "";
+      content: '';
       position: absolute;
       left: 0.5rem;
       top: 0.4rem;

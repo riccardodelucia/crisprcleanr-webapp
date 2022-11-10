@@ -10,7 +10,7 @@
 <script>
 const MOUSE_POS_OFFSET = 8;
 export default {
-  name: "Tooltip",
+  name: 'ChartsTooltip',
   props: {
     tooltipCoords: {
       type: Array,

@@ -1,4 +1,4 @@
-import nProgress from "nprogress";
+import nProgress from 'nprogress';
 
 export const namespaced = true;
 export const state = {
@@ -16,11 +16,11 @@ export const mutations = {
 
 export const actions = {
   increase({ commit }) {
-    commit("INCREASE");
+    commit('INCREASE');
     if (state.requestsCounter >= 1) nProgress.start();
   },
   decrease({ commit }) {
-    commit("DECREASE");
+    commit('DECREASE');
     if (state.requestsCounter === 0) nProgress.done();
   },
 };

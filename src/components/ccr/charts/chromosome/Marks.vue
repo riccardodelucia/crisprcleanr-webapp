@@ -2,9 +2,9 @@
   <g>
     <g v-show="selections.guides">
       <circle
-        class="chromosome__sgrna"
         v-for="point in points"
         :key="`point${point.idx}`"
+        class="chromosome__sgrna"
         :cx="xScale(point.idx)"
         :cy="yScale(point.avgLogFC)"
         :r="pointRadius"
@@ -14,9 +14,9 @@
     </g>
     <g v-show="selections.segments">
       <line
-        class="chromosome__segment"
         v-for="segment in segments"
         :key="`segment${segment.idxStart}`"
+        class="chromosome__segment"
         :x1="xScale(segment.idxStart)"
         :x2="xScale(segment.idxEnd)"
         :y1="yScale(segment.avgLogFC)"
@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import { setupTooltip } from "@/composables/chart.js";
+import { setupTooltip } from '@/composables/chart.js';
 
 export default {
-  name: "Marks",
+  name: 'ChromosomeMarks',
   props: {
     points: {
       type: Array,
@@ -40,12 +40,15 @@ export default {
     },
     segments: {
       type: Array,
+      default: () => [],
     },
     xScale: {
       type: Function,
+      default: () => {},
     },
     yScale: {
       type: Function,
+      default: () => {},
     },
     pointRadius: {
       type: Number,

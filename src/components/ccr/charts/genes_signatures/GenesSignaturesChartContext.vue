@@ -20,9 +20,9 @@
       <MarksCurve
         :width="innerWidth"
         :data="data"
-        :xScale="xScale"
-        :yScale="yScale"
-        :pointRadius="2"
+        :x-scale="xScale"
+        :y-scale="yScale"
+        :point-radius="2"
       ></MarksCurve>
     </BrushArea>
 
@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import BrushArea from "@/components/ccr/charts/BrushArea.vue";
-import D3Axis from "@/components/ccr/charts/D3Axis.vue";
-import { getInnerChartSizes } from "@/composables/chart.js";
-import { scaleLog, extent, scaleLinear } from "d3";
-import MarksCurve from "@/components/ccr/charts/genes_signatures/MarksCurve.vue";
+import BrushArea from '@/components/ccr/charts/BrushArea.vue';
+import D3Axis from '@/components/ccr/charts/D3Axis.vue';
+import { getInnerChartSizes } from '@/composables/chart.js';
+import { scaleLog, extent, scaleLinear } from 'd3';
+import MarksCurve from '@/components/ccr/charts/genes_signatures/MarksCurve.vue';
 
 export default {
-  name: "GenesSignaturesChartContext",
+  name: 'GenesSignaturesChartContext',
   components: { BrushArea, D3Axis, MarksCurve },
   props: {
     width: {
@@ -57,6 +57,7 @@ export default {
     },
     yDomain: {
       type: Array,
+      default: () => [],
     },
   },
   setup(props) {

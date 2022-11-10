@@ -2,11 +2,11 @@
   <svg
     preserveAspectRatio="xMinYMin meet"
     :viewBox="[0, 0, width, height].join(' ')"
+    width="100%"
+    height="100%"
     @mouseover="onMouseOver"
     @mousemove="onMouseOver"
     @mouseleave="onMouseLeave"
-    width="100%"
-    height="100%"
   >
     <g ref="chart" :transform="`translate(${margin.left}, ${margin.top})`">
       <D3Axis :scale="yScale" position="left" />
@@ -28,7 +28,7 @@
         </text>
       </g>
       <slot
-        :lineChartProps="{
+        :line-chart-props="{
           sizes: { innerHeight, innerWidth },
           scales: { xScale, yScale },
         }"
@@ -36,10 +36,10 @@
       <path :d="curve" class="chart__path" />
       <circle
         v-show="tooltipShow"
+        id="cursor"
         :cx="cursorPoint.x"
         :cy="cursorPoint.y"
         r="3"
-        id="cursor"
         class="chart__point"
         :data-tippy-content="tooltipContent"
       />
@@ -48,14 +48,14 @@
 </template>
 
 <script>
-import { scaleLinear, extent, line, bisector, pointer } from "d3";
-import D3Axis from "@/components/ccr/charts/D3Axis.vue";
+import { scaleLinear, extent, line, bisector, pointer } from 'd3';
+import D3Axis from '@/components/ccr/charts/D3Axis.vue';
 
-import { ref, reactive } from "vue";
-import { getInnerChartSizes } from "@/composables/chart.js";
+import { ref, reactive } from 'vue';
+import { getInnerChartSizes } from '@/composables/chart.js';
 
-import tippy from "tippy.js";
-import { hideAll } from "tippy.js";
+import tippy from 'tippy.js';
+import { hideAll } from 'tippy.js';
 
 const bisectD3 = bisector((d) => d.x).left;
 
@@ -79,18 +79,18 @@ const margin = {
 };
 
 export default {
-  name: "LineChart",
+  name: 'LineChart',
+  components: { D3Axis },
   props: {
     data: {
       type: Array,
       required: true,
     },
-    xLabel: String,
+    xLabel: { type: String, default: '' },
     xDomain: { type: Array, required: true },
-    yLabel: String,
+    yLabel: { type: String, default: '' },
     yDomain: { type: Array, required: true },
   },
-  components: { D3Axis },
   setup(props) {
     const { innerWidth, innerHeight } = getInnerChartSizes(
       width,
@@ -112,7 +112,7 @@ export default {
 
     const cursorPoint = reactive({ x: 0, y: 0 });
     const tooltipShow = ref(false);
-    const tooltipContent = ref("");
+    const tooltipContent = ref('');
 
     const onMouseOver = (event) => {
       tooltipShow.value = true;
@@ -121,7 +121,7 @@ export default {
       cursorPoint.y = yScale(datum.y);
       tooltipContent.value = `Threshold: ${datum.threshold}`;
       hideAll({ duration: 0 });
-      const instance = tippy("#cursor", { duration: 0 });
+      const instance = tippy('#cursor', { duration: 0 });
       instance[0].show();
     };
 

@@ -1,6 +1,6 @@
 <template>
   <div class="layout layout--app">
-    <BaseSidenav :sidenavObject="sidenavObject"></BaseSidenav>
+    <BaseSidenav :sidenav-object="sidenavObject"></BaseSidenav>
     <TheHeader></TheHeader>
     <div class="content">
       <router-view />
@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import sidenavObject from "@/sidenav.json";
+import sidenavObject from '@/sidenav.json';
 
-import TheHeader from "@/components/ccr/TheHeader";
+import TheHeader from '@/components/ccr/TheHeader.vue';
 
 export default {
-  name: "AppLayout",
+  name: 'AppLayout',
   components: { TheHeader },
   data() {
     return { sidenavObject };

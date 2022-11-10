@@ -1,6 +1,6 @@
 <template>
   <div class="input-field">
-    <label class="input-field__label" v-if="label">
+    <label v-if="label" class="input-field__label">
       {{ label }}
       <textarea
         class="textarea"
@@ -11,8 +11,8 @@
       >
       </textarea>
     </label>
-    <div class="input-field__error" v-if="error">
-      <BaseIcon name="alert-circle" width="16px" height="16px"></BaseIcon
+    <div v-if="error" class="input-field__error">
+      <vue-feather type="alert-circle" size="16px"></vue-feather
       ><small>{{ error }}</small>
     </div>
   </div>
@@ -20,23 +20,24 @@
 
 <script>
 export default {
-  name: "BaseTextArea",
+  name: 'BaseTextArea',
   props: {
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     modelValue: {
       type: String,
-      default: "",
+      default: '',
     },
     error: {
       type: String,
-      default: "",
+      default: '',
     },
   },
+  emits: ['update:modelValue'],
   setup(_, { emit }) {
-    const onInput = (event) => emit("update:modelValue", event.target.value);
+    const onInput = (event) => emit('update:modelValue', event.target.value);
     return {
       onInput,
     };

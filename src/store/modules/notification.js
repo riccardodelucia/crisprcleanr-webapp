@@ -27,42 +27,42 @@ export const getters = {
 
 export const actions = {
   add({ commit, getters }, notification) {
-    commit("PUSH", notification);
+    commit('PUSH', notification);
     const notificationWithID = getters.getLastNotification;
     notificationWithID?.timeout &&
       setTimeout(() => {
-        commit("DELETE", notificationWithID);
+        commit('DELETE', notificationWithID);
       }, notificationWithID.timeout);
   },
   remove({ commit }, notificationToRemove) {
-    commit("DELETE", notificationToRemove);
+    commit('DELETE', notificationToRemove);
   },
   sendErrorNotification: (
     { dispatch },
     {
-      title = "Something went wrong... 💥",
-      message = "Unknown error",
+      title = 'Something went wrong... 💥',
+      message = 'Unknown error',
       timeout = errorNotificationsTimeout,
     }
   ) => {
     const notification = {
-      type: "error",
+      type: 'error',
       title,
       message,
       timeout: timeout * 1000,
     };
-    dispatch("add", notification);
+    dispatch('add', notification);
   },
   sendSuccessNotification: (
     { dispatch },
-    { title = "Success!", message = "Successful request", timeout = 0 }
+    { title = 'Success!', message = 'Successful request', timeout = 0 }
   ) => {
     const notification = {
-      type: "success",
+      type: 'success',
       title,
       message,
       timeout: timeout * 1000,
     };
-    dispatch("add", notification);
+    dispatch('add', notification);
   },
 };

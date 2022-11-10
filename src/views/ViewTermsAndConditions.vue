@@ -338,7 +338,7 @@
 
 <script>
 export default {
-  name: "ViewCRISPRcleanRTermsAndConditions",
+  name: 'ViewCRISPRcleanRTermsAndConditions',
 };
 </script>
 

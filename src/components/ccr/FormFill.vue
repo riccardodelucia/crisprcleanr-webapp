@@ -1,10 +1,10 @@
 <template>
   <template v-if="!state.hasTag('submitting') && !state.matches('submitted')">
-    <form class="widget job-form" ref="form" @submit.prevent="submit">
+    <form ref="form" class="widget job-form" @submit.prevent="submit">
       <h2 class="u-margin-bottom-small">Submit a new job</h2>
       <BaseFormProgressBar
         :steps="progressSteps"
-        :currentStep="currentStep"
+        :current-step="currentStep"
         class="u-margin-bottom-small"
       >
       </BaseFormProgressBar>
@@ -14,11 +14,11 @@
         <div class="form__group">
           <BaseInput
             :label="labelFieldPairs.title"
-            @update:modelValue="onInput($event, 'title')"
-            :modelValue="getDataFieldValue(state, 'title')"
+            :model-value="getDataFieldValue(state, 'title')"
             type="text"
             placeholder="Your title here"
             :error="getDataFieldErrorMessage(state, 'title')"
+            @update:model-value="onInput($event, 'title')"
           >
           </BaseInput>
         </div>
@@ -26,11 +26,11 @@
         <div class="form__group">
           <BaseInput
             :label="labelFieldPairs.label"
-            @update:modelValue="onInput($event, 'label')"
-            :modelValue="getDataFieldValue(state, 'label')"
+            :model-value="getDataFieldValue(state, 'label')"
             type="text"
             placeholder="Your data label here"
             :error="getDataFieldErrorMessage(state, 'label')"
+            @update:model-value="onInput($event, 'label')"
           >
           </BaseInput>
         </div>
@@ -38,17 +38,17 @@
           <BaseCheckbox
             :label="labelFieldPairs.sendEmail"
             option="Send email upon job completion"
-            @update:modelValue="onInput($event, 'sendEmail')"
-            :modelValue="getDataFieldValue(state, 'sendEmail')"
+            :model-value="getDataFieldValue(state, 'sendEmail')"
+            @update:model-value="onInput($event, 'sendEmail')"
           >
           </BaseCheckbox>
         </div>
         <div class="form__group">
           <BaseTextarea
             :label="labelFieldPairs.notes"
-            @update:modelValue="onInput($event, 'notes')"
-            :modelValue="getDataFieldValue(state, 'notes')"
+            :model-value="getDataFieldValue(state, 'notes')"
             placeholder="Your notes here"
+            @update:model-valuee="onInput($event, 'notes')"
           />
         </div>
       </template>
@@ -58,18 +58,18 @@
         <div class="form__group">
           <BaseInput
             :label="labelFieldPairs.normMinReads"
-            @update:modelValue="onInput($event, 'normMinReads')"
-            :modelValue="getDataFieldValue(state, 'normMinReads')"
+            :model-value="getDataFieldValue(state, 'normMinReads')"
             type="number"
             :error="getDataFieldErrorMessage(state, 'normMinReads')"
+            @update:model-value="onInput($event, 'normMinReads')"
           >
           </BaseInput>
         </div>
         <div class="form__group">
           <BaseSelect
+            v-model="normalization"
             :label="labelFieldPairs.method"
             :options="normalizationOptions"
-            v-model="normalization"
             :error="getDataFieldErrorMessage(state, 'method')"
           >
           </BaseSelect>
@@ -81,16 +81,16 @@
         <BaseRadioGroup
           label="Library type"
           :options="libraryTypeOptions"
-          @update:modelValue="sendLibraryType"
-          :modelValue="libraryType"
+          :model-value="libraryType"
+          @update:model-value="sendLibraryType"
         >
         </BaseRadioGroup>
         <template v-if="state.hasTag('libraryBuiltin')">
           <div class="form__group">
             <BaseSelect
+              v-model="libraryBuiltin"
               :label="labelFieldPairs.libraryBuiltin"
               :options="libraryOptions"
-              v-model="libraryBuiltin"
               :error="getDataFieldErrorMessage(state, 'libraryBuiltin')"
             >
             </BaseSelect>
@@ -101,9 +101,9 @@
           <div class="form__group">
             <BaseInputFile
               :label="labelFieldPairs.libraryFile"
-              @update:modelValue="onInput($event, 'libraryFile')"
-              :modelValue="getFileFieldValue(state, 'libraryFile')"
+              :model-value="getFileFieldValue(state, 'libraryFile')"
               :error="getFileFieldErrorMessage(state, 'libraryFile')"
+              @update:model-value="onInput($event, 'libraryFile')"
             >
             </BaseInputFile>
           </div>
@@ -116,8 +116,8 @@
         <BaseRadioGroup
           label="Data type"
           :options="fileTypeOptions"
-          @update:modelValue="sendFileType"
-          :modelValue="fileType"
+          :model-value="fileType"
+          @update:model-value="sendFileType"
         >
         </BaseRadioGroup>
 
@@ -125,19 +125,19 @@
           <div class="form__group">
             <BaseInputFile
               :label="labelFieldPairs.fileCounts"
-              @update:modelValue="onInput($event, 'fileCounts')"
-              :modelValue="getFileFieldValue(state, 'fileCounts')"
+              :model-value="getFileFieldValue(state, 'fileCounts')"
               :error="getFileFieldErrorMessage(state, 'fileCounts')"
+              @update:model-value="onInput($event, 'fileCounts')"
             >
             </BaseInputFile>
           </div>
           <div class="form__group">
             <BaseInput
               :label="labelFieldPairs.nControls"
-              @update:modelValue="onInput($event, 'nControls')"
-              :modelValue="getDataFieldValue(state, 'nControls')"
+              :model-value="getDataFieldValue(state, 'nControls')"
               type="number"
               :error="getDataFieldErrorMessage(state, 'nControls')"
+              @update:model-value="onInput($event, 'nControls')"
             >
             </BaseInput>
           </div>
@@ -147,9 +147,9 @@
           <div class="form__group">
             <BaseInputFileMultiple
               :label="labelFieldPairs.filesFASTQcontrols"
-              @update:modelValue="onInput($event, 'filesFASTQcontrols')"
-              :modelValue="getFileFieldValue(state, 'filesFASTQcontrols')"
+              :model-value="getFileFieldValue(state, 'filesFASTQcontrols')"
               :error="getFileFieldErrorMessage(state, 'filesFASTQcontrols')"
+              @update:model-value="onInput($event, 'filesFASTQcontrols')"
             >
             </BaseInputFileMultiple>
           </div>
@@ -157,9 +157,9 @@
           <div class="form__group">
             <BaseInputFileMultiple
               :label="labelFieldPairs.filesFASTQsamples"
-              @update:modelValue="onInput($event, 'filesFASTQsamples')"
-              :modelValue="getFileFieldValue(state, 'filesFASTQsamples')"
+              :model-value="getFileFieldValue(state, 'filesFASTQsamples')"
               :error="getFileFieldErrorMessage(state, 'filesFASTQsamples')"
+              @update:model-value="onInput($event, 'filesFASTQsamples')"
             >
             </BaseInputFileMultiple>
           </div>
@@ -169,9 +169,9 @@
           <div class="form__group">
             <BaseInputFileMultiple
               :label="labelFieldPairs.filesBAMcontrols"
-              @update:modelValue="onInput($event, 'filesBAMcontrols')"
-              :modelValue="getFileFieldValue(state, 'filesBAMcontrols')"
+              :model-value="getFileFieldValue(state, 'filesBAMcontrols')"
               :error="getFileFieldErrorMessage(state, 'filesBAMcontrols')"
+              @update:model-value="onInput($event, 'filesBAMcontrols')"
             >
             </BaseInputFileMultiple>
           </div>
@@ -179,9 +179,9 @@
           <div class="form__group">
             <BaseInputFileMultiple
               :label="labelFieldPairs.filesBAMsamples"
-              @update:modelValue="onInput($event, 'filesBAMsamples')"
-              :modelValue="getFileFieldValue(state, 'filesBAMsamples')"
+              :model-value="getFileFieldValue(state, 'filesBAMsamples')"
               :error="getFileFieldErrorMessage(state, 'filesBAMsamples')"
+              @update:model-value="onInput($event, 'filesBAMsamples')"
             >
             </BaseInputFileMultiple>
           </div>
@@ -199,10 +199,10 @@
 
       <div class="job-form__button-container">
         <button
+          v-if="!state.matches('enteringGeneralInfo')"
           type="button"
           class="button button--primary button--large prev-button"
           @click="previous"
-          v-if="!state.matches('enteringGeneralInfo')"
         >
           Previous Step
         </button>
@@ -228,7 +228,7 @@
 </template>
 
 <script>
-import { watch, ref, computed, reactive } from "vue";
+import { watch, ref, computed, reactive } from 'vue';
 
 import {
   getInterpretedMachine,
@@ -236,49 +236,50 @@ import {
   getDataFieldErrorMessage,
   getFileFieldValue,
   getFileFieldErrorMessage,
-} from "../../machines/submitJobMachine";
+} from '../../machines/submitJobMachine';
 
 export default {
-  name: "FormFill",
+  name: 'FormFill',
   props: {
-    config: { type: Object },
+    config: { type: Object, default: () => ({}) },
   },
+  emits: { submitted: null },
   setup(props, { emit }) {
     const { state, send } = getInterpretedMachine();
 
     const onInput = (event, field) => {
-      send("INPUT", { payload: event, field });
+      send('INPUT', { payload: event, field });
     };
 
     const onChange = (event, field) => {
-      send("CHANGE", { payload: event, field });
+      send('CHANGE', { payload: event, field });
     };
 
-    const submit = (event, field) => {
-      send("NEXT");
+    const submit = () => {
+      send('NEXT');
     };
 
-    const previous = () => send("PREVIOUS");
+    const previous = () => send('PREVIOUS');
 
     watch(state, () => {
-      if (state.value.matches("submitted")) emit("submitted");
+      if (state.value.matches('submitted')) emit('submitted');
     });
 
     const labelFieldPairs = {
-      title: "Title",
-      sendEmail: "Send Email",
-      label: "Charts label",
-      notes: "Notes",
-      normMinReads: "Min number of reads in the control sample",
-      method: "Normalization Method",
-      libraryBuiltin: "Built-in Library",
-      libraryFile: "Library Annotation File",
-      fileCounts: "sgRNA Counts File",
-      nControls: "Number of controls",
-      filesFASTQcontrols: "FASTQ Controls",
-      filesFASTQsamples: "FASTQ Samples",
-      filesBAMcontrols: "BAM Controls",
-      filesBAMsamples: "BAM Samples",
+      title: 'Title',
+      sendEmail: 'Send Email',
+      label: 'Charts label',
+      notes: 'Notes',
+      normMinReads: 'Min number of reads in the control sample',
+      method: 'Normalization Method',
+      libraryBuiltin: 'Built-in Library',
+      libraryFile: 'Library Annotation File',
+      fileCounts: 'sgRNA Counts File',
+      nControls: 'Number of controls',
+      filesFASTQcontrols: 'FASTQ Controls',
+      filesFASTQsamples: 'FASTQ Samples',
+      filesBAMcontrols: 'BAM Controls',
+      filesBAMsamples: 'BAM Samples',
     };
 
     const formDataReview = (state) => {
@@ -286,7 +287,7 @@ export default {
       Object.entries(state.context.formData).forEach(([key, field]) => {
         let fieldValue = field;
         if (Array.isArray(field)) {
-          fieldValue = field.join(", ");
+          fieldValue = field.join(', ');
         }
         formDataMap.set(labelFieldPairs[key], fieldValue);
       });
@@ -295,10 +296,10 @@ export default {
 
     const normalizationOptions = reactive([
       {
-        method: "ScalingByTotalReads",
-        label: "Scaling By Total Numbers Of Reads",
+        method: 'ScalingByTotalReads',
+        label: 'Scaling By Total Numbers Of Reads',
       },
-      { method: "MedRatios", label: "Median Ratios" },
+      { method: 'MedRatios', label: 'Median Ratios' },
     ]);
 
     const normalization = ref(normalizationOptions[0]);
@@ -306,55 +307,55 @@ export default {
     watch(
       normalization,
       () => {
-        send("INPUT", {
+        send('INPUT', {
           payload: normalization.value?.method,
-          field: "method",
+          field: 'method',
         });
       },
       { immediate: true }
     );
 
     const libraryOptions = reactive([
-      { library: "AVANA_Library", label: "AVANA" },
-      { library: "Brunello_Library", label: "Brunello" },
-      { library: "GeCKO_Library_v2", label: "GeCKO" },
-      { library: "KY_Library_v1.0", label: "KY v1.0" },
-      { library: "KY_Library_v1.1", label: "KY v1.1" },
-      { library: "MiniLibCas9_Library", label: "MiniLibCas9" },
-      { library: "Whitehead_Library", label: "Whitehead" },
+      { library: 'AVANA_Library', label: 'AVANA' },
+      { library: 'Brunello_Library', label: 'Brunello' },
+      { library: 'GeCKO_Library_v2', label: 'GeCKO' },
+      { library: 'KY_Library_v1.0', label: 'KY v1.0' },
+      { library: 'KY_Library_v1.1', label: 'KY v1.1' },
+      { library: 'MiniLibCas9_Library', label: 'MiniLibCas9' },
+      { library: 'Whitehead_Library', label: 'Whitehead' },
     ]);
     const libraryBuiltin = ref(null);
 
     watch(
       libraryBuiltin,
       () => {
-        send("INPUT", {
+        send('INPUT', {
           payload: libraryBuiltin.value?.library,
-          field: "libraryBuiltin",
+          field: 'libraryBuiltin',
         });
       },
       { immediate: true }
     );
 
     const libraryTypeArray = [
-      { option: "Built-in", event: "LIBRARY.BUILTIN" },
-      { option: "Other Library", event: "LIBRARY.FILE" },
+      { option: 'Built-in', event: 'LIBRARY.BUILTIN' },
+      { option: 'Other Library', event: 'LIBRARY.FILE' },
     ];
     const libraryTypeOptions = libraryTypeArray.map((item) => item.option);
-    const libraryType = ref("Built-in");
+    const libraryType = ref('Built-in');
 
     const sendLibraryType = (option) => {
       libraryType.value = option;
       const event = libraryTypeArray.find((item) => item.option === option)[
-        "event"
+        'event'
       ];
       event && send(event);
     };
 
     const fileTypeArray = [
-      { option: "sgRNA Counts", event: "FILE.COUNTS" },
-      { option: "FASTQ", event: "FILE.FASTQ" },
-      { option: "BAM", event: "FILE.BAM" },
+      { option: 'sgRNA Counts', event: 'FILE.COUNTS' },
+      { option: 'FASTQ', event: 'FILE.FASTQ' },
+      { option: 'BAM', event: 'FILE.BAM' },
     ];
     const fileTypeOptions = fileTypeArray.map((item) => item.option);
     const fileType = ref(fileTypeArray[0].option);
@@ -362,24 +363,33 @@ export default {
     const sendFileType = (option) => {
       fileType.value = option;
       const event = fileTypeArray.find((item) => item.option === option)[
-        "event"
+        'event'
       ];
       event && send(event);
     };
 
     const progressSteps = [
-      "Job Info",
-      "Settings",
-      "Library Selection",
-      "Files Upload",
-      "Review",
+      'Job Info',
+      'Settings',
+      'Library Selection',
+      'Files Upload',
+      'Review',
     ];
     const currentStep = computed(() => {
-      if (state.value.matches("enteringGeneralInfo")) return progressSteps[0];
-      if (state.value.matches("enteringSettings")) return progressSteps[1];
-      if (state.value.matches("enteringLibrary")) return progressSteps[2];
-      if (state.value.matches("enteringFiles")) return progressSteps[3];
-      if (state.value.matches("review")) return progressSteps[4];
+      switch (state.value) {
+        case state.value.matches('enteringGeneralInfo'):
+          return progressSteps[0];
+        case state.value.matches('enteringSettings'):
+          return progressSteps[1];
+        case state.value.matches('enteringLibrary'):
+          return progressSteps[2];
+        case state.value.matches('enteringFiles'):
+          return progressSteps[3];
+        case state.value.matches('review'):
+          return progressSteps[4];
+        default:
+          return progressSteps[0];
+      }
     });
 
     return {

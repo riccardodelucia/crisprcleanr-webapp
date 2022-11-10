@@ -1,8 +1,8 @@
 <script>
-import { h, ref, computed } from "vue";
-import BaseIcon from "@/components/BaseIcon";
+import { h, ref, computed } from 'vue';
+import VueFeather from 'vue-feather';
 
-import { resizeListener } from "@/composables/utilities.js";
+import { resizeListener } from '@/composables/utilities.js';
 
 export default {
   props: {
@@ -21,75 +21,7 @@ export default {
       },
     },
   },
-  render() {
-    const children = [];
-
-    children.push(
-      h(BaseIcon, {
-        name: "chevron-left",
-        class: [
-          "pagination__navigation",
-          this.pagination.prevPage ? "" : "pagination--disabled",
-        ],
-        ...(this.pagination.prevPage && {
-          onClick: () => {
-            this.$emit("paginate", this.currentPage - 1);
-          },
-        }),
-      })
-    );
-
-    if (!this.isMobile) {
-      this.pagination.pages.forEach((page) => {
-        if (!isNaN(page)) {
-          children.push(
-            h(
-              "div",
-              {
-                class: [
-                  "pagination__page",
-                  page === this.currentPage ? "pagination__page--selected" : "",
-                ],
-                onClick: () => {
-                  this.$emit("paginate", page);
-                },
-              },
-              [h("span", page + 1)]
-            )
-          );
-        } else {
-          children.push(h("span", page));
-        }
-      });
-    } else {
-      children.push(
-        h(
-          "div",
-          {
-            class: ["pagination__page", "pagination__page--selected"],
-          },
-          [h("span", this.currentPage + 1)]
-        )
-      );
-    }
-
-    children.push(
-      h(BaseIcon, {
-        name: "chevron-right",
-        class: [
-          "pagination__navigation",
-          this.pagination.nextPage ? "" : "pagination--disabled",
-        ],
-        ...(this.pagination.nextPage && {
-          onClick: () => {
-            this.$emit("paginate", this.currentPage + 1);
-          },
-        }),
-      })
-    );
-
-    return h("div", { class: "pagination" }, children);
-  },
+  emits: { paginate: null },
 
   setup(props) {
     const isMobile = ref(false);
@@ -122,17 +54,17 @@ export default {
         let pages = [];
         if (props.currentPage < delta - 1) {
           pages = startArray;
-          pages.push("...");
+          pages.push('...');
           pages.push(props.numberOfPages - 1);
         } else if (props.currentPage > props.numberOfPages - delta + 1) {
           pages = endArray;
-          pages.unshift("...");
+          pages.unshift('...');
           pages.unshift(0);
         } else {
           pages = deltaArray;
-          pages.unshift("...");
+          pages.unshift('...');
           pages.unshift(0);
-          pages.push("...");
+          pages.push('...');
           pages.push(props.numberOfPages - 1);
         }
 
@@ -147,6 +79,75 @@ export default {
       delta,
       pagination,
     };
+  },
+  render() {
+    const children = [];
+
+    children.push(
+      h(VueFeather, {
+        type: 'chevron-left',
+        class: [
+          'pagination__navigation',
+          this.pagination.prevPage ? '' : 'pagination--disabled',
+        ],
+        ...(this.pagination.prevPage && {
+          onClick: () => {
+            this.$emit('paginate', this.currentPage - 1);
+          },
+        }),
+      })
+    );
+
+    if (!this.isMobile) {
+      this.pagination.pages.forEach((page) => {
+        if (!isNaN(page)) {
+          children.push(
+            h(
+              'div',
+              {
+                class: [
+                  'pagination__page',
+                  page === this.currentPage ? 'pagination__page--selected' : '',
+                ],
+                onClick: () => {
+                  this.$emit('paginate', page);
+                },
+              },
+              [h('span', page + 1)]
+            )
+          );
+        } else {
+          children.push(h('span', page));
+        }
+      });
+    } else {
+      children.push(
+        h(
+          'div',
+          {
+            class: ['pagination__page', 'pagination__page--selected'],
+          },
+          [h('span', this.currentPage + 1)]
+        )
+      );
+    }
+
+    children.push(
+      h(VueFeather, {
+        type: 'chevron-right',
+        class: [
+          'pagination__navigation',
+          this.pagination.nextPage ? '' : 'pagination--disabled',
+        ],
+        ...(this.pagination.nextPage && {
+          onClick: () => {
+            this.$emit('paginate', this.currentPage + 1);
+          },
+        }),
+      })
+    );
+
+    return h('div', { class: 'pagination' }, children);
   },
 };
 </script>

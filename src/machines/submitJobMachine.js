@@ -1,255 +1,271 @@
-import { createMachine } from "xstate";
-import { useMachine } from "@xstate/vue";
-import { assign } from "xstate";
-import { string, number, mixed, array, bool } from "yup";
-import { useField } from "vee-validate";
-import CcrAPI from "@/api/ccr.js";
-import store from "@/store";
+import { createMachine } from 'xstate';
+import { useMachine } from '@xstate/vue';
+import { assign } from 'xstate';
+import { string, number, mixed, array, bool } from 'yup';
+import { useField } from 'vee-validate';
+import CcrAPI from '@/api/ccr.js';
+import store from '@/store';
 
 ////////////////////////////////////////////////
 // MACHINE
 const submitJobMachine = createMachine({
-  id: "submitJob",
-  initial: "enteringGeneralInfo",
+  predictableActionArguments: true,
+  id: 'submitJob',
+  initial: 'enteringGeneralInfo',
   states: {
     enteringGeneralInfo: {
-      id: "enteringGeneralInfo",
-      initial: "idle",
+      id: 'enteringGeneralInfo',
+      initial: 'idle',
       states: {
         idle: {
-          entry: ["setupGeneralInfoSchema"],
+          entry: ['setupGeneralInfoSchema'],
           on: {
             NEXT: {
-              target: "validating",
+              target: 'validating',
             },
           },
         },
         validating: {
           invoke: {
-            src: "validateSchema",
+            src: 'validateSchema',
             onDone: [
               {
-                target: "complete",
+                target: 'complete',
               },
             ],
             onError: [
               {
-                target: "idle",
+                target: 'idle',
               },
             ],
           },
         },
         complete: {
-          type: "final",
+          type: 'final',
         },
       },
       onDone: {
-        target: "enteringSettings",
+        target: 'enteringSettings',
       },
     },
     enteringSettings: {
-      initial: "idle",
-      id: "enteringSettings",
+      initial: 'idle',
+      id: 'enteringSettings',
       states: {
         idle: {
-          entry: ["setupSettingsSchema"],
+          entry: ['setupSettingsSchema'],
           on: {
             PREVIOUS: {
-              target: "#enteringGeneralInfo",
+              target: '#enteringGeneralInfo',
             },
             NEXT: {
-              target: "validating",
+              target: 'validating',
             },
           },
         },
         validating: {
           invoke: {
-            src: "validateSchema",
+            src: 'validateSchema',
             onDone: [
               {
-                target: "complete",
+                target: 'complete',
               },
             ],
             onError: [
               {
-                target: "idle",
+                target: 'idle',
               },
             ],
           },
         },
         complete: {
-          type: "final",
+          type: 'final',
         },
       },
       onDone: {
-        target: "enteringLibrary.idle.hist",
+        target: 'enteringLibrary.idle.hist',
       },
     },
     enteringLibrary: {
-      initial: "idle",
-      id: "enteringLibrary",
+      initial: 'idle',
+      id: 'enteringLibrary',
       states: {
         idle: {
-          initial: "libraryBuiltin",
+          initial: 'libraryBuiltin',
           states: {
             libraryBuiltin: {
-              tags: ["libraryBuiltin"],
-              entry: ["setuplibraryBuiltinSchema", "updateExcludedFieldsList"],
+              tags: ['libraryBuiltin'],
+              entry: [
+                'setuplibraryBuiltinSchema',
+                'updateExcludedFieldsListLibraryBuiltin',
+              ],
               on: {
-                "LIBRARY.FILE": { target: "libraryFile" },
+                'LIBRARY.FILE': { target: 'libraryFile' },
               },
             },
             libraryFile: {
-              tags: ["libraryFile"],
-              entry: ["setupLibraryFileSchema", "updateExcludedFieldsList"],
+              tags: ['libraryFile'],
+              entry: [
+                'setupLibraryFileSchema',
+                'updateExcludedFieldsListLibraryFile',
+              ],
               on: {
-                "LIBRARY.BUILTIN": { target: "libraryBuiltin" },
+                'LIBRARY.BUILTIN': { target: 'libraryBuiltin' },
               },
             },
             hist: {
-              type: "history",
+              type: 'history',
             },
           },
           on: {
             PREVIOUS: {
-              target: "#enteringSettings",
+              target: '#enteringSettings',
             },
-            NEXT: { target: "validating" },
+            NEXT: { target: 'validating' },
           },
         },
         validating: {
           invoke: {
-            src: "validateSchema",
+            src: 'validateSchema',
             onDone: [
               {
-                target: "complete",
+                target: 'complete',
               },
             ],
             onError: [
               {
-                target: "idle.hist",
+                target: 'idle.hist',
               },
             ],
           },
         },
         complete: {
-          type: "final",
+          type: 'final',
         },
       },
       onDone: {
-        target: "enteringFiles.idle.hist",
+        target: 'enteringFiles.idle.hist',
       },
     },
     enteringFiles: {
-      initial: "idle",
-      id: "enteringFiles",
+      initial: 'idle',
+      id: 'enteringFiles',
       states: {
         idle: {
-          initial: "fileCounts",
+          initial: 'fileCounts',
           states: {
             fileCounts: {
-              tags: ["fileCounts"],
-              entry: ["setupFileCountsSchema", "updateExcludedFieldsList"],
+              tags: ['fileCounts'],
+              entry: [
+                'setupFileCountsSchema',
+                'updateExcludedFieldsListFileCounts',
+              ],
               on: {
-                "FILE.FASTQ": { target: "filesFASTQ" },
-                "FILE.BAM": { target: "filesBAM" },
+                'FILE.FASTQ': { target: 'filesFASTQ' },
+                'FILE.BAM': { target: 'filesBAM' },
               },
             },
             filesFASTQ: {
-              tags: ["filesFASTQ"],
-              entry: ["setupFilesFASTQschema", "updateExcludedFieldsList"],
+              tags: ['filesFASTQ'],
+              entry: [
+                'setupFilesFASTQschema',
+                'updateExcludedFieldsListFilesFASTQ',
+              ],
               on: {
-                "FILE.COUNTS": { target: "fileCounts" },
-                "FILE.BAM": { target: "filesBAM" },
+                'FILE.COUNTS': { target: 'fileCounts' },
+                'FILE.BAM': { target: 'filesBAM' },
               },
             },
             filesBAM: {
-              tags: ["filesBAM"],
-              entry: ["setupFilesBAMschema", "updateExcludedFieldsList"],
+              tags: ['filesBAM'],
+              entry: [
+                'setupFilesBAMschema',
+                'updateExcludedFieldsListFilesBAM',
+              ],
               on: {
-                "FILE.COUNTS": { target: "fileCounts" },
-                "FILE.FASTQ": { target: "filesFASTQ" },
+                'FILE.COUNTS': { target: 'fileCounts' },
+                'FILE.FASTQ': { target: 'filesFASTQ' },
               },
             },
             hist: {
-              type: "history",
+              type: 'history',
             },
           },
           on: {
             PREVIOUS: {
-              target: "#enteringLibrary.idle.hist",
+              target: '#enteringLibrary.idle.hist',
             },
-            NEXT: { target: "validating" },
+            NEXT: { target: 'validating' },
           },
         },
         validating: {
           invoke: {
-            src: "validateSchema",
+            src: 'validateSchema',
             onDone: [
               {
-                target: "complete",
+                target: 'complete',
               },
             ],
             onError: [
               {
-                target: "idle.hist",
+                target: 'idle.hist',
               },
             ],
           },
         },
         complete: {
-          type: "final",
+          type: 'final',
         },
       },
       onDone: {
-        target: "review",
+        target: 'review',
       },
     },
     review: {
-      entry: ["compileFormData"],
-      initial: "idle",
+      entry: ['compileFormData'],
+      initial: 'idle',
       states: {
         idle: {
           on: {
             PREVIOUS: {
-              target: "#enteringFiles.idle.hist",
+              target: '#enteringFiles.idle.hist',
             },
-            NEXT: { target: "submitting" },
+            NEXT: { target: 'submitting' },
           },
         },
         submitting: {
-          tags: ["submitting"],
+          tags: ['submitting'],
           invoke: {
-            src: "submitJob",
+            src: 'submitJob',
             onDone: {
-              actions: ["sendSuccessNotification", "makeUploadFilesList"],
-              target: "complete",
+              actions: ['sendSuccessNotification', 'makeUploadFilesList'],
+              target: 'complete',
             },
             onError: {
-              actions: ["sendErrorNotification"],
-              target: "complete",
+              actions: ['sendErrorNotification'],
+              target: 'complete',
             },
           },
         },
         complete: {
-          type: "final",
+          type: 'final',
         },
       },
       onDone: {
-        target: "submitted",
-        actions: ["startUploads"],
+        target: 'submitted',
+        actions: ['startUploads'],
       },
     },
     submitted: {
-      type: "final",
+      type: 'final',
     },
   },
   on: {
     INPUT: {
-      actions: "setFormFieldValue",
+      actions: 'setFormFieldValue',
     },
     CHANGE: {
-      actions: "setFormFieldValue",
+      actions: 'setFormFieldValue',
     },
   },
 });
@@ -274,10 +290,8 @@ export function getFileFieldErrorMessage(state, field) {
 }
 
 function getFieldValue(context, field) {
-  if (context.dataFields.hasOwnProperty(field))
-    return context.dataFields[field];
-  if (context.fileFields.hasOwnProperty(field))
-    return context.fileFields[field];
+  if (context.dataFields?.[field]) return context.dataFields[field];
+  if (context.fileFields?.[field]) return context.fileFields[field];
 }
 
 ////////////////////////////////////////////////
@@ -285,32 +299,32 @@ function getFieldValue(context, field) {
 
 const setupGeneralInfoSchema = assign({
   currentSchema: () => {
-    return ["title", "sendEmail", "label", "notes"];
+    return ['title', 'sendEmail', 'label', 'notes'];
   },
 });
 
 const setupSettingsSchema = assign({
-  currentSchema: () => ["normMinReads", "method"],
+  currentSchema: () => ['normMinReads', 'method'],
 });
 
 const setuplibraryBuiltinSchema = assign({
-  currentSchema: () => ["libraryBuiltin"],
+  currentSchema: () => ['libraryBuiltin'],
 });
 
 const setupLibraryFileSchema = assign({
-  currentSchema: () => ["libraryFile"],
+  currentSchema: () => ['libraryFile'],
 });
 
 const setupFileCountsSchema = assign({
-  currentSchema: () => ["fileCounts", "nControls"],
+  currentSchema: () => ['fileCounts', 'nControls'],
 });
 
 const setupFilesFASTQschema = assign({
-  currentSchema: () => ["filesFASTQcontrols", "filesFASTQsamples"],
+  currentSchema: () => ['filesFASTQcontrols', 'filesFASTQsamples'],
 });
 
 const setupFilesBAMschema = assign({
-  currentSchema: () => ["filesBAMcontrols", "filesBAMsamples"],
+  currentSchema: () => ['filesBAMcontrols', 'filesBAMsamples'],
 });
 
 const setFormFieldValue = (context, { field, payload }) => {
@@ -318,44 +332,54 @@ const setFormFieldValue = (context, { field, payload }) => {
   handleChange(payload);
 };
 
-const updateExcludedFieldsList = (context, event, { state }) => {
+const updateExcludedFieldsListLibraryBuiltin = (context) => {
   const { excludedFields } = context;
 
-  if (state.hasTag("libraryBuiltin")) {
-    excludedFields.delete("libraryBuiltin");
-    excludedFields.add("libraryFile");
-  }
-  if (state.hasTag("libraryFile")) {
-    excludedFields.delete("libraryFile");
-    excludedFields.add("libraryBuiltin");
-  }
-  if (state.hasTag("fileCounts")) {
-    excludedFields.delete("fileCounts");
-    excludedFields.delete("nControls");
-    excludedFields.add("filesFASTQcontrols");
-    excludedFields.add("filesFASTQsamples");
-    excludedFields.add("filesBAMcontrols");
-    excludedFields.add("filesBAMsamples");
-  }
-  if (state.hasTag("filesFASTQ")) {
-    excludedFields.delete("filesFASTQcontrols");
-    excludedFields.delete("filesFASTQsamples");
-    excludedFields.add("fileCounts");
-    excludedFields.add("filesBAMcontrols");
-    excludedFields.add("filesBAMsamples");
-    excludedFields.add("nControls");
-  }
-  if (state.hasTag("filesBAM")) {
-    excludedFields.delete("filesBAMcontrols");
-    excludedFields.delete("filesBAMsamples");
-    excludedFields.add("fileCounts");
-    excludedFields.add("filesFASTQcontrols");
-    excludedFields.add("filesFASTQsamples");
-    excludedFields.add("nControls");
-  }
+  excludedFields.delete('libraryBuiltin');
+  excludedFields.add('libraryFile');
 };
 
-const compileFormData = assign((context, event) => {
+const updateExcludedFieldsListLibraryFile = (context) => {
+  const { excludedFields } = context;
+
+  excludedFields.delete('libraryFile');
+  excludedFields.add('libraryBuiltin');
+};
+
+const updateExcludedFieldsListFileCounts = (context) => {
+  const { excludedFields } = context;
+
+  excludedFields.delete('fileCounts');
+  excludedFields.delete('nControls');
+  excludedFields.add('filesFASTQcontrols');
+  excludedFields.add('filesFASTQsamples');
+  excludedFields.add('filesBAMcontrols');
+  excludedFields.add('filesBAMsamples');
+};
+
+const updateExcludedFieldsListFilesFASTQ = (context) => {
+  const { excludedFields } = context;
+
+  excludedFields.delete('filesFASTQcontrols');
+  excludedFields.delete('filesFASTQsamples');
+  excludedFields.add('fileCounts');
+  excludedFields.add('filesBAMcontrols');
+  excludedFields.add('filesBAMsamples');
+  excludedFields.add('nControls');
+};
+
+const updateExcludedFieldsListFilesBAM = (context) => {
+  const { excludedFields } = context;
+
+  excludedFields.delete('filesBAMcontrols');
+  excludedFields.delete('filesBAMsamples');
+  excludedFields.add('fileCounts');
+  excludedFields.add('filesFASTQcontrols');
+  excludedFields.add('filesFASTQsamples');
+  excludedFields.add('nControls');
+};
+
+const compileFormData = assign((context) => {
   const { excludedFields } = context;
   const formData = {};
 
@@ -377,8 +401,8 @@ const compileFormData = assign((context, event) => {
 });
 
 const sendErrorNotification = (_, event) => {
-  store.dispatch("notification/sendErrorNotification", {
-    title: "Job Submission Error",
+  store.dispatch('notification/sendErrorNotification', {
+    title: 'Job Submission Error',
     message: event?.data?.message,
   });
 };
@@ -389,8 +413,8 @@ const sendSuccessNotification = (
   { data: { data: filesList } }
 ) => {
   const jobId = filesList[0].jobId;
-  store.dispatch("notification/sendSuccessNotification", {
-    title: "Job Submitted",
+  store.dispatch('notification/sendSuccessNotification', {
+    title: 'Job Submitted',
     message: `Job ID: ${jobId}`,
   });
 };
@@ -419,9 +443,9 @@ const makeUploadFilesList = assign(
   }
 );
 
-const startUploads = ({ uploads }, _) => {
+const startUploads = ({ uploads }) => {
   uploads.forEach((upload) => {
-    store.dispatch("uploads/add", upload);
+    store.dispatch('uploads/add', upload);
   });
 };
 
@@ -452,63 +476,63 @@ export const getInterpretedMachine = () => {
   const fileFields = {};
 
   // step 1
-  dataFields["title"] = useField(
-    "title",
-    string().required("title is required")
+  dataFields['title'] = useField(
+    'title',
+    string().required('title is required')
   );
-  dataFields["sendEmail"] = useField("sendEmail", bool(), {
+  dataFields['sendEmail'] = useField('sendEmail', bool(), {
     initialValue: true,
   });
-  dataFields["label"] = useField(
-    "label",
-    string().required("label is required")
+  dataFields['label'] = useField(
+    'label',
+    string().required('label is required')
   );
-  dataFields["notes"] = useField("notes", string());
+  dataFields['notes'] = useField('notes', string());
 
   // step 2
-  dataFields["normMinReads"] = useField(
-    "normMinReads",
+  dataFields['normMinReads'] = useField(
+    'normMinReads',
     number().positive().required(),
     { initialValue: 30 }
   );
-  dataFields["method"] = useField("method", string().required());
+  dataFields['method'] = useField('method', string().required());
 
   // step 3 version A
-  dataFields["libraryBuiltin"] = useField(
-    "libraryBuiltin",
+  dataFields['libraryBuiltin'] = useField(
+    'libraryBuiltin',
     string().required()
   );
 
   // step 3 version B
-  fileFields["libraryFile"] = useField("libraryFile", mixed().required());
+  fileFields['libraryFile'] = useField('libraryFile', mixed().required());
 
   // step 4 verison A
-  fileFields["fileCounts"] = useField("fileCounts", string().required());
-  dataFields["nControls"] = useField(
-    "nControls",
+  fileFields['fileCounts'] = useField('fileCounts', string().required());
+  dataFields['nControls'] = useField(
+    'nControls',
     number().positive().required(),
     { initialValue: 1 }
   );
 
   // step 4 verison B
-  fileFields["filesFASTQcontrols"] = useField(
-    "filesFASTQcontrols",
+  fileFields['filesFASTQcontrols'] = useField(
+    'filesFASTQcontrols',
     array().required()
   );
 
-  fileFields["filesFASTQsamples"] = useField(
-    "filesFASTQsamples",
+  fileFields['filesFASTQsamples'] = useField(
+    'filesFASTQsamples',
     array().required()
   );
 
   // step 4 verison C
-  fileFields["filesBAMcontrols"] = useField(
-    "filesBAMcontrols",
+  fileFields['filesBAMcontrols'] = useField(
+    'filesBAMcontrols',
     array().required()
   );
 
-  fileFields["filesBAMsamples"] = useField(
-    "filesBAMsamples",
+  fileFields['filesBAMsamples'] = useField(
+    'filesBAMsamples',
     array().required()
   );
 
@@ -518,11 +542,15 @@ export const getInterpretedMachine = () => {
       fileFields,
       formData: {},
       currentSchema: [],
-      excludedFields: new Set(["excludedFields", "currentSchema", "formData"]),
+      excludedFields: new Set(['excludedFields', 'currentSchema', 'formData']),
       uploads: [],
     },
     actions: {
-      updateExcludedFieldsList,
+      updateExcludedFieldsListLibraryBuiltin,
+      updateExcludedFieldsListLibraryFile,
+      updateExcludedFieldsListFileCounts,
+      updateExcludedFieldsListFilesFASTQ,
+      updateExcludedFieldsListFilesBAM,
       setFormFieldValue,
       setupGeneralInfoSchema,
       setupSettingsSchema,

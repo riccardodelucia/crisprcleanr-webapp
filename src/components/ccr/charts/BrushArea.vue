@@ -5,12 +5,12 @@
   </g>
 </template>
 <script>
-import { select, brushX, brushY } from "d3";
+import { select, brushX, brushY } from 'd3';
 
-import { ref, onMounted } from "vue";
+import { ref, onMounted } from 'vue';
 
 export default {
-  name: "BrushArea",
+  name: 'BrushArea',
   props: {
     width: {
       type: Number,
@@ -25,26 +25,29 @@ export default {
     // vertical brush:  [top, bottom]
     domain: {
       type: Array,
+      default: () => [],
     },
     brushDirection: {
       type: String,
-      default: "vertical",
+      default: 'vertical',
     },
     scale: {
       type: Function,
+      default: () => {},
     },
   },
+  emits: { brush: null },
   setup(props, { emit }) {
     const brush = ref(null);
 
-    const brushFunction = props.brushDirection === "vertical" ? brushY : brushX;
+    const brushFunction = props.brushDirection === 'vertical' ? brushY : brushX;
 
     const updateBrushedDomain = ({ selection }) => {
       const extent = selection
         ? selection.map(props.scale.invert)
         : props.domain;
 
-      emit("brush", extent);
+      emit('brush', extent);
     };
 
     onMounted(() => {
@@ -54,7 +57,7 @@ export default {
             [0, 0],
             [props.width, props.height],
           ])
-          .on("brush end", updateBrushedDomain)
+          .on('brush end', updateBrushedDomain)
       );
     });
 

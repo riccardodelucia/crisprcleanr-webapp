@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: "MessageLayout",
+  name: 'MessageLayout',
 };
 </script>

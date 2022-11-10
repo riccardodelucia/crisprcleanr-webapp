@@ -5,7 +5,7 @@
         <rect :width="innerWidth" :height="innerHeight" />
       </clipPath>
     </defs>
-    <D3Axis :scale="yScale" position="left" :tickSize="-innerWidth" />
+    <D3Axis :scale="yScale" position="left" :tick-size="-innerWidth" />
 
     <g :transform="`translate(0, ${innerHeight})`">
       <D3Axis :scale="xScale" position="bottom" />
@@ -16,9 +16,9 @@
     <Marks
       :points="focusData.sgRNAArray"
       :segments="data.segments"
-      :xScale="xScale"
-      :yScale="yScale"
-      :pointRadius="4"
+      :x-scale="xScale"
+      :y-scale="yScale"
+      :point-radius="4"
       :selections="selections"
       clip-path="url(#clip-segments)"
     />
@@ -26,16 +26,16 @@
 </template>
 
 <script>
-import { scaleLinear, extent } from "d3";
-import Marks from "@/components/ccr/charts/chromosome/Marks.vue";
-import D3Axis from "@/components/ccr/charts/D3Axis.vue";
+import { scaleLinear, extent } from 'd3';
+import Marks from '@/components/ccr/charts/chromosome/Marks.vue';
+import D3Axis from '@/components/ccr/charts/D3Axis.vue';
 
-import { computed } from "vue";
+import { computed } from 'vue';
 
-import { getInnerChartSizes, augmentedExtent } from "@/composables/chart.js";
+import { getInnerChartSizes, augmentedExtent } from '@/composables/chart.js';
 
 export default {
-  name: "ChromosomeChartFocus",
+  name: 'ChromosomeChartFocus',
   components: { Marks, D3Axis },
   props: {
     data: {
@@ -44,9 +44,11 @@ export default {
     },
     width: {
       type: Number,
+      default: 0,
     },
     height: {
       type: Number,
+      default: 0,
     },
     selections: {
       type: Object,
@@ -54,6 +56,7 @@ export default {
     },
     xDomain: {
       type: Array,
+      default: () => [],
     },
   },
   setup(props) {

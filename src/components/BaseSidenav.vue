@@ -21,10 +21,10 @@
     <ul class="sidenav__list">
       <li
         v-for="link in sidenavObject.links"
-        class="sidenav__item"
         :key="link.id"
-        @click="linkClick(link.url)"
+        class="sidenav__item"
         :class="{ 'sidenav__item--active': $route.path.includes(link.url) }"
+        @click="linkClick(link.url)"
       >
         <span class="sidenav__label">{{ link.label }}</span>
       </li>
@@ -35,18 +35,18 @@
       @click="manageSidenav(false)"
     >
       <span>hide</span>
-      <BaseIcon name="chevrons-left"></BaseIcon>
+      <vue-feather type="chevrons-left"></vue-feather>
     </div>
   </nav>
 </template>
 
 <script>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { resizeListener } from "@/composables/utilities.js";
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { resizeListener } from '@/composables/utilities.js';
 
 export default {
-  name: "BaseSidenav",
+  name: 'BaseSidenav',
   props: {
     sidenavObject: {
       type: Object,
@@ -63,8 +63,8 @@ export default {
 
     const manageSidenav = (value) => {
       showSideNav.value = value;
-      const body = document.querySelector("body");
-      body.style.overflow = value ? "hidden" : "auto";
+      const body = document.querySelector('body');
+      body.style.overflow = value ? 'hidden' : 'auto';
     };
 
     const linkClick = (url) => {
@@ -107,7 +107,7 @@ export default {
 
       &:before,
       &:after {
-        content: "";
+        content: '';
         display: block;
         height: 2px;
       }

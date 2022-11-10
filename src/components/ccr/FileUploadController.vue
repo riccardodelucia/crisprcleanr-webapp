@@ -1,43 +1,72 @@
 <template>
   <div class="uploads__file upload-controller">
     <div class="upload-controller__file">
-      <BaseIcon v-if="state.matches('uploaded')" class="upload-controller__icon upload-controller__icon--uploaded"
-        name="check-circle" width="20px" height="20px">
-      </BaseIcon>
+      <vue-feather
+        v-if="state.matches('uploaded')"
+        class="upload-controller__icon upload-controller__icon--uploaded"
+        type="check-circle"
+        size="20px"
+      >
+      </vue-feather>
       <span>{{ filename }}</span>
     </div>
-    <span v-if="state.matches('uploading') || state.matches('uploaded')" class="upload-controller__percentage">{{
-        state.context.percentage
-    }}%</span>
-    <BaseIcon v-if="state.matches('uploading')" class="upload-controller__icon upload-controller__icon--delete"
-      name="trash-2" width="20px" height="20px" @click="abort">
-    </BaseIcon>
-    <BaseIcon v-else class="upload-controller__icon upload-controller__icon--remove" name="x-circle" width="20px"
-      height="20px" @click="removeUpload">
-    </BaseIcon>
+    <span
+      v-if="state.matches('uploading') || state.matches('uploaded')"
+      class="upload-controller__percentage"
+      >{{ state.context.percentage }}%</span
+    >
+    <vue-feather
+      v-if="state.matches('uploading')"
+      class="upload-controller__icon upload-controller__icon--delete"
+      type="trash-2"
+      size="20px"
+      @click="abort"
+    >
+    </vue-feather>
+    <vue-feather
+      v-else
+      class="upload-controller__icon upload-controller__icon--remove"
+      type="x-circle"
+      size="20px"
+      @click="removeUpload"
+    >
+    </vue-feather>
     <div class="upload-controller__status">
-      <div v-if="state.matches('uploading')" class="upload-controller__progress-bar-container">
-        <div class="upload-controller__progress-bar" :style="{ width: state.context.percentage + '%' }"></div>
+      <div
+        v-if="state.matches('uploading')"
+        class="upload-controller__progress-bar-container"
+      >
+        <div
+          class="upload-controller__progress-bar"
+          :style="{ width: state.context.percentage + '%' }"
+        ></div>
       </div>
-      <div v-else-if="state.matches('uploaded')" class="upload-controller__uploaded-msg-container">
-        <span class="upload-controller__status-message">Uploaded. Click &nbsp;</span>
-        <BaseIcon name="x-circle" width="10px" height="10px"> </BaseIcon>
+      <div
+        v-else-if="state.matches('uploaded')"
+        class="upload-controller__uploaded-msg-container"
+      >
+        <span class="upload-controller__status-message"
+          >Uploaded. Click &nbsp;</span
+        >
+        <vue-feather type="x-circle" size="10px"> </vue-feather>
         <span class="upload-controller__status-message"> &nbsp; to close</span>
       </div>
-      <span v-else-if="state.matches('aborted') || state.matches('error')" class="upload-controller__status-message">{{
-          state.context.errorMessage
-      }}</span>
+      <span
+        v-else-if="state.matches('aborted') || state.matches('error')"
+        class="upload-controller__status-message"
+        >{{ state.context.errorMessage }}</span
+      >
     </div>
   </div>
 </template>
 
 <script>
-import { useMachine } from "@xstate/vue";
-import uploadFileMachine from "@/machines/uploadFileMachine.js";
-import { useStore } from "vuex";
+import { useMachine } from '@xstate/vue';
+import uploadFileMachine from '@/machines/uploadFileMachine.js';
+import { useStore } from 'vuex';
 
 export default {
-  name: "BaseFileUploadController",
+  name: 'BaseFileUploadController',
   props: {
     upload: {
       type: Object,
@@ -54,10 +83,10 @@ export default {
       },
     });
 
-    const pause = () => send("PAUSE");
-    const resume = () => send("RESUME");
-    const abort = () => send("ABORT");
-    const removeUpload = () => store.dispatch("uploads/remove", props.upload);
+    const pause = () => send('PAUSE');
+    const resume = () => send('RESUME');
+    const abort = () => send('ABORT');
+    const removeUpload = () => store.dispatch('uploads/remove', props.upload);
 
     return {
       state,

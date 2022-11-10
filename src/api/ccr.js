@@ -8,8 +8,8 @@ import store from "@/store";
 
 const _ = deepdash(lodash);
 
-const baseURL = `${getEnv("VUE_APP_URL_IORIO_CCR_BACKEND")}`;
-const connectionTimeout = `${getEnv("VUE_APP_CONNECTION_TIMEOUT_MS")}`;
+const baseURL = `${getEnv("VITE_URL_IORIO_CCR_BACKEND")}`;
+const connectionTimeout = `${getEnv("VITE_CONNECTION_TIMEOUT_MS")}`;
 
 // instances need to be separated according to auth to enable correct interceptor auth request on auth-dependent requests
 const instances = new Map();

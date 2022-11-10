@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "BaseFormProgressBar",
+  name: 'BaseFormProgressBar',
   props: {
     currentStep: {
       type: String,
@@ -59,7 +59,7 @@ export default {
 
   &:before,
   &__bar {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 0;

@@ -19,15 +19,16 @@
 
 <script>
 export default {
-  name: "BaseModal",
-  props: { width: { type: String, default: "100rem" } },
+  name: 'BaseModal',
+  props: { width: { type: String, default: '100rem' } },
+  emits: { 'modal-close': null },
   mounted() {
-    const body = document.querySelector("body");
-    body.style.overflow = "hidden";
+    const body = document.querySelector('body');
+    body.style.overflow = 'hidden';
   },
   unmounted() {
-    const body = document.querySelector("body");
-    body.style.overflow = "auto";
+    const body = document.querySelector('body');
+    body.style.overflow = 'auto';
   },
 };
 </script>
@@ -77,7 +78,7 @@ export default {
     &:before,
     &:after {
       position: absolute;
-      content: " ";
+      content: ' ';
       height: 33px;
       width: 2px;
       background-color: #333;

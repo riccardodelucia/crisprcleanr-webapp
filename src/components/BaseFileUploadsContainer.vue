@@ -13,13 +13,13 @@
 </template>
 
 <script>
-import FileUploadController from "@/components/ccr/FileUploadController";
-import { mapState } from "vuex";
+import FileUploadController from '@/components/ccr/FileUploadController.vue';
+import { mapState } from 'vuex';
 export default {
-  name: "BaseFileUploadsContainer",
+  name: 'BaseFileUploadsContainer',
   components: { FileUploadController },
   computed: {
-    ...mapState("uploads", ["uploads"]),
+    ...mapState('uploads', ['uploads']),
   },
 };
 </script>

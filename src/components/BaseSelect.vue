@@ -1,6 +1,6 @@
 <template>
   <div class="input-field">
-    <label class="input-field__label" v-if="label">{{ label }}</label>
+    <label v-if="label" class="input-field__label">{{ label }}</label>
     <div
       ref="select"
       class="select"
@@ -18,51 +18,52 @@
         {{ selection }}
       </div>
       <div
-        class="select__overlay"
         v-if="open"
+        class="select__overlay"
         @click.stop="closeSelector"
       ></div>
-      <div class="select__options" v-show="open">
+      <div v-show="open" class="select__options">
         <div
-          class="select__option"
           v-for="(option, index) of options"
           :key="index"
+          class="select__option"
           @click.stop="clickedOption(option)"
         >
           {{ showLabel(option) }}
         </div>
       </div>
     </div>
-    <div class="input-field__error" v-if="error">
-      <BaseIcon name="alert-circle" width="16px" height="16px"></BaseIcon
+    <div v-if="error" class="input-field__error">
+      <vue-feather type="alert-circle" size="16px"></vue-feather
       ><small>{{ error }}</small>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref } from 'vue';
 
 export default {
   props: {
-    label: { type: String, default: "" },
+    label: { type: String, default: '' },
     options: {
       type: Array,
-      default: [],
+      default: () => [],
     },
     optionLabel: {
       type: String,
-      default: "label",
+      default: 'label',
     },
     error: {
       type: String,
-      default: "",
+      default: '',
     },
     placeholder: {
       type: String,
-      default: "Select an option",
+      default: 'Select an option',
     },
     modelValue: {
+      type: [Object, null],
       required: true,
       default: undefined,
     },
@@ -72,6 +73,7 @@ export default {
       default: 0,
     },
   },
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const open = ref(false);
     const select = ref(null);
@@ -82,12 +84,12 @@ export default {
     };
 
     const clickedOption = (option) => {
-      emit("update:modelValue", option);
+      emit('update:modelValue', option);
       closeSelector();
     };
 
     const showLabel = (option) => {
-      if (typeof option === "object") {
+      if (typeof option === 'object') {
         return option?.[props.optionLabel] || option;
       }
       return option;

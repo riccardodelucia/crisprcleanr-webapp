@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "BaseNotificationBar",
+  name: 'BaseNotificationBar',
   props: {
     notification: {
       type: Object,
@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     onClick() {
-      this.$store.dispatch("notification/remove", this.notification);
+      this.$store.dispatch('notification/remove', this.notification);
     },
   },
 };

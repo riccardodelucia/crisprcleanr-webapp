@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import TheHeader from "@/components/ccr/TheHeader";
+import TheHeader from '@/components/ccr/TheHeader.vue';
 
 export default {
-  name: "WebLayout",
+  name: 'WebLayout',
   components: { TheHeader },
 };
 </script>

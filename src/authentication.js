@@ -1,16 +1,16 @@
-import Keycloak from "keycloak-js";
-import getEnv from "@/utils/env";
-import store from "./store";
-import { getRouter } from "@/router/index.js";
-import { ref } from "vue";
+import Keycloak from 'keycloak-js';
+import getEnv from '@/utils/env';
+import store from './store';
+import { getRouter } from '@/router/index.js';
+import { ref } from 'vue';
 
-const authServerURL = `${getEnv("VUE_APP_URL_AUTH_SERVER")}`;
+const authServerURL = `${getEnv('VITE_URL_AUTH_SERVER')}`;
 
-const realm = getEnv("VUE_APP_AUTH_REALM");
+const realm = getEnv('VITE_AUTH_REALM');
 
-const clientId = getEnv("VUE_APP_AUTH_CLIENT_ID");
+const clientId = getEnv('VITE_AUTH_CLIENT_ID');
 
-const appRootUrl = getEnv("VUE_APP_URL_IORIO_CCR_WEBAPP");
+const appRootUrl = getEnv('VITE_URL_IORIO_CCR_WEBAPP');
 
 const keycloak = new Keycloak({
   url: authServerURL,
@@ -22,19 +22,19 @@ keycloak.onAuthSuccess = function () {
   keycloak
     .loadUserProfile()
     .then((profile) => {
-      store.commit("user/SET_USER", profile);
+      store.commit('user/SET_USER', profile);
     })
     .catch((error) => {
-      store.commit("user/SET_USER", {});
-      store.dispatch("notification/sendErrorNotification", {
-        title: "Unable to log in",
+      store.commit('user/SET_USER', {});
+      store.dispatch('notification/sendErrorNotification', {
+        title: 'Unable to log in',
         message: error?.message,
       });
     });
 };
 
 keycloak.onAuthLogout = function () {
-  store.commit("user/SET_USER", {});
+  store.commit('user/SET_USER', {});
 };
 
 keycloak.onAuthRefreshSuccess = function () {
@@ -48,15 +48,15 @@ function login(redirectUri) {
 }
 
 function logout() {
-  const absoluteUri = new URL("/", appRootUrl).toString();
+  const absoluteUri = new URL('/', appRootUrl).toString();
   return keycloak.logout({ redirectUri: absoluteUri });
 }
 
 const authenticationPlugin = {
-  install(app, options) {
-    app.provide("login", login);
-    app.provide("logout", logout);
-    app.provide("authenticated", ref(keycloak.authenticated)); // TODO monitor if this works fine
+  install(app) {
+    app.provide('login', login);
+    app.provide('logout', logout);
+    app.provide('authenticated', ref(keycloak.authenticated)); // TODO monitor if this works fine
   },
 };
 
@@ -65,7 +65,7 @@ export const authorize = (redirectUri) =>
     const expirationTime = 70;
     if (!keycloak.authenticated) {
       login(redirectUri);
-      reject(new Error("Not authenticated"));
+      reject(new Error('Not authenticated'));
     } else {
       keycloak
         .updateToken(expirationTime)
@@ -75,7 +75,7 @@ export const authorize = (redirectUri) =>
         })
         .catch(() => {
           login(redirectUri);
-          reject("Unable to refresh token, logging out");
+          reject('Unable to refresh token, logging out');
         });
     }
   });

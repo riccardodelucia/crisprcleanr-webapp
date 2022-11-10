@@ -6,7 +6,7 @@ import camelize from "camelize";
 import { authorize } from "@/authentication";
 const _ = deepdash(lodash);
 
-const baseURL = `${getEnv("VUE_APP_URL_IORIO_CCR_FILESERVER")}`;
+const baseURL = `${getEnv("VITE_URL_IORIO_CCR_FILESERVER")}`;
 
 const authInstances = new Map();
 

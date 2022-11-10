@@ -17,8 +17,8 @@
     >
       <Marks
         v-bind="$attrs"
-        :xScale="xScale"
-        :yScale="yScale"
+        :x-scale="xScale"
+        :y-scale="yScale"
         :data="box"
         clip-path="url(#clip-boxplots)"
       ></Marks>
@@ -27,17 +27,17 @@
 </template>
 
 <script>
-import { scaleBand, scaleLinear } from "d3";
-import D3Axis from "@/components/ccr/charts/D3Axis.vue";
+import { scaleBand, scaleLinear } from 'd3';
+import D3Axis from '@/components/ccr/charts/D3Axis.vue';
 
-import Marks from "@/components/ccr/charts/boxplot/Marks.vue";
+import Marks from '@/components/ccr/charts/boxplot/Marks.vue';
 
-import { getInnerChartSizes } from "@/composables/chart.js";
+import { getInnerChartSizes } from '@/composables/chart.js';
 
-import { computed } from "vue";
+import { computed } from 'vue';
 
 export default {
-  name: "BoxPlotChartFocus",
+  name: 'BoxPlotChartFocus',
   components: { Marks, D3Axis },
   props: {
     data: {
@@ -46,9 +46,11 @@ export default {
     },
     width: {
       type: Number,
+      default: 0,
     },
     height: {
       type: Number,
+      default: 0,
     },
     /* yDomain is used to filter data inside this component */
     yDomain: {

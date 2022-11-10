@@ -19,21 +19,24 @@
 </template>
 
 <script>
-import { setupMarksChart } from "@/composables/genes-signatures-chart.js";
+import { setupMarksChart } from '@/composables/genes-signatures-chart.js';
 
 export default {
-  name: "MarksGenesSet",
+  name: 'MarksGenesSet',
   props: {
-    geneSet: { type: Array },
+    geneSet: { type: Array, default: () => [] },
     yScale: {
       type: Function,
+      default: () => {},
     },
     width: {
       type: Number,
+      default: 0,
     },
-    modelValue: { type: String },
+    modelValue: { type: String, default: '' },
     thr: {
       type: Number,
+      default: 0,
     },
   },
   setup(props, context) {

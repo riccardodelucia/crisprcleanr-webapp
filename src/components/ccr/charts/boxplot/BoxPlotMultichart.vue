@@ -15,15 +15,15 @@
         :data="selectedChartData"
         :width="chartFocusWidth"
         :height="height"
-        :yDomain="yDomainFocus"
+        :y-domain="yDomainFocus"
       />
     </g>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
       <BoxPlotChartContext
         :width="chartContextWidth"
         :height="height"
+        :y-domain="yDomainContext"
         @brush="brushed"
-        :yDomain="yDomainContext"
       ></BoxPlotChartContext>
     </g>
   </svg>

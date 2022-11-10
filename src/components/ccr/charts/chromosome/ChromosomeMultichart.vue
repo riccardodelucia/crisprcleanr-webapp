@@ -22,7 +22,7 @@
         :data="selectedChartData"
         :width="width"
         :height="chartFocusHeight"
-        :xDomain="xDomainFocus"
+        :x-domain="xDomainFocus"
         :selections="selections"
       />
     </g>
@@ -31,8 +31,8 @@
         :data="selectedChartData"
         :width="width"
         :height="chartContextHeight"
+        :x-domain="xDomainContext"
         @brush="brushed"
-        :xDomain="xDomainContext"
       ></ChromosomeChartContext>
     </g>
   </svg>

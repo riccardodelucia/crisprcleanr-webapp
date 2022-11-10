@@ -1,11 +1,11 @@
 <template>
   <g class="marks">
     <circle
+      v-for="(gene, idx) in data.genes"
+      :key="idx"
       :class="{
         selected: gene.gene === modelValue,
       }"
-      v-for="(gene, idx) in data.genes"
-      :key="idx"
       :cx="xScale(gene.x)"
       :cy="yScale(gene.y)"
       :r="pointRadius"
@@ -18,13 +18,14 @@
 </template>
 
 <script>
-import { setupMarksChart } from "@/composables/genes-signatures-chart.js";
+import { setupMarksChart } from '@/composables/genes-signatures-chart.js';
 
 export default {
-  name: "MarksCurve",
+  name: 'MarksCurve',
   props: {
     data: {
       type: Object,
+      default: () => ({}),
     },
     pointRadius: {
       type: Number,
@@ -32,14 +33,17 @@ export default {
     },
     xScale: {
       type: Function,
+      default: () => {},
     },
     yScale: {
       type: Function,
+      default: () => {},
     },
     width: {
       type: Number,
+      default: 0,
     },
-    modelValue: { type: String },
+    modelValue: { type: String, default: '' },
   },
   setup(props, context) {
     const { onMouseOver, onMouseLeave } = setupMarksChart(context);

@@ -1,7 +1,10 @@
 <template>
   <h2 class="u-margin-bottom-small">Results</h2>
-  <button class="button button--large button--primary" @click="$router.push({ name: 'resultsList' })">
-    <BaseIcon name="arrow-left"></BaseIcon> Results List
+  <button
+    class="button button--large button--primary"
+    @click="$router.push({ name: 'resultsList' })"
+  >
+    <vue-feather type="arrow-left"></vue-feather> Results List
   </button>
 
   <div class="results">
@@ -12,7 +15,7 @@
           <b>{{ field[0] }}:</b> {{ field[1] }}
         </li>
       </ul>
-      <p class="u-margin-top-small" v-if="result.status === 'pending'">
+      <p v-if="result.status === 'pending'" class="u-margin-top-small">
         Further content will be shown upon successful job completion...
       </p>
     </div>
@@ -25,10 +28,15 @@
     <div v-if="result.status === 'success'" class="widget results__downloads">
       <h3 class="u-margin-bottom-small">Downloads</h3>
       <div class="results__download-buttons-container">
-        <button v-for="(file, index) in fileList" :key="index" @click="onClick(file, id)" class="button button--primary"
-          type="button">
+        <button
+          v-for="(file, index) in fileList"
+          :key="index"
+          class="button button--primary"
+          type="button"
+          @click="onClick(file, id)"
+        >
           {{ file }}&nbsp;<span>
-            <BaseIcon name="download" />
+            <vue-feather type="download" />
           </span>
         </button>
       </div>
@@ -36,7 +44,11 @@
 
     <template v-if="result.status === 'success'">
       <div class="widget results__genes-signatures">
-        <ContentLoader v-if="!genesSignatures" viewBox="0 0 520 700" :animate="!genesSignatures">
+        <ContentLoader
+          v-if="!genesSignatures"
+          viewBox="0 0 520 700"
+          :animate="!genesSignatures"
+        >
           <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
           <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
           <rect x="40" y="75" rx="0" ry="0" width="80" height="630" />
@@ -45,10 +57,16 @@
           <rect x="340" y="35" rx="0" ry="0" width="80" height="670" />
           <rect x="440" y="55" rx="0" ry="0" width="80" height="650" />
         </ContentLoader>
-        <GenesSignaturesMultichart v-else-if="typeof genesSignatures === 'object'" :data="genesSignatures">
+        <GenesSignaturesMultichart
+          v-else-if="typeof genesSignatures === 'object'"
+          :data="genesSignatures"
+        >
         </GenesSignaturesMultichart>
         <svg v-else viewBox="0 0 520 700">
-          <g stroke="var(--color-grey-lighter)" fill="var(--color-grey-lighter)">
+          <g
+            stroke="var(--color-grey-lighter)"
+            fill="var(--color-grey-lighter)"
+          >
             <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
             <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
             <rect x="40" y="75" rx="0" ry="0" width="80" height="630" />
@@ -61,68 +79,95 @@
       </div>
 
       <BaseAccordion class="widget widget--color1 results__thumbnails">
-        <template v-slot:title>Normalised Counts and Depletion Fold-Changes Charts</template>
-        <template v-slot:content>
+        <template #title
+          >Normalised Counts and Depletion Fold-Changes Charts</template
+        >
+        <template #content>
           <div class="thumbnails__content">
-            <BaseThumbnail v-for="item in imageListByCathegory.normImages" :key="item.filename"
-              @clicked="openModal(item, id)" :img="item"></BaseThumbnail>
+            <BaseThumbnail
+              v-for="item in imageListByCathegory.normImages"
+              :key="item.filename"
+              :img="item"
+              @clicked="openModal(item, id)"
+            ></BaseThumbnail>
           </div>
         </template>
       </BaseAccordion>
 
-      <BaseAccordion class="widget widget--color2 results__thumbnails" height="42rem">
-        <template v-slot:title>Chromosome Charts</template>
-        <template v-slot:content>
+      <BaseAccordion
+        class="widget widget--color2 results__thumbnails"
+        height="42rem"
+      >
+        <template #title>Chromosome Charts</template>
+        <template #content>
           <div class="thumbnails__content">
-            <BaseThumbnail v-for="item in imageListByCathegory.chrImages" :key="item.filename"
-              @clicked="openModal(item, id)" :img="item"></BaseThumbnail>
+            <BaseThumbnail
+              v-for="item in imageListByCathegory.chrImages"
+              :key="item.filename"
+              :img="item"
+              @clicked="openModal(item, id)"
+            ></BaseThumbnail>
           </div>
         </template>
       </BaseAccordion>
 
       <BaseAccordion class="widget widget--color3 results__thumbnails">
-        <template v-slot:title>QC Assessment Charts</template>
-        <template v-slot:content>
+        <template #title>QC Assessment Charts</template>
+        <template #content>
           <div class="thumbnails__content">
-            <BaseThumbnail v-for="item in imageListByCathegory.qcImages" :key="item.filename"
-              @clicked="openModal(item, id)" :img="item"></BaseThumbnail>
+            <BaseThumbnail
+              v-for="item in imageListByCathegory.qcImages"
+              :key="item.filename"
+              :img="item"
+              @clicked="openModal(item, id)"
+            ></BaseThumbnail>
           </div>
         </template>
       </BaseAccordion>
     </template>
   </div>
 
-  <BaseModal v-if="modalState != 'closed'" @modal-close="closeModal" :width="image.width">
-    <template v-slot:header>{{ image.label }} </template>
-    <template v-slot:body>
-      <component v-if="modalState === 'opened'" :is="image.component" :data="data" />
+  <BaseModal
+    v-if="modalState != 'closed'"
+    :width="image.width"
+    @modal-close="closeModal"
+  >
+    <template #header>{{ image.label }} </template>
+    <template #body>
+      <component
+        :is="image.component"
+        v-if="modalState === 'opened'"
+        :data="data"
+      />
       <div v-else-if="modalState === 'loading'">Loading...</div>
     </template>
   </BaseModal>
 </template>
 
 <script>
-import fileServerAPI from "@/api/fileServer.js";
-import fileList from "@/files.json";
+import fileServerAPI from '@/api/fileServer.js';
+import fileList from '@/files.json';
 
-import BoxPlotMultichart from "@/components/ccr/charts/boxplot/BoxPlotMultichart.vue";
-import ChromosomeMultichart from "@/components/ccr/charts/chromosome/ChromosomeMultichart.vue";
-import LineChartROC from "@/components/ccr/charts/linechart/LineChartROC.vue";
-import LineChartPrRc from "@/components/ccr/charts/linechart/LineChartPrRc.vue";
-import GenesSignaturesMultichart from "@/components/ccr/charts/genes_signatures/GenesSignaturesMultichart.vue";
+import BoxPlotMultichart from '@/components/ccr/charts/boxplot/BoxPlotMultichart.vue';
+import ChromosomeMultichart from '@/components/ccr/charts/chromosome/ChromosomeMultichart.vue';
+import LineChartROC from '@/components/ccr/charts/linechart/LineChartROC.vue';
+import LineChartPrRc from '@/components/ccr/charts/linechart/LineChartPrRc.vue';
+import GenesSignaturesMultichart from '@/components/ccr/charts/genes_signatures/GenesSignaturesMultichart.vue';
 
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed } from 'vue';
 
-import { date, download } from "@/composables/utilities.js";
+import { date, download } from '@/composables/utilities.js';
 
-import { ContentLoader } from "vue-content-loader";
+import { ContentLoader } from 'vue-content-loader';
 
-import imageList from "@/images.json";
+import imageList from '@/images.json';
 
-import { useStore } from "vuex";
+import { useStore } from 'vuex';
+
+import imagePlaceholder from '@/assets/img/placeholder-image.png';
 
 export default {
-  name: "ViewResultsByID",
+  name: 'ViewResultsByID',
   components: {
     BoxPlotMultichart,
     ChromosomeMultichart,
@@ -134,6 +179,7 @@ export default {
   props: {
     id: {
       type: String,
+      default: '',
     },
     result: {
       type: Object,
@@ -143,7 +189,7 @@ export default {
   setup(props) {
     const image = ref({});
     const data = ref({});
-    const modalState = ref("closed");
+    const modalState = ref('closed');
 
     const store = useStore();
 
@@ -156,7 +202,7 @@ export default {
     });
     const genesSignatures = ref(null);
 
-    if (props.result.status === "success") {
+    if (props.result.status === 'success') {
       const objectKey = `/${user.value.username}/${props.id}/genes_signatures.json`;
       fileServerAPI
         .downloadFile({ objectKey })
@@ -165,56 +211,59 @@ export default {
         })
         .catch((err) => {
           const message = err?.message;
-          store.dispatch("notification/sendErrorNotification", {
-            title: "Unable to donwload genes signatures data",
+          store.dispatch('notification/sendErrorNotification', {
+            title: 'Unable to donwload genes signatures data',
             message,
           });
-          genesSignatures.value = "error";
+          genesSignatures.value = 'error';
         });
 
       const imageListWithURL = imageList.map(async (image) => {
         try {
           const objectKey = `/${user.value.username}/${props.id}/${image.imgUri}`;
-          const response = await fileServerAPI.downloadFile({ objectKey, blob: true });
+          const response = await fileServerAPI.downloadFile({
+            objectKey,
+            blob: true,
+          });
           return { ...image, src: URL.createObjectURL(response.data) };
         } catch (error) {
           return {
             ...image,
-            src: require("@/assets/img/placeholder-image.png"),
+            src: imagePlaceholder,
           };
         }
       });
 
       Promise.all(imageListWithURL).then((images) => {
         imageListByCathegory.normImages = images.filter(
-          (image) => image.section === "norm"
+          (image) => image.section === 'norm'
         );
         imageListByCathegory.chrImages = images
-          .filter((image) => image.section === "chr")
+          .filter((image) => image.section === 'chr')
           .sort((image1, image2) => {
             const a = parseInt(image1.filename.match(/(\d+)/)[0]);
             const b = parseInt(image2.filename.match(/(\d+)/)[0]);
             return a - b;
           });
         imageListByCathegory.qcImages = images.filter(
-          (image) => image.section === "qc"
+          (image) => image.section === 'qc'
         );
       });
     }
 
     const openModal = (img, id) => {
-      modalState.value = "loading";
+      modalState.value = 'loading';
       const objectKey = `/${user.value.username}/${id}/${img.chart}.json`;
       fileServerAPI
         .downloadFile({ objectKey })
         .then((response) => {
           data.value = response.data;
           image.value = img;
-          modalState.value = "opened";
+          modalState.value = 'opened';
         })
         .catch((err) => {
           const message = err?.message;
-          store.dispatch("notification/sendErrorNotification", {
+          store.dispatch('notification/sendErrorNotification', {
             title: `Unable to open chart ${img.chart}`,
             message,
           });
@@ -225,7 +274,7 @@ export default {
     const closeModal = () => {
       image.value = {};
       data.value = {};
-      modalState.value = "closed";
+      modalState.value = 'closed';
     };
 
     const onClick = (file, id) => {
@@ -237,7 +286,7 @@ export default {
         })
         .catch((error) => {
           const message = error?.message;
-          store.dispatch("notification/sendErrorNotification", {
+          store.dispatch('notification/sendErrorNotification', {
             title: `Unable to download file ${file}`,
             message,
           });
@@ -245,31 +294,31 @@ export default {
     };
 
     const labelFieldPairs = {
-      id: "ID",
-      title: "Title",
-      email: "Email",
-      label: "Data label",
-      status: "Status",
-      dateTime: "Date Time",
-      nControls: "Number of controls",
-      normMinReads: "Min number of reads in the control sample",
-      method: "Normalization Method",
-      libraryBuiltin: "Default Library",
-      libraryFile: "Library File",
-      fileCounts: "Counts File",
-      filesFASTQcontrols: "FASTQ Controls",
-      filesFASTQsamples: "FASTQ Samples",
-      filesBAMcontrols: "BAM Controls",
-      filesBAMsamples: "BAM Samples",
-      errorMsg: "Error"
+      id: 'ID',
+      title: 'Title',
+      email: 'Email',
+      label: 'Data label',
+      status: 'Status',
+      dateTime: 'Date Time',
+      nControls: 'Number of controls',
+      normMinReads: 'Min number of reads in the control sample',
+      method: 'Normalization Method',
+      libraryBuiltin: 'Default Library',
+      libraryFile: 'Library File',
+      fileCounts: 'Counts File',
+      filesFASTQcontrols: 'FASTQ Controls',
+      filesFASTQsamples: 'FASTQ Samples',
+      filesBAMcontrols: 'BAM Controls',
+      filesBAMsamples: 'BAM Samples',
+      errorMsg: 'Error',
     };
 
     const resultDataMap = new Map();
     Object.entries(props.result).forEach(([key, field]) => {
-      if (key !== "notes" && field && labelFieldPairs[key]) {
+      if (key !== 'notes' && field && labelFieldPairs[key]) {
         let fieldValue = field;
         if (Array.isArray(field)) {
-          fieldValue = field.join(", ");
+          fieldValue = field.join(', ');
         }
         resultDataMap.set(labelFieldPairs[key], fieldValue);
       }

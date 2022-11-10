@@ -6,31 +6,27 @@
       type="checkbox"
       @change="isOpen = !isOpen"
     />
-    <label :for="uuid" class="accordion__label"
-      ><BaseIcon v-if="isOpen" name="plus-circle"></BaseIcon>
-      <BaseIcon v-else name="minus-circle"></BaseIcon>
-      <slot name="title">Title</slot></label
-    >
+    <label :for="uuid" class="accordion__label">
+      <vue-feather v-if="isOpen" type="plus-circle"></vue-feather>
+      <vue-feather v-else type="minus-circle"></vue-feather>
+      <slot name="title">Title</slot>
+    </label>
     <div class="accordion__collapsible-content">
-      <!--       <div class="accordion__content-inner">
- -->
       <slot name="content"></slot>
-      <!--       </div>
- -->
     </div>
   </div>
 </template>
 
 <script>
-import UniqueID from "@/composables/uuid.js";
-import { ref } from "vue";
+import UniqueID from '@/composables/uuid.js';
+import { ref } from 'vue';
 
 export default {
-  name: "BaseAccordion",
+  name: 'BaseAccordion',
   props: {
     height: {
       type: String,
-      default: "min-content",
+      default: 'min-content',
     },
   },
   setup() {
@@ -47,6 +43,7 @@ export default {
   &__checkbox {
     display: none;
   }
+
   &__label {
     user-select: none;
     display: flex;
@@ -55,6 +52,7 @@ export default {
     cursor: pointer;
     font-weight: bold;
   }
+
   &__collapsible-content {
     max-height: 0px;
     overflow: hidden;

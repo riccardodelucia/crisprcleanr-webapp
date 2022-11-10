@@ -33,6 +33,14 @@ lint-dockerfile:
 
 # TODO lint javascript
 
+lint-code:
+  extends: .lint
+  image: node:18-alpine
+  before_script:
+    - npm install
+  script:
+    - npm run lint
+
 ####################################################################################################
 # branch pipeline: build, package and test image on the master branch
 

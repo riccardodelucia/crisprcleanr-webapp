@@ -1,17 +1,19 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import store from "./store";
-import upperFirst from "lodash/upperFirst";
-import camelCase from "lodash/camelCase";
+import { createApp } from 'vue';
+import App from './App.vue';
+import store from './store';
+import upperFirst from 'lodash/upperFirst';
+import camelCase from 'lodash/camelCase';
 
-import "@/assets/scss/main.scss";
-import "@/assets/scss/vendor/nprogress.scss";
+import '@/assets/scss/main.scss';
+import '@/assets/scss/vendor/nprogress.scss';
 
-import nProgress from "nprogress";
+import nProgress from 'nprogress';
 
-import { initializeAppWithAuth } from "@/authentication.js";
+import { initializeAppWithAuth } from '@/authentication.js';
 
-import "tippy.js/dist/tippy.css"; // optional for styling
+import 'tippy.js/dist/tippy.css'; // optional for styling
+
+import VueFeather from 'vue-feather';
 
 nProgress.configure({ showSpinner: false });
 
@@ -20,37 +22,30 @@ initializeAppWithAuth().then(({ router, authentication }) => {
   app.config.unwrapInjectedRef = true;
 
   // directive to catch out-of-element clicks (useful for blurring/ focusing)
-  app.directive("click-outside", {
+  app.directive('click-outside', {
     beforeMount(el, binding) {
       el.clickOutsideEvent = (event) => {
         if (!(el === event.target || el.contains(event.target))) {
           binding.value(event, el);
         }
       };
-      document.body.addEventListener("click", el.clickOutsideEvent);
+      document.body.addEventListener('click', el.clickOutsideEvent);
     },
     beforeUnmount(el) {
-      document.body.removeEventListener("click", el.clickOutsideEvent);
+      document.body.removeEventListener('click', el.clickOutsideEvent);
     },
   });
-  const requireComponent = require.context(
-    // The relative path of the components folder
-    "./components",
-    // Whether or not to look in subfolders
-    false,
-    // The regular expression used to match base component filenames
-    /Base[A-Z]\w+\.(vue|js)$/
-  );
 
-  requireComponent.keys().forEach((fileName) => {
-    // Get component config
-    const componentConfig = requireComponent(fileName);
+  const componentFiles = import.meta.globEager('./components/Base*.vue');
 
+  Object.entries(componentFiles).forEach(([path, componentConfig]) => {
     // Get PascalCase name of component
     const componentName = upperFirst(
       camelCase(
-        // Gets the file name regardless of folder depth
-        fileName.replace(/^\.\/(.*)\.\w+$/, "$1")
+        path
+          .split('/')
+          .pop()
+          .replace(/\.\w+$/, '')
       )
     );
 
@@ -64,5 +59,7 @@ initializeAppWithAuth().then(({ router, authentication }) => {
     );
   });
 
-  app.mount("#app");
+  app.component(VueFeather.name, VueFeather);
+
+  app.mount('#app');
 });

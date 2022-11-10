@@ -50,18 +50,18 @@
     </text>
 
     <MarksCurve
+      v-model="selectedGene"
       :data="filteredData"
       :width="innerWidth"
-      :xScale="xScale"
-      :yScale="yScale"
-      v-model="selectedGene"
+      :x-scale="xScale"
+      :y-scale="yScale"
     ></MarksCurve>
     <g :transform="`translate(${curveWidth + paddingX}, 0)`">
       <MarksGenesSet
-        :geneSet="filteredData.genesSet"
-        :width="geneSetWidth"
-        :yScale="yScale"
         v-model="selectedGene"
+        :gene-set="filteredData.genesSet"
+        :width="geneSetWidth"
+        :y-scale="yScale"
         :thr="data.threshold"
       ></MarksGenesSet>
       <text
@@ -75,31 +75,33 @@
 </template>
 
 <script>
-import { extent, scaleLinear, scaleLog } from "d3";
-import { ref, computed } from "vue";
+import { extent, scaleLinear, scaleLog } from 'd3';
+import { ref, computed } from 'vue';
 
-import { getInnerChartSizes } from "@/composables/chart.js";
-import D3Axis from "@/components/ccr/charts/D3Axis.vue";
-import MarksCurve from "@/components/ccr/charts/genes_signatures/MarksCurve.vue";
-import MarksGenesSet from "@/components/ccr/charts/genes_signatures/MarksGenesSet.vue";
+import { getInnerChartSizes } from '@/composables/chart.js';
+import D3Axis from '@/components/ccr/charts/D3Axis.vue';
+import MarksCurve from '@/components/ccr/charts/genes_signatures/MarksCurve.vue';
+import MarksGenesSet from '@/components/ccr/charts/genes_signatures/MarksGenesSet.vue';
 
 export default {
-  name: "GenesSignaturesFocus",
+  name: 'GenesSignaturesFocus',
+  components: { D3Axis, MarksCurve, MarksGenesSet },
   props: {
     data: {
       type: Object,
       required: true,
     },
-    width: { type: Number },
-    height: { type: Number },
+    width: { type: Number, default: 0 },
+    height: { type: Number, default: 0 },
     yDomain: {
       type: Array,
+      default: () => [],
     },
     genesSet: {
       type: String,
+      default: '',
     },
   },
-  components: { D3Axis, MarksCurve, MarksGenesSet },
   setup(props) {
     const margin = {
       top: 20,

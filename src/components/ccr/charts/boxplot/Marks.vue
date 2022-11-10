@@ -1,6 +1,6 @@
 <template>
   <g>
-    <g @mouseover="onMouseOver" class="boxplot">
+    <g class="boxplot" @mouseover="onMouseOver">
       <line
         :x1="bandwidth / 2"
         :x2="bandwidth / 2"
@@ -87,20 +87,23 @@
 </template>
 
 <script>
-import { setupTooltip } from "@/composables/chart.js";
-import { computed } from "vue";
+import { setupTooltip } from '@/composables/chart.js';
+import { computed } from 'vue';
 
 export default {
-  name: "Marks",
+  name: 'BoxPlotMarks',
   props: {
     xScale: {
       type: Function,
+      default: () => {},
     },
     yScale: {
       type: Function,
+      default: () => {},
     },
     data: {
       type: Object,
+      default: () => ({}),
     },
   },
   setup(props) {

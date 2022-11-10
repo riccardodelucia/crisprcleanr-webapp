@@ -1,6 +1,6 @@
 <template>
   <BaseHeader>
-    <template v-slot:logo
+    <template #logo
       ><a
         href="https://humantechnopole.it/en/research-groups/iorio-group/"
         target="_blank"
@@ -10,13 +10,10 @@
           alt="Iorio logo"
           class="header__logo logo-iorio" /></a
     ></template>
-    <template v-slot:nav>
+    <template #nav>
       <a :href="dashboardURL" target="_blank" class="header__link">
-        <BaseIcon name="grid" />
+        <vue-feather type="grid" />
       </a>
-      <!--             <router-link class="header__link" to="/dashboard">
-
-            </router-link> -->
       <a v-if="!authenticated" to="#" class="header__link" @click="loginUser"
         >Sign in or Register</a
       >
@@ -26,25 +23,26 @@
 </template>
 
 <script>
-import getEnv from "@/utils/env";
+import getEnv from '@/utils/env';
 
-const dashboardURL = getEnv("VUE_APP_URL_IORIO_DASHBOARD");
+const dashboardURL = getEnv('VITE_URL_IORIO_DASHBOARD');
 
 export default {
-  name: "TheHeader",
+  name: 'TheHeader',
+  inject: ['login', 'authenticated'],
   props: {
     sidenavObject: {
       type: Object,
-    },
-  },
-  inject: ["login", "authenticated"],
-  methods: {
-    loginUser() {
-      this.login(this.$route.fullPath);
+      default: () => ({}),
     },
   },
   data() {
     return { dashboardURL };
+  },
+  methods: {
+    loginUser() {
+      this.login(this.$route.fullPath);
+    },
   },
 };
 </script>

@@ -3,22 +3,22 @@
     <div class="test">
       <BaseInput label="Label" error="error"> </BaseInput>
       <BaseSelect
+        v-model="selectValue"
         label="Label"
         error="error"
         :options="selectOptions"
-        v-model="selectValue"
       >
       </BaseSelect>
       <BaseTextarea label="Label" error="error"></BaseTextarea>
       <BaseInputFile
-        label="Label"
         v-model="fileValue"
+        label="Label"
         error="error"
       ></BaseInputFile>
       <BaseRadioGroup
+        v-model="radioValue"
         label="Label"
         :options="radioOptions"
-        v-model="radioValue"
       >
       </BaseRadioGroup>
       <BaseCheckbox
@@ -27,8 +27,8 @@
         option="Check me!"
       ></BaseCheckbox>
       <BaseToggleSwitch
-        label="Label"
         v-model="toggleValue"
+        label="Label"
         option="Toggle me!"
       ></BaseToggleSwitch>
     </div>
@@ -39,23 +39,23 @@
 export default {
   data() {
     const option1 = {
-      name: "Name1",
-      surname: "Surname1",
+      name: 'Name1',
+      surname: 'Surname1',
       age: 23,
-      sex: "male",
+      sex: 'male',
     };
     const option2 = {
-      name: "Name2",
-      surname: "Surname2",
+      name: 'Name2',
+      surname: 'Surname2',
       age: 44,
-      sex: "female",
+      sex: 'female',
     };
     const selectOptions = [option1, option2];
     return {
       selectOptions,
       selectValue: null,
-      radioOptions: ["Yes", "No", "Undecided"],
-      radioValue: "Yes",
+      radioOptions: ['Yes', 'No', 'Undecided'],
+      radioValue: 'Yes',
       fileValue: null,
       checkboxValue: false,
       toggleValue: false,

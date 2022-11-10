@@ -1,4 +1,4 @@
-import tippy from "tippy.js";
+import tippy from 'tippy.js';
 
 export const getInnerChartSizes = function (width, height, margin) {
   const innerWidth = width - margin.left - margin.right;
@@ -11,7 +11,7 @@ export const setupTooltip = function () {
   const setTooltipContent = function (data) {
     const msg = Object.entries(data).reduce((acc, [key, value]) => {
       return acc + `${key}: ${value} <br />`;
-    }, "");
+    }, '');
     return msg;
   };
   const onMouseOver = (event) => {

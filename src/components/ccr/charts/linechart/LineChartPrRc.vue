@@ -2,12 +2,12 @@
   <div class="linechart-container">
     <LineChart
       :data="chartData"
-      :xDomain="xDomain"
-      :xLabel="xLabel"
-      :yDomain="yDomain"
-      :yLabel="yLabel"
+      :x-domain="xDomain"
+      :x-label="xLabel"
+      :y-domain="yDomain"
+      :y-label="yLabel"
     >
-      <template v-slot:default="{ lineChartProps }">
+      <template #default="{ lineChartProps }">
         <g>
           <line
             class="chart__line chart__line--dashed"
@@ -36,9 +36,9 @@
     <div>
       <ul class="metrics__list">
         <li
-          class="metrics__element"
           v-for="[key, value] in Object.entries(metrics)"
           :key="key"
+          class="metrics__element"
         >
           <b>{{ `${key}: ` }}</b
           >{{ `${value}` }}
@@ -52,8 +52,8 @@
 import LineChart from "@/components/ccr/charts/linechart/LineChart.vue";
 
 export default {
-  components: { LineChart },
   name: "LineChartPrRc",
+  components: { LineChart },
   props: {
     data: {
       type: Object,

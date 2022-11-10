@@ -5,7 +5,7 @@
   //font-display: auto;
   unicode-range: U+000-5FF;
   src: local("Raleway"),
-    url("~@/assets/fonts/Raleway/static/Raleway-Regular.ttf") format("truetype");
+    url("@/assets/fonts/Raleway/static/Raleway-Regular.ttf") format("truetype");
 }
 
 @font-face {
@@ -15,7 +15,7 @@
   //font-display: auto;
   unicode-range: U+000-5FF;
   src: local("Raleway"),
-    url("~@/assets/fonts/Raleway/static/Raleway-Italic.ttf") format("truetype");
+    url("@/assets/fonts/Raleway/static/Raleway-Italic.ttf") format("truetype");
 }
 
 @font-face {
@@ -25,7 +25,7 @@
   //font-display: auto;
   unicode-range: U+000-5FF;
   src: local("Raleway"),
-    url("~@/assets/fonts/Raleway/static/Raleway-Bold.ttf") format("truetype");
+    url("@/assets/fonts/Raleway/static/Raleway-Bold.ttf") format("truetype");
 }
 
 body {

@@ -10,8 +10,8 @@
         @input.stop="onInput"
       />
     </label>
-    <div class="input-field__error" v-if="error">
-      <BaseIcon name="alert-circle" width="16px" height="16px"></BaseIcon
+    <div v-if="error" class="input-field__error">
+      <vue-feather type="alert-circle" size="16px"></vue-feather
       ><small>{{ error }}</small>
     </div>
   </div>
@@ -19,24 +19,25 @@
 
 <script>
 export default {
-  name: "BaseInput",
+  name: 'BaseInput',
   props: {
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     modelValue: {
       type: [String, Number],
-      default: "",
+      default: '',
     },
     error: {
       type: String,
-      default: "",
+      default: '',
     },
   },
+  emits: { 'update:modelValue': null },
   setup(_, { emit }) {
     const onInput = (event) => {
-      emit("update:modelValue", event.target.value);
+      emit('update:modelValue', event.target.value);
     };
     return {
       onInput,

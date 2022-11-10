@@ -12,17 +12,17 @@
 </template>
 
 <script>
-import MessageLayout from "@/views/layouts/MessageLayout";
+import MessageLayout from '@/views/layouts/MessageLayout.vue';
 
 export default {
-  title: "Message Page",
-  name: "ViewMessagePage",
+  title: 'Message Page',
+  name: 'ViewMessagePage',
   components: { MessageLayout },
   props: {
-    title: { type: String, default: "" },
+    title: { type: String, default: '' },
     message: {
       type: String,
-      default: "",
+      default: '',
     },
   },
 };

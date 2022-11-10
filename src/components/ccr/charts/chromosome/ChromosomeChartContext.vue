@@ -15,32 +15,32 @@
       v-bind="$attrs"
       :domain="xDomain"
       :scale="xScale"
-      brushDirection="horizontal"
+      brush-direction="horizontal"
     >
     </BrushArea>
     <Marks
       :points="data.sgRNAArray"
       :segments="data.segments"
-      :xScale="xScale"
-      :yScale="yScale"
-      :pointRadius="2"
+      :x-scale="xScale"
+      :y-scale="yScale"
+      :point-radius="2"
     />
     <g ref="brush"></g>
   </g>
 </template>
 
 <script>
-import { scaleLinear, extent, select, brushX } from "d3";
-import Marks from "@/components/ccr/charts/chromosome/Marks.vue";
-import D3Axis from "@/components/ccr/charts/D3Axis.vue";
-import BrushArea from "@/components/ccr/charts/BrushArea.vue";
+import { scaleLinear, extent, select, brushX } from 'd3';
+import Marks from '@/components/ccr/charts/chromosome/Marks.vue';
+import D3Axis from '@/components/ccr/charts/D3Axis.vue';
+import BrushArea from '@/components/ccr/charts/BrushArea.vue';
 
-import { getInnerChartSizes } from "@/composables/chart.js";
+import { getInnerChartSizes } from '@/composables/chart.js';
 
-import { ref, onMounted } from "vue";
+import { ref, onMounted } from 'vue';
 
 export default {
-  name: "ChromosomeChartContext",
+  name: 'ChromosomeChartContext',
   components: { D3Axis, BrushArea, Marks },
   props: {
     data: {
@@ -49,14 +49,18 @@ export default {
     },
     width: {
       type: Number,
+      default: 0,
     },
     height: {
       type: Number,
+      default: 0,
     },
     xDomain: {
       type: Array,
+      default: () => [],
     },
   },
+  emits: { brush: null },
   setup(props, { emit }) {
     const margin = {
       top: 20,
@@ -81,7 +85,7 @@ export default {
 
     const updateScale = ({ selection }) => {
       const extent = selection ? selection.map(xScale.invert) : props.xDomain;
-      emit("brush", extent);
+      emit('brush', extent);
     };
 
     const brush = ref(null);
@@ -93,7 +97,7 @@ export default {
             [0, 0],
             [innerWidth, innerHeight],
           ])
-          .on("brush end", updateScale)
+          .on('brush end', updateScale)
       );
     });
 
@@ -105,7 +109,7 @@ export default {
       yScale,
       brush,
       xAxisLabelOffset: 40,
-      xLabel: "Genomic Positions",
+      xLabel: 'Genomic Positions',
     };
   },
 };

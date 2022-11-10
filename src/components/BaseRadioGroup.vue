@@ -1,6 +1,6 @@
 <template>
   <div class="input-field">
-    <label class="input-field__label" v-if="label">{{ label }}</label>
+    <label v-if="label" class="input-field__label">{{ label }}</label>
     <div class="radio-group">
       <label
         v-for="option in options"
@@ -12,10 +12,10 @@
           :class="{ 'radio-group__input--selected': option === modelValue }"
         ></div>
         <input
+          :id="option"
           hidden
           type="radio"
           :value="option"
-          :id="option"
           @click="emit('update:modelValue', option)"
         />
         {{ option }}
@@ -26,11 +26,11 @@
 
 <script>
 export default {
-  name: "BaseRadionButtonGroup",
+  name: 'BaseRadionButtonGroup',
   props: {
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     options: {
       required: true,
@@ -38,6 +38,7 @@ export default {
     },
     modelValue: {
       type: String, // TODO make component compatible with any other type, like VueBaseSelect
+      default: '',
     },
   },
   setup(_, { emit }) {

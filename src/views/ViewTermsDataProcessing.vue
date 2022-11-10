@@ -188,6 +188,6 @@
 
 <script>
 export default {
-  name: "ViewCRISPRcleanRTermsDataProcessing",
+  name: 'ViewCRISPRcleanRTermsDataProcessing',
 };
 </script>

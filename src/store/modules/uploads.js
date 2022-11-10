@@ -20,9 +20,9 @@ export const getters = {};
 
 export const actions = {
   add({ commit }, upload) {
-    commit("PUSH", upload);
+    commit('PUSH', upload);
   },
   remove({ commit }, upload) {
-    commit("DELETE", upload);
+    commit('DELETE', upload);
   },
 };

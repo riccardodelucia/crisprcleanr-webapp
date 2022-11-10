@@ -2,7 +2,7 @@
   <h2 class="u-margin-bottom-medium">Results</h2>
   <div class="results-table">
     <BaseDatatable :columns="columns" :rows="results">
-      <template v-slot:default="slotProps">
+      <template #default="slotProps">
         <tr>
           <td v-if="!isMobile">{{ slotProps.row.id }}</td>
           <td v-if="!isMobile">
@@ -25,16 +25,17 @@
 </template>
 
 <script>
-import { date } from "@/composables/utilities.js";
-import { ref, watchEffect } from "vue";
-import { resizeListener } from "@/composables/utilities.js";
+import { date } from '@/composables/utilities.js';
+import { ref, watchEffect } from 'vue';
+import { resizeListener } from '@/composables/utilities.js';
 
 export default {
-  title: "Jobs Results",
-  name: "ViewCRISPRcleanRResultsList",
+  title: 'Jobs Results',
+  name: 'ViewCRISPRcleanRResultsList',
   props: {
     results: {
       type: Array,
+      default: () => [],
     },
   },
   setup() {
@@ -47,31 +48,31 @@ export default {
     watchEffect(() => {
       if (!isMobile.value) {
         columns.value = [
-          { width: "30%", label: "Job ID", name: "id", type: "string" },
+          { width: '30%', label: 'Job ID', name: 'id', type: 'string' },
           {
-            width: "20%",
-            label: "Submission Date",
-            name: "dateTime",
-            type: "date",
+            width: '20%',
+            label: 'Submission Date',
+            name: 'dateTime',
+            type: 'date',
           },
-          { width: "30%", label: "Title", name: "title", type: "string" },
-          { width: "10%", label: "Status", name: "status", type: "string" },
+          { width: '30%', label: 'Title', name: 'title', type: 'string' },
+          { width: '10%', label: 'Status', name: 'status', type: 'string' },
 
           {
-            width: "10%",
-            label: "Actions",
-            name: "actions",
+            width: '10%',
+            label: 'Actions',
+            name: 'actions',
             isSortable: false,
           },
         ];
       } else {
         columns.value = [
-          { width: "30%", label: "Title", name: "title" },
-          { width: "30%", label: "Status", name: "status" },
+          { width: '30%', label: 'Title', name: 'title' },
+          { width: '30%', label: 'Status', name: 'status' },
           {
-            width: "40%",
-            label: "Actions",
-            name: "actions",
+            width: '40%',
+            label: 'Actions',
+            name: 'actions',
             isSortable: false,
           },
         ];

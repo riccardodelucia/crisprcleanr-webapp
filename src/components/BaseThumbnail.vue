@@ -7,12 +7,14 @@
 
 <script>
 export default {
-  name: "BaseThumbnail",
+  name: 'BaseThumbnail',
   props: {
     img: {
       type: Object,
+      default: () => ({}),
     },
   },
+  emits: { clicked: null },
   methods: {},
 };
 </script>

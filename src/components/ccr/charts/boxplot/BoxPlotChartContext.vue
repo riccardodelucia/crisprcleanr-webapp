@@ -23,14 +23,14 @@
 </template>
 
 <script>
-import BrushArea from "@/components/ccr/charts/BrushArea.vue";
-import { getInnerChartSizes } from "@/composables/chart.js";
-import D3Axis from "@/components/ccr/charts/D3Axis.vue";
-import { computed } from "vue";
-import { scaleLinear } from "d3";
+import BrushArea from '@/components/ccr/charts/BrushArea.vue';
+import { getInnerChartSizes } from '@/composables/chart.js';
+import D3Axis from '@/components/ccr/charts/D3Axis.vue';
+import { computed } from 'vue';
+import { scaleLinear } from 'd3';
 
 export default {
-  name: "BoxPlotChartContext",
+  name: 'BoxPlotChartContext',
   components: { BrushArea, D3Axis },
   props: {
     width: {
@@ -43,6 +43,7 @@ export default {
     },
     yDomain: {
       type: Array,
+      default: () => [],
     },
   },
   setup(props) {

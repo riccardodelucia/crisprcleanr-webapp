@@ -1,10 +1,10 @@
 <template>
-  <div tabindex="-1" class="user" v-click-outside="onClickOutside">
+  <div v-click-outside="onClickOutside" tabindex="-1" class="user">
     <div v-if="!useIcon" class="user__name" @click="open = !open">
       {{ user }}
       <div class="user__arrow"></div>
     </div>
-    <BaseIcon v-else name="user" @click="open = !open"></BaseIcon>
+    <vue-feather v-else type="user" @click="open = !open"></vue-feather>
     <div v-show="open" class="user__menu">
       <a href="#" @click="logoutUser">logout</a>
     </div>
@@ -12,15 +12,15 @@
 </template>
 
 <script>
-import { ref, computed, inject } from "vue";
-import { useStore } from "vuex";
-import { resizeListener } from "@/composables/utilities.js";
+import { ref, computed, inject } from 'vue';
+import { useStore } from 'vuex';
+import { resizeListener } from '@/composables/utilities.js';
 
 export default {
-  name: "BaseUser",
+  name: 'BaseUser',
   setup() {
     const store = useStore();
-    const logout = inject("logout");
+    const logout = inject('logout');
     const open = ref(false);
     const useIcon = ref(false);
 
@@ -38,10 +38,10 @@ export default {
       const name =
         store.state.user.user?.firstName ||
         store.state.user.user?.username ||
-        "user";
+        'user';
 
       return name.length > maxLength
-        ? name.substring(0, maxLength - 3).concat("...")
+        ? name.substring(0, maxLength - 3).concat('...')
         : name;
     });
 

@@ -15,16 +15,16 @@
       </p>
       <div class="hero__button-container">
         <button
-          @click="$router.push({ name: 'submit' })"
           class="button button--primary button--large hero__button--submit"
           type="button"
+          @click="$router.push({ name: 'submit' })"
         >
           Submit New Job
         </button>
         <button
-          @click="$router.push({ name: 'resultsList' })"
           class="button button--secondary button--large hero__button--results"
           type="button"
+          @click="$router.push({ name: 'resultsList' })"
         >
           Results
         </button>
@@ -42,7 +42,7 @@
     <div class="card-step">
       <div>
         <div class="card-step__icon-container card-step__icon-container--1">
-          <BaseIcon name="upload" />
+          <vue-feather type="upload" />
         </div>
       </div>
       <h3>Step 1: submit your job</h3>
@@ -56,7 +56,7 @@
     <div class="card-step">
       <div>
         <div class="card-step__icon-container card-step__icon-container--2">
-          <BaseIcon name="book-open" />
+          <vue-feather type="book-open" />
         </div>
       </div>
       <h3>Step 2: identify and access your results</h3>
@@ -70,7 +70,7 @@
     </div>
     <div class="card-step">
       <div class="card-step__icon-container card-step__icon-container--3">
-        <BaseIcon name="eye" />
+        <vue-feather type="eye" />
       </div>
 
       <h3>Step 3: explore and download your results</h3>
@@ -136,8 +136,8 @@
     </div>
     <img src="@/assets/img/multistep-form.png" alt="Multistep form" />
     <BaseAccordion class="section-howitworks__accordion">
-      <template v-slot:title>Step 1️⃣ : submit your job</template>
-      <template v-slot:content>
+      <template #title>Step 1️⃣ : submit your job</template>
+      <template #content>
         <div class="text-small">
           <p>Check out this tutorial to learn:</p>
           <ul class="u-margin-bottom-medium">
@@ -158,10 +158,8 @@
       </template>
     </BaseAccordion>
     <BaseAccordion class="section-howitworks__accordion">
-      <template v-slot:title
-        >Step 2️⃣: identify and access your results</template
-      >
-      <template v-slot:content>
+      <template #title>Step 2️⃣: identify and access your results</template>
+      <template #content>
         <div class="text-small">
           <p>Check out this tutorial to learn:</p>
           <ul class="u-margin-bottom-medium">
@@ -182,10 +180,8 @@
     </BaseAccordion>
 
     <BaseAccordion class="section-howitworks__accordion">
-      <template v-slot:title
-        >Step 3️⃣: explore and download your results</template
-      >
-      <template v-slot:content>
+      <template #title>Step 3️⃣: explore and download your results</template>
+      <template #content>
         <div class="text-small">
           <p>Check out this tutorial to learn:</p>
           <ul class="u-margin-bottom-medium">
@@ -211,24 +207,24 @@
 </template>
 
 <script>
-import CcrAPI from "@/api/ccr.js";
-import { download } from "@/composables/utilities.js";
-import store from "@/store";
+import CcrAPI from '@/api/ccr.js';
+import { download } from '@/composables/utilities.js';
+import store from '@/store';
 
 export default {
-  title: "CRISPRcleanR",
-  name: "ViewCRISPRcleanRHome",
+  title: 'CRISPRcleanR',
+  name: 'ViewCRISPRcleanRHome',
   methods: {
     downloadSampleData() {
-      const filename = "CRISPRcleanR_WebApp_example_files.zip";
+      const filename = 'CRISPRcleanR_WebApp_example_files.zip';
       return CcrAPI.getStaticResource(filename)
         .then((response) => {
           download(response.data, filename);
         })
         .catch((error) => {
           const message = error?.message;
-          store.dispatch("notification/sendErrorNotification", {
-            title: "Unable to download sample data",
+          store.dispatch('notification/sendErrorNotification', {
+            title: 'Unable to download sample data',
             message,
           });
         });
@@ -248,7 +244,7 @@ export default {
       rgba(#1f59a0, 0.9),
       rgba(#16355c, 0.9)
     ),
-    url("../assets/img/dna-unsplash.jpg");
+    url('../assets/img/dna-unsplash.jpg');
   background-size: cover;
 
   &__container {

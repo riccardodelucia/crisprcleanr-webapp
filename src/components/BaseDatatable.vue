@@ -2,12 +2,12 @@
   <div class="widget datatable">
     <div class="datatable__controls">
       <BaseSearchBar
-        :modelValue="search"
-        @update:modelValue="setSearch"
+        :model-value="search"
+        @update:model-value="setSearch"
       ></BaseSearchBar>
       <BaseSelect
-        style="width: 6rem"
         v-model="pageSize"
+        style="width: 6rem"
         :options="[5, 10, 20]"
       ></BaseSelect>
     </div>
@@ -37,16 +37,16 @@
       </thead>
       <tbody class="table__body">
         <slot
-          :row="row"
           v-for="(row, index) in paginatedItems"
           :key="index"
+          :row="row"
         ></slot>
       </tbody>
     </table>
     <BasePagination
       class="datatable__pagination"
-      :currentPage="currentPage"
-      :numberOfPages="numberOfPages"
+      :current-page="currentPage"
+      :number-of-pages="numberOfPages"
       @paginate="setCurrentPage"
     >
     </BasePagination>
@@ -54,9 +54,9 @@
 </template>
 
 <script>
-import { reactive, ref, watch, computed } from "vue";
+import { reactive, ref, watch, computed } from 'vue';
 
-const search = ref("");
+const search = ref('');
 const currentPage = ref(0);
 const pageSize = ref(5);
 
@@ -98,22 +98,22 @@ const sortData = (data, columns, currentSortKey, order) => {
   };
 
   return data.slice().sort((a, b) => {
-    const dataColumnIndex = getIndex(columns, "name", currentSortKey);
+    const dataColumnIndex = getIndex(columns, 'name', currentSortKey);
 
     const valueA = a[currentSortKey];
     const valueB = b[currentSortKey];
 
     switch (columns[dataColumnIndex]?.type) {
-      case "date": {
+      case 'date': {
         const dateA = new Date(valueA);
         const dateB = new Date(valueB);
         return (dateB.getTime() - dateA.getTime()) * order;
       }
-      case "number": {
+      case 'number': {
         return (+valueB - +valueA) * order;
       }
 
-      case "string": {
+      case 'string': {
         const stringA = String(valueA).toLowerCase();
         const stringB = String(valueB).toLowerCase();
 
@@ -127,17 +127,17 @@ const sortData = (data, columns, currentSortKey, order) => {
 };
 
 export default {
-  name: "BaseDatatable",
+  name: 'BaseDatatable',
   props: {
-    columns: { type: Array },
-    rows: { type: Array },
+    columns: { type: Array, default: () => [] },
+    rows: { type: Array, default: () => [] },
   },
 
   setup(props) {
     const currentSortKey = ref(
       props.columns.find((column) => {
         sortable(column);
-      })?.name || ""
+      })?.name || ''
     );
 
     const sortOrders = reactive(
@@ -260,7 +260,7 @@ export default {
     &--sorting-desc:before,
     &--sorting-desc:after {
       border: 4px solid transparent;
-      content: "";
+      content: '';
       display: block;
       height: 0;
       right: 5px;

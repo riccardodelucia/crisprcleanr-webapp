@@ -1,5 +1,5 @@
-import { createMachine, assign } from "xstate";
-import fileServerAPI from "@/api/fileServer.js";
+import { createMachine, assign } from 'xstate';
+import fileServerAPI from '@/api/fileServer.js';
 
 ////////////////////////////////////////////////////////////////
 // SERVICES
@@ -8,18 +8,18 @@ const uploadFile =
   (callback) => {
     const progressCallback = (progress) =>
       callback({
-        type: "PROGRESS",
+        type: 'PROGRESS',
         progress,
       });
 
     const uploadedCallback = () =>
       callback({
-        type: "UPLOADED",
+        type: 'UPLOADED',
       });
 
     const errorCallback = (error) =>
       callback({
-        type: "ERROR",
+        type: 'ERROR',
         payload: { error },
       });
 
@@ -54,14 +54,14 @@ const assignProgress100 = assign({
 
 const assignErrorMessage = assign({
   errorMessage: (context, event) =>
-    event.payload.error?.message || "Upload error",
+    event.payload.error?.message || 'Upload error',
 });
 
 const assignAbortMessage = assign({
-  errorMessage: () => "canceled",
+  errorMessage: () => 'canceled',
 });
 
-const abortUpload = ({ uploadId }, event) =>
+const abortUpload = ({ uploadId }) =>
   fileServerAPI.abortAndDeleteRequest(uploadId);
 
 ////////////////////////////////////////////////////////////////
@@ -72,48 +72,49 @@ const abortUpload = ({ uploadId }, event) =>
   ); */
 
 export default createMachine({
+  predictableActionArguments: true,
   context: {
     file: null,
-    objectKey: "",
+    objectKey: '',
     totalFileBytesUploaded: 0,
     percentage: 0,
-    errorMessage: "", //filled only if an error occurs during the upload
+    errorMessage: '', //filled only if an error occurs during the upload
   },
-  initial: "uploading",
+  initial: 'uploading',
   states: {
     uploading: {
       invoke: {
-        id: "uploadFile",
-        src: "uploadFile",
+        id: 'uploadFile',
+        src: 'uploadFile',
       },
       on: {
-        PROGRESS: { actions: ["assignProgress"] },
+        PROGRESS: { actions: ['assignProgress'] },
         ABORT: {
-          target: "aborted",
+          target: 'aborted',
           //cond: "warnAbort",
-          actions: ["abortUpload"],
+          actions: ['abortUpload'],
         },
         ERROR: {
-          target: "error",
+          target: 'error',
         },
         UPLOADED: {
-          target: "uploaded",
+          target: 'uploaded',
         },
       },
     },
-    uploaded: { type: "final", entry: ["assignProgress100"] },
+    uploaded: { type: 'final', entry: ['assignProgress100'] },
     aborted: {
-      type: "final",
-      entry: ["assignAbortMessage"],
+      type: 'final',
+      entry: ['assignAbortMessage'],
     },
     error: {
-      type: "final",
-      entry: ["assignErrorMessage"],
+      type: 'final',
+      entry: ['assignErrorMessage'],
     },
     idle: {
       on: {
         RESUME: {
-          target: "uploading",
+          target: 'uploading',
         },
       },
     },

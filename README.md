@@ -91,7 +91,7 @@ docker-compose up -d
 
 Simply declare your variables in `.env` file
 
-<span style="color: red">Variables must follow the naming convention: **VUE_APP_VARIABLE_NAME**</span>
+<span style="color: red">Variables must follow the naming convention: **VITE_VARIABLE_NAME**</span>
 <span style="color: red">New variables are only seen upon **Node** Server restart</span>
 
 ### Production
