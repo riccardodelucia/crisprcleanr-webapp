@@ -12,7 +12,7 @@
               />
             </div>
 
-            <h1 class="hero__title">Welcome to CRISPRcleanR Web App (Beta)</h1>
+            <h1 class="hero__title">Welcome to CRISPRcleanR Web App</h1>
             <p class="hero__text">
               CRISPRcleanR WebApp is an interactive, user-friendly web
               application to CRISPRcleanR: a tool for the unsupervised
@@ -102,14 +102,6 @@
               CRISPRcleanR WebApp you need to create a user account and login.
               All the data you upload and submit and related results are
               <b>protected</b> and accessible to <b>you only</b>.
-            </p>
-            <p class="disclaimer">
-              <b style="color: red">Disclaimer:</b><br />
-              CRISPRclearR WebApp is in a beta-testing phase. For any info and
-              bug report please contact the
-              <a href="mailto: info_ioriolab@fht.org">Iorio Lab</a>. If you are
-              a reviewer of the CRISPRcleanR WebApp manuscript, you will find
-              your access credentials in the cover letter of our submission.
             </p>
           </div>
           <img src="@/assets/img/login.png" alt="login form" />
