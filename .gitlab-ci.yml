@@ -31,12 +31,13 @@ lint-dockerfile:
   script:
     - hadolint Dockerfile
 
-# TODO lint javascript
 
 lint-code:
   extends: .lint
   image: node:18-alpine
   before_script:
+    - npm config set -- //${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
+    - npm config set @${CI_PROJECT_NAMESPACE}:registry=https://${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/
     - npm install
   script:
     - npm run lint
@@ -56,8 +57,11 @@ build website:
   stage: build
   extends: .master branch
   image: node:18-alpine
-  script:
+  before_script:
+    - npm config set -- //${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
+    - npm config set @${CI_PROJECT_NAMESPACE}:registry=https://${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/
     - npm install
+  script:
     - npm run build
     - echo $BUILD > dist/build.html
   artifacts:

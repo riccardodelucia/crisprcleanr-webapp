@@ -1,17 +1,29 @@
 <template>
-  <FormFill
-    :key="key"
-    :config="$route.params.config"
-    @submitted="incKey"
-  ></FormFill>
+  <ht-app-layout :sidenav-object="sidenavObject">
+    <template #header><the-header></the-header></template>
+    <template #sidenav>
+      <the-sidenav></the-sidenav>
+    </template>
+    <template #default>
+      <FormFill
+        :key="key"
+        :config="$route.params.config"
+        @submitted="incKey"
+      ></FormFill></template
+  ></ht-app-layout>
 </template>
 
 <script>
-import FormFill from '@/components/ccr/FormFill.vue';
+import FormFill from '@/components/FormFill.vue';
+import TheHeader from '@/components/TheHeader.vue';
+import TheSidenav from '@/components/TheSidenav.vue';
+
 export default {
   title: 'Submit New Job',
   name: 'ViewCRISPRcleanRSubmitJob',
   components: {
+    TheHeader,
+    TheSidenav,
     FormFill,
   },
   data() {

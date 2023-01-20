@@ -1,174 +1,188 @@
 <template>
-  <h2 class="u-margin-bottom-small">Results</h2>
-  <button
-    class="button button--large button--primary"
-    @click="$router.push({ name: 'resultsList' })"
-  >
-    <vue-feather type="arrow-left"></vue-feather> Results List
-  </button>
-
-  <div class="results">
-    <div class="widget results__details">
-      <h3 class="u-margin-bottom-small">Details</h3>
-      <ul>
-        <li v-for="field in resultDataMap" :key="field[1]">
-          <b>{{ field[0] }}:</b> {{ field[1] }}
-        </li>
-      </ul>
-      <p v-if="result.status === 'pending'" class="u-margin-top-small">
-        Further content will be shown upon successful job completion...
-      </p>
-    </div>
-
-    <div class="widget results__notes">
-      <h3 class="u-margin-bottom-small">Notes</h3>
-      <p>{{ result.notes }}</p>
-    </div>
-
-    <div v-if="result.status === 'success'" class="widget results__downloads">
-      <h3 class="u-margin-bottom-small">Downloads</h3>
-      <div class="results__download-buttons-container">
-        <button
-          v-for="(file, index) in fileList"
-          :key="index"
-          class="button button--primary"
-          type="button"
-          @click="onClick(file, id)"
-        >
-          {{ file }}&nbsp;<span>
-            <vue-feather type="download" />
-          </span>
-        </button>
-      </div>
-    </div>
-
-    <template v-if="result.status === 'success'">
-      <div class="widget results__genes-signatures">
-        <ContentLoader
-          v-if="!genesSignatures"
-          viewBox="0 0 520 700"
-          :animate="!genesSignatures"
-        >
-          <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
-          <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
-          <rect x="40" y="75" rx="0" ry="0" width="80" height="630" />
-          <rect x="140" y="125" rx="0" ry="0" width="80" height="580" />
-          <rect x="240" y="105" rx="0" ry="0" width="80" height="610" />
-          <rect x="340" y="35" rx="0" ry="0" width="80" height="670" />
-          <rect x="440" y="55" rx="0" ry="0" width="80" height="650" />
-        </ContentLoader>
-        <GenesSignaturesMultichart
-          v-else-if="typeof genesSignatures === 'object'"
-          :data="genesSignatures"
-        >
-        </GenesSignaturesMultichart>
-        <svg v-else viewBox="0 0 520 700">
-          <g
-            stroke="var(--color-grey-lighter)"
-            fill="var(--color-grey-lighter)"
-          >
-            <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
-            <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
-            <rect x="40" y="75" rx="0" ry="0" width="80" height="630" />
-            <rect x="140" y="125" rx="0" ry="0" width="80" height="580" />
-            <rect x="240" y="105" rx="0" ry="0" width="80" height="610" />
-            <rect x="340" y="35" rx="0" ry="0" width="80" height="670" />
-            <rect x="440" y="55" rx="0" ry="0" width="80" height="650" />
-          </g>
-        </svg>
-      </div>
-
-      <BaseAccordion class="widget widget--color1 results__thumbnails">
-        <template #title
-          >Normalised Counts and Depletion Fold-Changes Charts</template
-        >
-        <template #content>
-          <div class="thumbnails__content">
-            <BaseThumbnail
-              v-for="item in imageListByCathegory.normImages"
-              :key="item.filename"
-              :img="item"
-              @clicked="openModal(item, id)"
-            ></BaseThumbnail>
-          </div>
-        </template>
-      </BaseAccordion>
-
-      <BaseAccordion
-        class="widget widget--color2 results__thumbnails"
-        height="42rem"
+  <ht-app-layout>
+    <template #header><the-header></the-header></template>
+    <template #sidenav>
+      <the-sidenav></the-sidenav>
+    </template>
+    <template #default>
+      <h2 class="u-margin-bottom-small">Results</h2>
+      <button
+        class="button button--large button--primary"
+        @click="$router.push({ name: 'resultsList' })"
       >
-        <template #title>Chromosome Charts</template>
-        <template #content>
-          <div class="thumbnails__content">
-            <BaseThumbnail
-              v-for="item in imageListByCathegory.chrImages"
-              :key="item.filename"
-              :img="item"
-              @clicked="openModal(item, id)"
-            ></BaseThumbnail>
-          </div>
-        </template>
-      </BaseAccordion>
+        <vue-feather type="arrow-left"></vue-feather> Results List
+      </button>
 
-      <BaseAccordion class="widget widget--color3 results__thumbnails">
-        <template #title>QC Assessment Charts</template>
-        <template #content>
-          <div class="thumbnails__content">
-            <BaseThumbnail
-              v-for="item in imageListByCathegory.qcImages"
-              :key="item.filename"
-              :img="item"
-              @clicked="openModal(item, id)"
-            ></BaseThumbnail>
-          </div>
-        </template>
-      </BaseAccordion>
-    </template>
-  </div>
+      <div class="results">
+        <div class="widget results__details">
+          <h3 class="u-margin-bottom-small">Details</h3>
+          <ul>
+            <li v-for="field in resultDataMap" :key="field[1]">
+              <b>{{ field[0] }}:</b> {{ field[1] }}
+            </li>
+          </ul>
+          <p v-if="result.status === 'pending'" class="u-margin-top-small">
+            Further content will be shown upon successful job completion...
+          </p>
+        </div>
 
-  <BaseModal
-    v-if="modalState != 'closed'"
-    :width="image.width"
-    @modal-close="closeModal"
-  >
-    <template #header>{{ image.label }} </template>
-    <template #body>
-      <component
-        :is="image.component"
-        v-if="modalState === 'opened'"
-        :data="data"
-      />
-      <div v-else-if="modalState === 'loading'">Loading...</div>
+        <div class="widget results__notes">
+          <h3 class="u-margin-bottom-small">Notes</h3>
+          <p>{{ result.notes }}</p>
+        </div>
+
+        <div
+          v-if="result.status === 'success'"
+          class="widget results__downloads"
+        >
+          <h3 class="u-margin-bottom-small">Downloads</h3>
+          <div class="results__download-buttons-container">
+            <button
+              v-for="(file, index) in fileList"
+              :key="index"
+              class="button button--primary"
+              type="button"
+              @click="onClick(file, id)"
+            >
+              {{ file }}&nbsp;<span>
+                <vue-feather type="download" />
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <template v-if="result.status === 'success'">
+          <div class="widget results__genes-signatures">
+            <ContentLoader
+              v-if="!genesSignatures"
+              viewBox="0 0 520 700"
+              :animate="!genesSignatures"
+            >
+              <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
+              <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
+              <rect x="40" y="75" rx="0" ry="0" width="80" height="630" />
+              <rect x="140" y="125" rx="0" ry="0" width="80" height="580" />
+              <rect x="240" y="105" rx="0" ry="0" width="80" height="610" />
+              <rect x="340" y="35" rx="0" ry="0" width="80" height="670" />
+              <rect x="440" y="55" rx="0" ry="0" width="80" height="650" />
+            </ContentLoader>
+            <GenesSignaturesMultichart
+              v-else-if="typeof genesSignatures === 'object'"
+              :data="genesSignatures"
+            >
+            </GenesSignaturesMultichart>
+            <svg v-else viewBox="0 0 520 700">
+              <g
+                stroke="var(--color-grey-lighter)"
+                fill="var(--color-grey-lighter)"
+              >
+                <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
+                <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
+                <rect x="40" y="75" rx="0" ry="0" width="80" height="630" />
+                <rect x="140" y="125" rx="0" ry="0" width="80" height="580" />
+                <rect x="240" y="105" rx="0" ry="0" width="80" height="610" />
+                <rect x="340" y="35" rx="0" ry="0" width="80" height="670" />
+                <rect x="440" y="55" rx="0" ry="0" width="80" height="650" />
+              </g>
+            </svg>
+          </div>
+
+          <ht-accordion class="widget widget--color1 results__thumbnails">
+            <template #title
+              >Normalised Counts and Depletion Fold-Changes Charts</template
+            >
+            <template #content>
+              <div class="thumbnails__content">
+                <ht-thumbnail
+                  v-for="item in imageListByCathegory.normImages"
+                  :key="item.filename"
+                  :img="item"
+                  @clicked="openModal(item, id)"
+                ></ht-thumbnail>
+              </div>
+            </template>
+          </ht-accordion>
+
+          <ht-accordion
+            class="widget widget--color2 results__thumbnails"
+            height="42rem"
+          >
+            <template #title>Chromosome Charts</template>
+            <template #content>
+              <div class="thumbnails__content">
+                <ht-thumbnail
+                  v-for="item in imageListByCathegory.chrImages"
+                  :key="item.filename"
+                  :img="item"
+                  @clicked="openModal(item, id)"
+                ></ht-thumbnail>
+              </div>
+            </template>
+          </ht-accordion>
+
+          <ht-accordion class="widget widget--color3 results__thumbnails">
+            <template #title>QC Assessment Charts</template>
+            <template #content>
+              <div class="thumbnails__content">
+                <ht-thumbnail
+                  v-for="item in imageListByCathegory.qcImages"
+                  :key="item.filename"
+                  :img="item"
+                  @clicked="openModal(item, id)"
+                ></ht-thumbnail>
+              </div>
+            </template>
+          </ht-accordion>
+        </template>
+      </div>
+
+      <ht-modal v-if="modalState != 'closed'" @modal-close="closeModal">
+        <template #header>{{ image.label }} </template>
+        <template #body>
+          <component
+            :is="image.component"
+            v-if="modalState === 'opened'"
+            :data="data"
+          />
+          <div v-else-if="modalState === 'loading'">Loading...</div>
+        </template>
+      </ht-modal>
     </template>
-  </BaseModal>
+  </ht-app-layout>
 </template>
 
 <script>
 import fileServerAPI from '@/api/fileServer.js';
 import fileList from '@/files.json';
 
-import BoxPlotMultichart from '@/components/ccr/charts/boxplot/BoxPlotMultichart.vue';
-import ChromosomeMultichart from '@/components/ccr/charts/chromosome/ChromosomeMultichart.vue';
-import LineChartROC from '@/components/ccr/charts/linechart/LineChartROC.vue';
-import LineChartPrRc from '@/components/ccr/charts/linechart/LineChartPrRc.vue';
-import GenesSignaturesMultichart from '@/components/ccr/charts/genes_signatures/GenesSignaturesMultichart.vue';
+import BoxPlotMultichart from '@/components/charts/boxplot/BoxPlotMultichart.vue';
+import ChromosomeMultichart from '@/components/charts/chromosome/ChromosomeMultichart.vue';
+import LineChartROC from '@/components/charts/linechart/LineChartROC.vue';
+import LineChartPrRc from '@/components/charts/linechart/LineChartPrRc.vue';
+import GenesSignaturesMultichart from '@/components/charts/genes_signatures/GenesSignaturesMultichart.vue';
 
-import { ref, reactive, computed } from 'vue';
+import TheHeader from '@/components/TheHeader.vue';
+import TheSidenav from '@/components/TheSidenav.vue';
 
-import { date, download } from '@/composables/utilities.js';
+import { ref, reactive } from 'vue';
+
+import { download, date } from '@computational-biology-web-unit/ht-vue/utilities';
 
 import { ContentLoader } from 'vue-content-loader';
 
 import imageList from '@/images.json';
 
-import { useStore } from 'vuex';
-
 import imagePlaceholder from '@/assets/img/placeholder-image.png';
+
+import { useUserProfile } from '@computational-biology-web-unit/ht-vue/authentication';
+import { resizeListener } from '@computational-biology-web-unit/ht-vue/composables';
+import { sendErrorNotification } from '@computational-biology-web-unit/ht-vue/components';
 
 export default {
   name: 'ViewResultsByID',
   components: {
+    TheHeader,
+    TheSidenav,
     BoxPlotMultichart,
     ChromosomeMultichart,
     LineChartROC,
@@ -191,9 +205,9 @@ export default {
     const data = ref({});
     const modalState = ref('closed');
 
-    const store = useStore();
+    const userProfile = useUserProfile();
 
-    const user = computed(() => store.state.user.user);
+    const username = userProfile.value.username;
 
     const imageListByCathegory = reactive({
       normImages: [],
@@ -202,8 +216,15 @@ export default {
     });
     const genesSignatures = ref(null);
 
+    const modalAvailable = ref(false);
+
+    resizeListener(() => {
+      modalAvailable.value = window.innerWidth > 1000;
+      if (!modalAvailable.value) closeModal();
+    });
+
     if (props.result.status === 'success') {
-      const objectKey = `/${user.value.username}/${props.id}/genes_signatures.json`;
+      const objectKey = `/${username}/${props.id}/genes_signatures.json`;
       fileServerAPI
         .downloadFile({ objectKey })
         .then((response) => {
@@ -211,7 +232,7 @@ export default {
         })
         .catch((err) => {
           const message = err?.message;
-          store.dispatch('notification/sendErrorNotification', {
+          sendErrorNotification({
             title: 'Unable to donwload genes signatures data',
             message,
           });
@@ -220,7 +241,7 @@ export default {
 
       const imageListWithURL = imageList.map(async (image) => {
         try {
-          const objectKey = `/${user.value.username}/${props.id}/${image.imgUri}`;
+          const objectKey = `/${username}/${props.id}/${image.imgUri}`;
           const response = await fileServerAPI.downloadFile({
             objectKey,
             blob: true,
@@ -252,23 +273,25 @@ export default {
     }
 
     const openModal = (img, id) => {
-      modalState.value = 'loading';
-      const objectKey = `/${user.value.username}/${id}/${img.chart}.json`;
-      fileServerAPI
-        .downloadFile({ objectKey })
-        .then((response) => {
-          data.value = response.data;
-          image.value = img;
-          modalState.value = 'opened';
-        })
-        .catch((err) => {
-          const message = err?.message;
-          store.dispatch('notification/sendErrorNotification', {
-            title: `Unable to open chart ${img.chart}`,
-            message,
+      if (modalAvailable.value) {
+        modalState.value = 'loading';
+        const objectKey = `/${username}/${id}/${img.chart}.json`;
+        fileServerAPI
+          .downloadFile({ objectKey })
+          .then((response) => {
+            data.value = response.data;
+            image.value = img;
+            modalState.value = 'opened';
+          })
+          .catch((err) => {
+            const message = err?.message;
+            sendErrorNotification({
+              title: `Unable to open chart ${img.chart}`,
+              message,
+            });
+            closeModal();
           });
-          closeModal();
-        });
+      } else closeModal();
     };
 
     const closeModal = () => {
@@ -278,7 +301,7 @@ export default {
     };
 
     const onClick = (file, id) => {
-      const objectKey = `/${user.value.username}/${id}/${file}`;
+      const objectKey = `/${username}/${id}/${file}`;
       fileServerAPI
         .downloadFile({ objectKey, blob: true })
         .then((response) => {
@@ -286,7 +309,7 @@ export default {
         })
         .catch((error) => {
           const message = error?.message;
-          store.dispatch('notification/sendErrorNotification', {
+          sendErrorNotification({
             title: `Unable to download file ${file}`,
             message,
           });
@@ -326,6 +349,7 @@ export default {
 
     return {
       fileList,
+      modalAvailable,
       openModal,
       closeModal,
       onClick,
@@ -336,7 +360,6 @@ export default {
       genesSignatures,
       imageListByCathegory,
       resultDataMap,
-      user,
     };
   },
 };

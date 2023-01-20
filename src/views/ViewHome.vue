@@ -1,219 +1,251 @@
 <template>
-  <div class="hero">
-    <div class="hero__container">
-      <div class="hero__logo">
-        <img src="@/assets/logos/ccr-webapp-logo.svg" alt="CRISPRcleanR logo" />
-      </div>
+  <ht-web-layout>
+    <template #header><the-header :is-web="true"></the-header></template>
+    <template #default>
+      <div class="centered-grid">
+        <section class="section-hero centered-grid">
+          <div class="hero">
+            <div class="hero__logo">
+              <img
+                src="@/assets/logos/ccr-webapp-logo.svg"
+                alt="CRISPRcleanR logo"
+              />
+            </div>
 
-      <h1 class="hero__title">Welcome to CRISPRcleanR Web App (Beta)</h1>
-      <p class="hero__text">
-        CRISPRcleanR WebApp is an interactive, user-friendly web application to
-        CRISPRcleanR: a tool for the unsupervised correction of gene-independent
-        effects in CRISPR knockout screens encompassing pre-processing and
-        normalization of single-guide RNA counts, pre/post-correction
-        quality-control assessment and interactive visualizations.
-      </p>
-      <div class="hero__button-container">
-        <button
-          class="button button--primary button--large hero__button--submit"
-          type="button"
-          @click="$router.push({ name: 'submit' })"
-        >
-          Submit New Job
-        </button>
-        <button
-          class="button button--secondary button--large hero__button--results"
-          type="button"
-          @click="$router.push({ name: 'resultsList' })"
-        >
-          Results
-        </button>
-        <button
-          class="button button--ghost button--large hero__button--download"
-          type="button"
-          @click="downloadSampleData"
-        >
-          Example Input Files
-        </button>
-      </div>
-    </div>
-  </div>
-  <section class="section section-cards">
-    <div class="card-step">
-      <div>
-        <div class="card-step__icon-container card-step__icon-container--1">
-          <vue-feather type="upload" />
-        </div>
-      </div>
-      <h3>Step 1: submit your job</h3>
-      <p>
-        Click on the <b>Submit New Job</b> navigation button on the left bar,
-        fill in the handy <b>form</b> with your experiment
-        <b>metadata </b> and<b> details</b>, then click on the submit button.
-        CRISPRcleanR will pre-process and analyze your data.
-      </p>
-    </div>
-    <div class="card-step">
-      <div>
-        <div class="card-step__icon-container card-step__icon-container--2">
-          <vue-feather type="book-open" />
-        </div>
-      </div>
-      <h3>Step 2: identify and access your results</h3>
-      <p>
-        When your job is <b>completed</b>, your results will be listed in a
-        dedicated <b>table</b>, accessible by clicking on the
-        <b>Results</b> navigation button on the left bar. Identify your job
-        results in the table and access them by clicking on the
-        <b>Show</b> button.
-      </p>
-    </div>
-    <div class="card-step">
-      <div class="card-step__icon-container card-step__icon-container--3">
-        <vue-feather type="eye" />
-      </div>
+            <h1 class="hero__title">Welcome to CRISPRcleanR Web App (Beta)</h1>
+            <p class="hero__text">
+              CRISPRcleanR WebApp is an interactive, user-friendly web
+              application to CRISPRcleanR: a tool for the unsupervised
+              correction of gene-independent effects in CRISPR knockout screens
+              encompassing pre-processing and normalization of single-guide RNA
+              counts, pre/post-correction quality-control assessment and
+              interactive visualizations.
+            </p>
+            <div class="hero__button-container">
+              <button
+                class="button button--primary button--large hero__button--submit"
+                type="button"
+                @click="$router.push({ name: 'submit' })"
+              >
+                Submit New Job
+              </button>
+              <button
+                class="button button--secondary button--large hero__button--results"
+                type="button"
+                @click="$router.push({ name: 'resultsList' })"
+              >
+                Results
+              </button>
+              <button
+                class="button button--ghost button--large hero__button--download"
+                type="button"
+                @click="downloadSampleData"
+              >
+                Example Input Files
+              </button>
+            </div>
+          </div>
+        </section>
+        <div class="section section-cards">
+          <div class="card-step">
+            <div>
+              <div
+                class="card-step__icon-container card-step__icon-container--1"
+              >
+                <vue-feather type="upload" />
+              </div>
+            </div>
+            <h3>Step 1: submit your job</h3>
+            <p>
+              Click on the <b>Submit New Job</b> navigation button on the left
+              bar, fill in the handy <b>form</b> with your experiment
+              <b>metadata </b> and<b> details</b>, then click on the submit
+              button. CRISPRcleanR will pre-process and analyze your data.
+            </p>
+          </div>
+          <div class="card-step">
+            <div>
+              <div
+                class="card-step__icon-container card-step__icon-container--2"
+              >
+                <vue-feather type="book-open" />
+              </div>
+            </div>
+            <h3>Step 2: identify and access your results</h3>
+            <p>
+              When your job is <b>completed</b>, your results will be listed in
+              a dedicated <b>table</b>, accessible by clicking on the
+              <b>Results</b> navigation button on the left bar. Identify your
+              job results in the table and access them by clicking on the
+              <b>Show</b> button.
+            </p>
+          </div>
+          <div class="card-step">
+            <div class="card-step__icon-container card-step__icon-container--3">
+              <vue-feather type="eye" />
+            </div>
 
-      <h3>Step 3: explore and download your results</h3>
-      <p>
-        Explore all data and results related to your completed job
-        <b>interactively</b>; <b>download</b> input data and results in tabular
-        format, together with plots and images in different graphical formats.
-      </p>
-    </div>
-  </section>
-  <section class="section section-security">
-    <div class="section-security__promo">
-      <h2>Your data in a secure place 🔐</h2>
-      <p>
-        Your data <b>privacy</b> is very important to us. To use CRISPRcleanR
-        WebApp you need to create a user account and login. All the data you
-        upload and submit and related results are <b>protected</b> and
-        accessible to <b>you only</b>.
-      </p>
-      <p class="disclaimer">
-        <b style="color: red">Disclaimer:</b><br />
-        CRISPRclearR WebApp is in a beta-testing phase. For any info and bug
-        report please contact the
-        <a href="mailto: info_ioriolab@fht.org">Iorio Lab</a>. If you are a
-        reviewer of the CRISPRcleanR WebApp manuscript, you will find your
-        access credentials in the cover letter of our submission.
-      </p>
-    </div>
-    <img src="@/assets/img/login.png" alt="login form" />
-  </section>
-  <section class="section section-howitworks">
-    <h2>How it works ⚙️</h2>
-    <div class="section-howitworks__text">
-      <p>
-        <b>CRISPRcleanR WebApp</b> allows to easily run CRISPRcleanR on your
-        experimental data through an <b>easy-to-use interface</b>. New
-        <b>jobs</b> can be submitted from the
-        <router-link to="/submit">dedicated section </router-link> in the app. A
-        <b>multi-step form</b> will guide you through the job submission, where
-        all relevant information needs to be filled. Not only CRISPRcleanR
-        WebApp natively supports a set of <b>6 built-in sgRNA libraries</b>, but
-        it also provides the possibility of processing data generated with
-        <b>any library</b> (by uploading the corresponding
-        <b>annotation file</b>). Experimental CRISPR data can be provided either
-        as <b>FASTQ/BAM files</b> or <b>pre-computed counts file</b>. Submitted
-        jobs are available from the
-        <router-link to="/submit">results section</router-link>. For each job, a
-        <b>dedicated result page</b> is made available, where you can
-        <b>download</b> all job-related data, together with static plots.
-        Finally, a comprehensive set of <b>interactive charts</b> allows you to
-        get insight over the outcome of your processed data.
-      </p>
-      <p>
-        To start using CRISPRcleanR, follow along the videos provided in the
-        following <b>step sections</b>.
-      </p>
-      <p>
-        <b>Example input files</b> can be <b>downloaded</b> from the current
-        page and used to <b>submit test jobs</b>. A <b>README file</b> included
-        in the example data allows you to better understand
-        <b>accepted file formats and their inner structure</b>
-      </p>
-    </div>
-    <img src="@/assets/img/multistep-form.png" alt="Multistep form" />
-    <BaseAccordion class="section-howitworks__accordion">
-      <template #title>Step 1️⃣ : submit your job</template>
-      <template #content>
-        <div class="text-small">
-          <p>Check out this tutorial to learn:</p>
-          <ul class="u-margin-bottom-medium">
-            <li>how to <b>sign in/register</b> to CRISPRcleanR Web App</li>
-            <li>how to correctly fill in the <b>Job Submission Form</b></li>
-            <li>
-              the right <b>format</b> for your experimental data and
-              <b>library files</b> (if you are using custom/external libraries).
-            </li>
-          </ul>
-          <video controls class="section__video">
-            <source
-              src="@/assets/videos/step_1_compressed.mp4"
-              type="video/mp4"
-            />
-          </video>
+            <h3>Step 3: explore and download your results</h3>
+            <p>
+              Explore all data and results related to your completed job
+              <b>interactively</b>; <b>download</b> input data and results in
+              tabular format, together with plots and images in different
+              graphical formats.
+            </p>
+          </div>
         </div>
-      </template>
-    </BaseAccordion>
-    <BaseAccordion class="section-howitworks__accordion">
-      <template #title>Step 2️⃣: identify and access your results</template>
-      <template #content>
-        <div class="text-small">
-          <p>Check out this tutorial to learn:</p>
-          <ul class="u-margin-bottom-medium">
-            <li>how to access the <b>Results Section</b></li>
-            <li>
-              how to filter and retrieve specific results using the
-              <b>data table controls</b>
-            </li>
-          </ul>
-          <video controls class="section__video">
-            <source
-              src="@/assets/videos/step_2_compressed.mp4"
-              type="video/mp4"
-            />
-          </video>
-        </div>
-      </template>
-    </BaseAccordion>
+        <section class="section section-security">
+          <div class="section-security__promo">
+            <h2>Your data in a secure place 🔐</h2>
+            <p>
+              Your data <b>privacy</b> is very important to us. To use
+              CRISPRcleanR WebApp you need to create a user account and login.
+              All the data you upload and submit and related results are
+              <b>protected</b> and accessible to <b>you only</b>.
+            </p>
+            <p class="disclaimer">
+              <b style="color: red">Disclaimer:</b><br />
+              CRISPRclearR WebApp is in a beta-testing phase. For any info and
+              bug report please contact the
+              <a href="mailto: info_ioriolab@fht.org">Iorio Lab</a>. If you are
+              a reviewer of the CRISPRcleanR WebApp manuscript, you will find
+              your access credentials in the cover letter of our submission.
+            </p>
+          </div>
+          <img src="@/assets/img/login.png" alt="login form" />
+        </section>
+        <section class="section section-howitworks">
+          <h2>How it works ⚙️</h2>
+          <div class="section-howitworks__text">
+            <p>
+              <b>CRISPRcleanR WebApp</b> allows to easily run CRISPRcleanR on
+              your experimental data through an <b>easy-to-use interface</b>.
+              New <b>jobs</b> can be submitted from the
+              <router-link to="/submit">dedicated section </router-link> in the
+              app. A <b>multi-step form</b> will guide you through the job
+              submission, where all relevant information needs to be filled. Not
+              only CRISPRcleanR WebApp natively supports a set of
+              <b>6 built-in sgRNA libraries</b>, but it also provides the
+              possibility of processing data generated with
+              <b>any library</b> (by uploading the corresponding
+              <b>annotation file</b>). Experimental CRISPR data can be provided
+              either as <b>FASTQ/BAM files</b> or
+              <b>pre-computed counts file</b>. Submitted jobs are available from
+              the <router-link to="/submit">results section</router-link>. For
+              each job, a <b>dedicated result page</b> is made available, where
+              you can <b>download</b> all job-related data, together with static
+              plots. Finally, a comprehensive set of
+              <b>interactive charts</b> allows you to get insight over the
+              outcome of your processed data.
+            </p>
+            <p>
+              To start using CRISPRcleanR, follow along the videos provided in
+              the following <b>step sections</b>.
+            </p>
+            <p>
+              <b>Example input files</b> can be <b>downloaded</b> from the
+              current page and used to <b>submit test jobs</b>. A
+              <b>README file</b> included in the example data allows you to
+              better understand
+              <b>accepted file formats and their inner structure</b>
+            </p>
+          </div>
+          <img src="@/assets/img/multistep-form.png" alt="Multistep form" />
+        </section>
+        <section class="section">
+          <ht-accordion class="section-howitworks__accordion">
+            <template #title>Step 1️⃣ : submit your job</template>
+            <template #content>
+              <div class="text-small">
+                <p>Check out this tutorial to learn:</p>
+                <ul class="u-margin-bottom-medium">
+                  <li>
+                    how to <b>sign in/register</b> to CRISPRcleanR Web App
+                  </li>
+                  <li>
+                    how to correctly fill in the <b>Job Submission Form</b>
+                  </li>
+                  <li>
+                    the right <b>format</b> for your experimental data and
+                    <b>library files</b> (if you are using custom/external
+                    libraries).
+                  </li>
+                </ul>
+                <video controls class="section__video">
+                  <source
+                    src="@/assets/videos/step_1_compressed.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              </div>
+            </template>
+          </ht-accordion>
+          <ht-accordion class="section-howitworks__accordion">
+            <template #title
+              >Step 2️⃣: identify and access your results</template
+            >
+            <template #content>
+              <div class="text-small">
+                <p>Check out this tutorial to learn:</p>
+                <ul class="u-margin-bottom-medium">
+                  <li>how to access the <b>Results Section</b></li>
+                  <li>
+                    how to filter and retrieve specific results using the
+                    <b>data table controls</b>
+                  </li>
+                </ul>
+                <video controls class="section__video">
+                  <source
+                    src="@/assets/videos/step_2_compressed.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              </div>
+            </template>
+          </ht-accordion>
 
-    <BaseAccordion class="section-howitworks__accordion">
-      <template #title>Step 3️⃣: explore and download your results</template>
-      <template #content>
-        <div class="text-small">
-          <p>Check out this tutorial to learn:</p>
-          <ul class="u-margin-bottom-medium">
-            <li>
-              how to <b>explore your results</b> through a range of
-              <b>interactive plots</b> provided by CRISPRcleanR Web App
-            </li>
-            <li>
-              how to <b>download</b> all the <b>job data and static plots</b> as
-              zip files
-            </li>
-          </ul>
-          <video controls class="section__video">
-            <source
-              src="@/assets/videos/step_3_compressed.mp4"
-              type="video/mp4"
-            />
-          </video>
-        </div>
-      </template>
-    </BaseAccordion>
-  </section>
+          <ht-accordion class="section-howitworks__accordion">
+            <template #title
+              >Step 3️⃣: explore and download your results</template
+            >
+            <template #content>
+              <div class="text-small">
+                <p>Check out this tutorial to learn:</p>
+                <ul class="u-margin-bottom-medium">
+                  <li>
+                    how to <b>explore your results</b> through a range of
+                    <b>interactive plots</b> provided by CRISPRcleanR Web App
+                  </li>
+                  <li>
+                    how to <b>download</b> all the
+                    <b>job data and static plots</b> as zip files
+                  </li>
+                </ul>
+                <video controls class="section__video">
+                  <source
+                    src="@/assets/videos/step_3_compressed.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              </div>
+            </template>
+          </ht-accordion>
+        </section>
+      </div>
+    </template>
+  </ht-web-layout>
 </template>
 
 <script>
 import CcrAPI from '@/api/ccr.js';
-import { download } from '@/composables/utilities.js';
-import store from '@/store';
+import { download } from '@computational-biology-web-unit/ht-vue/utilities';
+import { sendErrorNotification } from '@computational-biology-web-unit/ht-vue/components';
+import TheHeader from '@/components/TheHeader.vue';
 
 export default {
   title: 'CRISPRcleanR',
   name: 'ViewCRISPRcleanRHome',
+  components: { TheHeader },
   methods: {
     downloadSampleData() {
       const filename = 'CRISPRcleanR_WebApp_example_files.zip';
@@ -223,7 +255,7 @@ export default {
         })
         .catch((error) => {
           const message = error?.message;
-          store.dispatch('notification/sendErrorNotification', {
+          sendErrorNotification({
             title: 'Unable to download sample data',
             message,
           });
@@ -234,11 +266,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hero {
-  color: #fff;
-  padding: 5rem 0;
-  grid-column: 1 / -1;
+.centered-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(5rem, 1fr) repeat(8, minmax(min-content, 15rem))
+    minmax(5rem, 1fr);
+}
 
+.section-hero {
+  grid-column: 1 / -1;
+  color: #fff;
   background-image: linear-gradient(
       to right bottom,
       rgba(#1f59a0, 0.9),
@@ -246,22 +283,21 @@ export default {
     ),
     url('../assets/img/dna-unsplash.jpg');
   background-size: cover;
+  padding: 5rem 0;
+}
 
-  &__container {
-    max-width: 150rem;
-    padding: 5rem;
-    margin: auto;
-    display: grid;
-    grid-template-columns: minmax(20rem, 1fr) repeat(2, 1fr); //3 columns to allow the logo occupy only 1/3 of the width;
-    grid-template-rows: repeat(3, min-content);
-    column-gap: 3rem;
-    row-gap: 2rem;
+.hero {
+  grid-column: 2 / -2;
+  display: grid;
+  grid-template-columns: minmax(20rem, 1fr) repeat(2, 1fr); //3 columns to allow the logo occupy only 1/3 of the width;
+  grid-template-rows: repeat(3, min-content);
+  column-gap: 3rem;
+  row-gap: 2rem;
 
-    @media only screen and (max-width: 880px) {
-      display: flex;
-      flex-direction: column;
-      text-align: center;
-    }
+  @media only screen and (max-width: 880px) {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
   }
 
   &__logo {
@@ -317,28 +353,28 @@ export default {
 }
 
 .section {
-  grid-column: 2 / -2;
-  padding: 4rem 0;
-  row-gap: 3rem;
-  column-gap: 4rem;
+  padding: 4rem 5rem;
+  grid-column: 2/-2;
 
   &__video {
     width: 100%;
     max-width: 1200px;
     margin-bottom: 2em;
   }
-}
-
-.section-cards {
-  display: grid;
-
-  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-  justify-items: center;
 
   @media only screen and (max-width: 880px) {
     display: flex;
     flex-direction: column;
+    gap: 5rem;
   }
+}
+
+.section-cards {
+  display: grid;
+  grid-column-gap: 5rem;
+
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  justify-items: center;
 
   .card-step {
     flex-grow: 1;
@@ -387,14 +423,11 @@ export default {
 
 .section-security {
   display: grid;
+  grid-column-gap: 5rem;
   grid-template-columns: repeat(2, 1fr);
 
   &__promo {
     grid-column: 1 / 2;
-
-    @media only screen and (max-width: 700px) {
-      grid-column: 1 / -1;
-    }
   }
 
   img {
@@ -402,10 +435,6 @@ export default {
     width: 100%;
     grid-column: 2 / 3;
     box-shadow: var(--shadow-1);
-
-    @media only screen and (max-width: 700px) {
-      grid-column: 1 / -1;
-    }
   }
 
   .disclaimer {
@@ -420,6 +449,7 @@ export default {
   display: grid;
   grid-template-rows: min-content 1fr;
   grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 5rem;
 
   h2 {
     grid-row: 1 / 2;
@@ -431,7 +461,7 @@ export default {
   }
 
   img {
-    width: 60%;
+    width: 100%;
     grid-row: 1 / -1;
     grid-column: 1 / 2;
     box-shadow: var(--shadow-1);
@@ -455,16 +485,5 @@ export default {
       grid-column: 1 / -1;
     }
   }
-
-  &__accordion {
-    grid-column: 1 / -1;
-  }
-}
-
-.section-charts {
-  display: flex;
-  flex-direction: column;
-  gap: 2em;
-  margin-bottom: 5em;
 }
 </style>

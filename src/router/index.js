@@ -1,10 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import WebLayout from '@/views/layouts/WebLayout.vue';
-import AppLayout from '@/views/layouts/AppLayout.vue';
-
-import ViewTest from '@/views/ViewTest.vue';
-
 import ViewHome from '@/views/ViewHome.vue';
 import ViewSubmitJob from '@/views/ViewSubmitJob.vue';
 import ViewResultsList from '@/views/ViewResultsList.vue';
@@ -12,15 +7,21 @@ import ViewResultsByID from '@/views/ViewResultsByID.vue';
 import ViewTermsAndConditions from '@/views/ViewTermsAndConditions.vue';
 import ViewTermsDataProcessing from '@/views/ViewTermsDataProcessing.vue';
 
-import ViewMessagePage from '@/views/ViewMessagePage.vue';
+import View404NotFound from '@/views/View404NotFound.vue';
 
 import CcrAPI from '@/api/ccr.js';
-import store from '../store';
+
+import getEnv from '@/utils/env.js';
+
+import auth from '@/authentication/index.js';
+import { sendErrorNotification } from '@computational-biology-web-unit/ht-vue/components';
+
+const appRootUrl = getEnv('VITE_URL_IORIO_CCR_WEBAPP');
 
 const manageRouteError = (from, error, title) => {
   if (error?.response?.status === 404) return '/404'; //this translates into catchAll route
   const message = error?.message;
-  store.dispatch('notification/sendErrorNotification', {
+  sendErrorNotification({
     title,
     message,
   });
@@ -29,53 +30,33 @@ const manageRouteError = (from, error, title) => {
   return { name: 'home' };
 };
 
-export const routes = [
+const routes = [
   {
-    path: '/test',
-    component: ViewTest,
+    path: '/home',
+    alias: '/',
+    name: 'home',
+    component: ViewHome,
   },
   {
-    path: '/',
-    redirect: '/home',
+    path: '/terms-and-conditions',
+    name: 'termsAndConditions',
+    component: ViewTermsAndConditions,
   },
   {
-    path: '/',
-    component: WebLayout,
-    children: [
-      {
-        path: 'home',
-        name: 'home',
-        component: ViewHome,
-      },
-      {
-        path: 'terms-and-conditions',
-        name: 'termsAndConditions',
-        component: ViewTermsAndConditions,
-      },
-      {
-        path: 'terms-data-processing',
-        name: 'termsDataProcessing',
-        component: ViewTermsDataProcessing,
-      },
-    ],
+    path: '/terms-data-processing',
+    name: 'termsDataProcessing',
+    component: ViewTermsDataProcessing,
   },
   {
     path: '/submit',
+    name: 'submit',
     meta: {
       requiresAuth: true,
     },
-    component: AppLayout,
-    children: [
-      {
-        path: '',
-        name: 'submit',
-        component: ViewSubmitJob,
-      },
-    ],
+    component: ViewSubmitJob,
   },
   {
     path: '/jobs',
-    component: AppLayout,
     meta: {
       requiresAuth: true,
     },
@@ -125,7 +106,7 @@ export const routes = [
   {
     path: '/:catchAll(.*)',
     name: '404',
-    component: ViewMessagePage,
+    component: View404NotFound,
     beforeEnter(to) {
       to.params.title = 'Not found 🔍';
       to.params.message = "The content you're looking for is not there.";
@@ -135,20 +116,18 @@ export const routes = [
   },
 ];
 
-export const getRouter = function () {
-  const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes,
-  });
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes,
+});
 
-  router.beforeEach((to, from) => {
-    store.dispatch('progressBar/increase');
-    CcrAPI.abortAndDeleteAllRequests(from.fullPath);
-  });
+router.beforeEach((to) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    const redirectUri = new URL(to.path, appRootUrl).toString();
+    return auth.authorize(redirectUri).then(() => true);
+  }
+  // This page did not require authentication
+  return;
+});
 
-  router.afterEach(() => {
-    store.dispatch('progressBar/decrease');
-  });
-
-  return router;
-};
+export default router;

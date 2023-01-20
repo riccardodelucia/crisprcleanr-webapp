@@ -4,7 +4,14 @@ import { assign } from 'xstate';
 import { string, number, mixed, array, bool } from 'yup';
 import { useField } from 'vee-validate';
 import CcrAPI from '@/api/ccr.js';
-import store from '@/store';
+
+import fileServerAPI from '@/api/fileServer.js';
+
+import {
+  sendSuccessNotification,
+  sendErrorNotification,
+  addFileUpload,
+} from '@computational-biology-web-unit/ht-vue/components';
 
 ////////////////////////////////////////////////
 // MACHINE
@@ -238,11 +245,11 @@ const submitJobMachine = createMachine({
           invoke: {
             src: 'submitJob',
             onDone: {
-              actions: ['sendSuccessNotification', 'makeUploadFilesList'],
+              actions: ['actionSendSuccessNotification', 'makeUploadFilesList'],
               target: 'complete',
             },
             onError: {
-              actions: ['sendErrorNotification'],
+              actions: ['actionSendErrorNotification'],
               target: 'complete',
             },
           },
@@ -400,20 +407,20 @@ const compileFormData = assign((context) => {
   return { formData };
 });
 
-const sendErrorNotification = (_, event) => {
-  store.dispatch('notification/sendErrorNotification', {
+const actionSendErrorNotification = (_, event) => {
+  sendErrorNotification({
     title: 'Job Submission Error',
     message: event?.data?.message,
   });
 };
 
-const sendSuccessNotification = (
+const actionSendSuccessNotification = (
   _,
 
   { data: { data: filesList } }
 ) => {
   const jobId = filesList[0].jobId;
-  store.dispatch('notification/sendSuccessNotification', {
+  sendSuccessNotification({
     title: 'Job Submitted',
     message: `Job ID: ${jobId}`,
   });
@@ -432,10 +439,23 @@ const makeUploadFilesList = assign(
       return acc;
     }, {});
 
-    const uploads = filesList.map((file) => ({
-      ...file,
-      file: candidates[file.filename],
-    }));
+    // TODO create new api instance and config
+
+    const uploads = filesList.map((fileInfo) => {
+      const filename = fileInfo.filename;
+      const file = candidates[filename];
+      const { request, config } = fileServerAPI.getUploadSetup(
+        file,
+        fileInfo.objectKey
+      );
+
+      return {
+        ...fileInfo,
+        file,
+        request,
+        config,
+      };
+    });
 
     return {
       uploads,
@@ -445,7 +465,7 @@ const makeUploadFilesList = assign(
 
 const startUploads = ({ uploads }) => {
   uploads.forEach((upload) => {
-    store.dispatch('uploads/add', upload);
+    addFileUpload(upload);
   });
 };
 
@@ -560,8 +580,8 @@ export const getInterpretedMachine = () => {
       setupFilesFASTQschema,
       setupFilesBAMschema,
       compileFormData,
-      sendErrorNotification,
-      sendSuccessNotification,
+      actionSendErrorNotification,
+      actionSendSuccessNotification,
       makeUploadFilesList,
       startUploads,
     },

@@ -14,11 +14,11 @@ npm install
 
 ```
 
-npm run serve
+npm run serve -- --port 8081
 
 ```
 
-### Run unit tests
+### (TODO) Run unit tests
 
 ```
 
@@ -26,7 +26,7 @@ npm run test:unit
 
 ```
 
-### Lint and fix files
+### Lint files
 
 ```
 

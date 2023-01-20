@@ -1,0 +1,123 @@
+<template>
+  <g :transform="`translate(${margin.left}, ${margin.top})`">
+    <g :transform="`translate(0, ${innerHeight})`">
+      <ht-chart-axis :scale="xScale" position="bottom" />
+      <text
+        :transform="`translate(${innerWidth / 2}, ${xAxisLabelOffset})`"
+        class="axis-label"
+      >
+        {{ xLabel }}
+      </text>
+    </g>
+    <ht-brush-area
+      :width="innerWidth"
+      :height="innerHeight"
+      v-bind="$attrs"
+      :domain="xDomain"
+      :scale="xScale"
+      brush-direction="horizontal"
+    >
+    </ht-brush-area>
+    <Marks
+      :points="data.sgRnaArray"
+      :segments="data.segments"
+      :x-scale="xScale"
+      :y-scale="yScale"
+      :point-radius="2"
+    />
+    <g ref="brush"></g>
+  </g>
+</template>
+
+<script>
+import { scaleLinear, extent, select, brushX } from 'd3';
+import Marks from '@/components/charts/chromosome/Marks.vue';
+
+import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue/utilities';
+
+import { ref, onMounted } from 'vue';
+
+export default {
+  name: 'ChromosomeChartContext',
+  components: { Marks },
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    width: {
+      type: Number,
+      default: 0,
+    },
+    height: {
+      type: Number,
+      default: 0,
+    },
+    xDomain: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  emits: { brush: null },
+  setup(props, { emit }) {
+    const margin = {
+      top: 20,
+      right: 50,
+      bottom: 20,
+      left: 50,
+    };
+
+    const { innerWidth, innerHeight } = getInnerChartSizes(
+      props.width,
+      props.height,
+      margin
+    );
+
+    const yScale = scaleLinear()
+      .domain(extent(props.data.sgRnaArray.map((d) => d.avgLogFc)))
+      .range([innerHeight, 0]);
+
+    const xScale = scaleLinear()
+      .domain([0, props.data.sgRnaArray.length])
+      .range([0, innerWidth]);
+
+    const updateScale = ({ selection }) => {
+      const extent = selection ? selection.map(xScale.invert) : props.xDomain;
+      emit('brush', extent);
+    };
+
+    const brush = ref(null);
+
+    onMounted(() => {
+      select(brush.value).call(
+        brushX()
+          .extent([
+            [0, 0],
+            [innerWidth, innerHeight],
+          ])
+          .on('brush end', updateScale)
+      );
+    });
+
+    return {
+      innerWidth,
+      innerHeight,
+      margin,
+      xScale,
+      yScale,
+      brush,
+      xAxisLabelOffset: 40,
+      xLabel: 'Genomic Positions',
+    };
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.axis-label {
+  text-anchor: middle;
+  font-family: sans-serif;
+  font-size: 15px;
+  color: black;
+}
+</style>

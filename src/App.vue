@@ -1,11 +1,9 @@
 <template>
-  <router-view />
-  <div class="fixed-container">
-    <BaseNotificationContainer></BaseNotificationContainer>
-    <BaseFileUploadsContainer></BaseFileUploadsContainer>
+  <div>
+    <router-view />
+    <div class="fixed-container">
+      <ht-notification-container />
+      <ht-file-uploads-container />
+    </div>
   </div>
 </template>
-
-<script>
-export default {};
-</script>
