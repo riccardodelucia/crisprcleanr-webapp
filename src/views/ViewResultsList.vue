@@ -1,48 +1,41 @@
 <template>
-  <ht-app-layout>
-    <template #header><the-header></the-header></template>
-    <template #sidenav>
-      <the-sidenav></the-sidenav>
-    </template>
-    <template #default>
-      <h2 class="u-margin-bottom-medium">Results</h2>
-      <div class="results-table">
-        <ht-datatable :columns="columns" :rows="results">
-          <template #default="slotProps">
-            <tr>
-              <td v-if="!isMobile">{{ slotProps.row.id }}</td>
-              <td v-if="!isMobile">
-                {{ date(slotProps.row.dateTime) }}
-              </td>
-              <td>{{ slotProps.row.title }}</td>
-              <td>{{ slotProps.row.status }}</td>
-              <td>
-                <button
-                  class="button button--ghost button--large"
-                  @click="$router.push(`/jobs/${slotProps.row.id}`)"
-                >
-                  Show
-                </button>
-              </td>
-            </tr>
-          </template>
-        </ht-datatable>
-      </div>
-    </template></ht-app-layout
-  >
+  <AppLayout>
+    <div class="app-content card">
+      <h2>Results</h2>
+      <ht-datatable :columns="columns" :rows="results">
+        <template #default="slotProps">
+          <tr>
+            <td v-if="!isMobile">{{ slotProps.row.id }}</td>
+            <td v-if="!isMobile">
+              {{ date(slotProps.row.dateTime) }}
+            </td>
+            <td>{{ slotProps.row.title }}</td>
+            <td>{{ slotProps.row.status }}</td>
+            <td>
+              <button
+                class="btn btn--ghost"
+                @click="$router.push(`/jobs/${slotProps.row.id}`)"
+              >
+                Show
+              </button>
+            </td>
+          </tr>
+        </template>
+      </ht-datatable>
+    </div>
+  </AppLayout>
 </template>
 
 <script>
 import { date } from '@computational-biology-web-unit/ht-vue/utilities';
 import { ref, watchEffect } from 'vue';
-import { resizeListener } from '@computational-biology-web-unit/ht-vue/composables';
-import TheHeader from '@/components/TheHeader.vue';
-import TheSidenav from '@/components/TheSidenav.vue';
+import { resizeListener } from '@computational-biology-web-unit/ht-vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 export default {
   title: 'Jobs Results',
   name: 'ViewCRISPRcleanRResultsList',
-  components: { TheHeader, TheSidenav },
+  components: { AppLayout },
   props: {
     results: {
       type: Array,
@@ -100,7 +93,8 @@ export default {
 </script>
 
 <style lang="scss">
-.results-table {
+.app-content {
   max-width: 150rem;
+  margin: var(--space-md);
 }
 </style>

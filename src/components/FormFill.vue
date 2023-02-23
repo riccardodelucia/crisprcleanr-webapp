@@ -1,7 +1,7 @@
 <template>
   <template v-if="!state.hasTag('submitting') && !state.matches('submitted')">
-    <form ref="form" class="widget job-form" @submit.prevent="submit">
-      <h2 class="u-margin-bottom-small">Submit a new job</h2>
+    <form ref="form" class="card job-form" @submit.prevent="submit">
+      <h2>Submit a new job</h2>
       <ht-form-progress-bar
         :steps="progressSteps"
         :current-step="currentStep"
@@ -10,7 +10,7 @@
       </ht-form-progress-bar>
 
       <template v-if="state.matches('enteringGeneralInfo')">
-        <h3 class="u-margin-bottom-small">{{ progressSteps[0] }}</h3>
+        <h4>{{ progressSteps[0] }}</h4>
         <div class="form__group">
           <ht-input
             :label="labelFieldPairs.title"
@@ -36,7 +36,6 @@
         </div>
         <div class="form__group">
           <ht-checkbox
-            :label="labelFieldPairs.sendEmail"
             option="Send email upon job completion"
             :model-value="getDataFieldValue(state, 'sendEmail')"
             @update:model-value="onInput($event, 'sendEmail')"
@@ -54,7 +53,7 @@
       </template>
 
       <template v-if="state.matches('enteringSettings')">
-        <h3 class="u-margin-bottom-small">{{ progressSteps[1] }}</h3>
+        <h4 class="u-margin-bottom-small">{{ progressSteps[1] }}</h4>
         <div class="form__group">
           <ht-input
             :label="labelFieldPairs.normMinReads"
@@ -77,7 +76,7 @@
       </template>
 
       <template v-if="state.matches('enteringLibrary')">
-        <h3 class="u-margin-bottom-small">{{ progressSteps[2] }}</h3>
+        <h4 class="u-margin-bottom-small">{{ progressSteps[2] }}</h4>
         <ht-radio-group
           label="Library type"
           :options="libraryTypeOptions"
@@ -111,7 +110,7 @@
       </template>
 
       <template v-if="state.matches('enteringFiles')">
-        <h3 class="u-margin-bottom-small">{{ progressSteps[3] }}</h3>
+        <h4 class="u-margin-bottom-small">{{ progressSteps[3] }}</h4>
 
         <ht-radio-group
           label="Data type"
@@ -189,19 +188,19 @@
       </template>
 
       <template v-if="state.matches('review')">
-        <h3 class="u-margin-bottom-small">{{ progressSteps[4] }}</h3>
-        <ul v-for="field in formDataReview(state)" :key="field">
-          <li>
+        <h3>{{ progressSteps[4] }}</h3>
+        <ul>
+          <li v-for="field in formDataReview(state)" :key="field">
             <b>{{ field[0] }}:</b> {{ field[1] }}
           </li>
         </ul>
       </template>
 
-      <div class="job-form__button-container">
+      <div class="btns-group margin-top--lg">
         <button
           v-if="!state.matches('enteringGeneralInfo')"
           type="button"
-          class="button button--primary button--large prev-button"
+          class="btn btn--primary prev-button"
           @click="previous"
         >
           Previous Step
@@ -209,15 +208,11 @@
         <button
           v-if="!state.matches('review')"
           type="submit"
-          class="button button--primary button--large next-button"
+          class="btn btn--primary next-button"
         >
           Next Step
         </button>
-        <button
-          v-else
-          type="submit"
-          class="button button--secondary button--large submit-button"
-        >
+        <button v-else type="submit" class="btn btn--secondary submit-button">
           Submit
         </button>
       </div>
@@ -416,14 +411,7 @@ export default {
 <style lang="scss" scoped>
 .job-form {
   max-width: 50rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.job-form__button-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1em;
+  margin: var(--space-lg);
 }
 
 .prev-button,

@@ -11,7 +11,7 @@ import {
   sendSuccessNotification,
   sendErrorNotification,
   addFileUpload,
-} from '@computational-biology-web-unit/ht-vue/components';
+} from '@computational-biology-web-unit/ht-vue';
 
 ////////////////////////////////////////////////
 // MACHINE

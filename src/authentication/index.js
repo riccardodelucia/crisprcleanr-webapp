@@ -1,5 +1,5 @@
 import getEnv from '@/utils/env.js';
-import { createAuthentication } from '@computational-biology-web-unit/ht-vue/authentication';
+import { createAuthentication } from '@computational-biology-web-unit/ht-vue/auth';
 
 const authServerURL = `${getEnv('VITE_URL_AUTH_SERVER')}`;
 

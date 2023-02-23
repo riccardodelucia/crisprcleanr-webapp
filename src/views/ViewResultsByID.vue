@@ -1,46 +1,39 @@
 <template>
-  <ht-app-layout>
-    <template #header><the-header></the-header></template>
-    <template #sidenav>
-      <the-sidenav></the-sidenav>
-    </template>
-    <template #default>
-      <h2 class="u-margin-bottom-small">Results</h2>
+  <AppLayout>
+    <div class="app-content">
+      <h2>Results</h2>
       <button
-        class="button button--large button--primary"
+        class="btn btn--secondary"
         @click="$router.push({ name: 'resultsList' })"
       >
         <vue-feather type="arrow-left"></vue-feather> Results List
       </button>
 
       <div class="results">
-        <div class="widget results__details">
-          <h3 class="u-margin-bottom-small">Details</h3>
+        <div class="card results__details">
+          <h3>Details</h3>
           <ul>
             <li v-for="field in resultDataMap" :key="field[1]">
               <b>{{ field[0] }}:</b> {{ field[1] }}
             </li>
           </ul>
-          <p v-if="result.status === 'pending'" class="u-margin-top-small">
+          <p v-if="result.status === 'pending'">
             Further content will be shown upon successful job completion...
           </p>
         </div>
 
-        <div class="widget results__notes">
-          <h3 class="u-margin-bottom-small">Notes</h3>
+        <div class="card results__notes">
+          <h3>Notes</h3>
           <p>{{ result.notes }}</p>
         </div>
 
-        <div
-          v-if="result.status === 'success'"
-          class="widget results__downloads"
-        >
-          <h3 class="u-margin-bottom-small">Downloads</h3>
-          <div class="results__download-buttons-container">
+        <div v-if="result.status === 'success'" class="card results__downloads">
+          <h3 class="margin-bottom">Downloads</h3>
+          <div class="btns-group">
             <button
               v-for="(file, index) in fileList"
               :key="index"
-              class="button button--primary"
+              class="btn btn--primary btn--sm"
               type="button"
               @click="onClick(file, id)"
             >
@@ -52,7 +45,7 @@
         </div>
 
         <template v-if="result.status === 'success'">
-          <div class="widget results__genes-signatures">
+          <div class="card results__genes-signatures">
             <ContentLoader
               v-if="!genesSignatures"
               viewBox="0 0 520 700"
@@ -87,68 +80,71 @@
             </svg>
           </div>
 
-          <ht-accordion class="widget widget--color1 results__thumbnails">
-            <template #title
-              >Normalised Counts and Depletion Fold-Changes Charts</template
-            >
-            <template #content>
-              <div class="thumbnails__content">
-                <ht-thumbnail
-                  v-for="item in imageListByCathegory.normImages"
-                  :key="item.filename"
-                  :img="item"
-                  @clicked="openModal(item, id)"
-                ></ht-thumbnail>
+          <ht-accordion
+            label="Normalised Counts and Depletion Fold-Changes Charts"
+            class="card color--1 results__thumbnails"
+          >
+            <div class="thumbnails__content">
+              <div
+                v-for="img in imageListByCathegory.normImages"
+                :key="img.filename"
+                class="thumbnail"
+                @click="openModal(img, id)"
+              >
+                <img class="thumbnail__img" :src="img.src" :alt="img.title" />
+                <p class="thumbnail__caption">{{ img.label }}</p>
               </div>
-            </template>
+            </div>
           </ht-accordion>
 
           <ht-accordion
-            class="widget widget--color2 results__thumbnails"
+            label="Chromosome Charts"
+            class="card color--2 results__thumbnails"
             height="42rem"
           >
-            <template #title>Chromosome Charts</template>
-            <template #content>
-              <div class="thumbnails__content">
-                <ht-thumbnail
-                  v-for="item in imageListByCathegory.chrImages"
-                  :key="item.filename"
-                  :img="item"
-                  @clicked="openModal(item, id)"
-                ></ht-thumbnail>
+            <div class="thumbnails__content">
+              <div
+                v-for="img in imageListByCathegory.chrImages"
+                :key="img.filename"
+                class="thumbnail"
+                @click="openModal(img, id)"
+              >
+                <img class="thumbnail__img" :src="img.src" :alt="img.title" />
+                <p class="thumbnail__caption">{{ img.label }}</p>
               </div>
-            </template>
+            </div>
           </ht-accordion>
 
-          <ht-accordion class="widget widget--color3 results__thumbnails">
-            <template #title>QC Assessment Charts</template>
-            <template #content>
-              <div class="thumbnails__content">
-                <ht-thumbnail
-                  v-for="item in imageListByCathegory.qcImages"
-                  :key="item.filename"
-                  :img="item"
-                  @clicked="openModal(item, id)"
-                ></ht-thumbnail>
+          <ht-accordion
+            label="QC Assessment Charts"
+            class="card color--3 results__thumbnails"
+          >
+            <div class="thumbnails__content">
+              <div
+                v-for="img in imageListByCathegory.qcImages"
+                :key="img.filename"
+                class="thumbnail"
+                @click="openModal(img, id)"
+              >
+                <img class="thumbnail__img" :src="img.src" :alt="img.title" />
+                <p class="thumbnail__caption">{{ img.label }}</p>
               </div>
-            </template>
+            </div>
           </ht-accordion>
         </template>
       </div>
 
       <ht-modal v-if="modalState != 'closed'" @modal-close="closeModal">
-        <template #header>{{ image.label }} </template>
-        <template #body>
-          <component
-            :is="image.component"
-            v-if="modalState === 'opened'"
-            :data="data"
-          />
-          <div v-else-if="modalState === 'loading'">Loading...</div>
-        </template>
+        <h4 class="center">{{ image.label }}</h4>
+        <component
+          :is="image.component"
+          v-if="modalState === 'opened'"
+          :data="data"
+        />
+        <div v-else-if="modalState === 'loading'">Loading...</div>
       </ht-modal>
-    </template>
-  </ht-app-layout>
+    </div>
+  </AppLayout>
 </template>
 
 <script>
@@ -161,12 +157,14 @@ import LineChartROC from '@/components/charts/linechart/LineChartROC.vue';
 import LineChartPrRc from '@/components/charts/linechart/LineChartPrRc.vue';
 import GenesSignaturesMultichart from '@/components/charts/genes_signatures/GenesSignaturesMultichart.vue';
 
-import TheHeader from '@/components/TheHeader.vue';
-import TheSidenav from '@/components/TheSidenav.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 import { ref, reactive } from 'vue';
 
-import { download, date } from '@computational-biology-web-unit/ht-vue/utilities';
+import {
+  download,
+  date,
+} from '@computational-biology-web-unit/ht-vue/utilities';
 
 import { ContentLoader } from 'vue-content-loader';
 
@@ -174,15 +172,14 @@ import imageList from '@/images.json';
 
 import imagePlaceholder from '@/assets/img/placeholder-image.png';
 
-import { useUserProfile } from '@computational-biology-web-unit/ht-vue/authentication';
-import { resizeListener } from '@computational-biology-web-unit/ht-vue/composables';
-import { sendErrorNotification } from '@computational-biology-web-unit/ht-vue/components';
+import { useUserProfile } from '@computational-biology-web-unit/ht-vue/auth';
+import { resizeListener } from '@computational-biology-web-unit/ht-vue';
+import { sendErrorNotification } from '@computational-biology-web-unit/ht-vue';
 
 export default {
   name: 'ViewResultsByID',
   components: {
-    TheHeader,
-    TheSidenav,
+    AppLayout,
     BoxPlotMultichart,
     ChromosomeMultichart,
     LineChartROC,
@@ -366,6 +363,21 @@ export default {
 </script>
 
 <style lang="scss">
+.app-content {
+  margin: var(--space-md);
+}
+
+.color {
+  &--1 {
+    background-color: var(--color-content-1);
+  }
+  &--2 {
+    background-color: var(--color-content-2);
+  }
+  &--3 {
+    background-color: var(--color-content-3);
+  }
+}
 .results {
   display: grid;
   grid-template-columns: minmax(min-content, 50rem) 50rem 1fr;
@@ -421,6 +433,39 @@ export default {
     justify-items: left;
     gap: 1em;
     grid-template-columns: repeat(auto-fit, minmax(min-content, 32rem));
+  }
+}
+
+.thumbnail {
+  overflow: hidden;
+  background-color: white;
+  padding: 0.5rem;
+
+  transition: all 0.5s;
+
+  cursor: pointer;
+  &:hover {
+    transform: translateY(-0.3em);
+  }
+
+  &__img {
+    height: 30rem;
+    width: 30rem;
+    object-fit: contain;
+    margin-bottom: auto;
+  }
+
+  &__caption {
+    text-align: center;
+    color: black;
+    font-weight: 400;
+    padding: 0.6em 0.3em;
+
+    &:active,
+    &:link,
+    &:visited {
+      text-decoration: none;
+    }
   }
 }
 </style>

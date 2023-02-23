@@ -14,7 +14,7 @@ import CcrAPI from '@/api/ccr.js';
 import getEnv from '@/utils/env.js';
 
 import auth from '@/authentication/index.js';
-import { sendErrorNotification } from '@computational-biology-web-unit/ht-vue/components';
+import { sendErrorNotification } from '@computational-biology-web-unit/ht-vue';
 
 const appRootUrl = getEnv('VITE_URL_IORIO_CCR_WEBAPP');
 

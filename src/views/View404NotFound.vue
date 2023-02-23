@@ -1,26 +1,21 @@
 <template>
-  <ht-message :title="title" :message="message">
+  <div class="message-page">
+    <h3>Not found 🔍</h3>
+    <p>The content you're looking for is not there.</p>
     <button
-      class="button button--primary button--large"
+      class="btn btn--primary btn--lg"
       type="button"
       @click="$router.push({ name: 'home' })"
     >
       Back to Home
     </button>
-  </ht-message>
+  </div>
 </template>
 
 <script>
 export default {
   title: 'Message Page',
   name: 'View404NotFound',
-  props: {
-    title: { type: String, default: '' },
-    message: {
-      type: String,
-      default: '',
-    },
-  },
 };
 </script>
 
@@ -32,13 +27,7 @@ export default {
   align-items: center;
   height: 100vh;
 
-  background-image: linear-gradient(
-    to right,
-    var(--color-gradient-blue-0) 0%,
-    var(--color-gradient-blue-100) 5%,
-    var(--color-gradient-green-0) 95%,
-    var(--color-gradient-green-100) 100%
-  );
+  background-image: var(--color-gradient-ht-theme);
 
   background-size: cover;
   background-repeat: no-repeat;

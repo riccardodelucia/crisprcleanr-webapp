@@ -1,7 +1,5 @@
 <template>
-  <ht-sidenav-collapsible
-    :sidenav-object="sidenavObject"
-  ></ht-sidenav-collapsible>
+  <ht-sidenav :sidenav-object="sidenavObject"></ht-sidenav>
 </template>
 <script>
 export default {
