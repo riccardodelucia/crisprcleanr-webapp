@@ -215,8 +215,10 @@
 
 <script>
 import CcrAPI from '@/api/ccr.js';
-import { download } from '@computational-biology-web-unit/ht-vue/utilities';
-import { sendErrorNotification } from '@computational-biology-web-unit/ht-vue';
+import { download } from '@computational-biology-web-unit/ht-vue';
+
+import { sendErrorNotification } from '../notifications';
+
 import WebLayout from '@/layouts/WebLayout.vue';
 export default {
   title: 'CRISPRcleanR',

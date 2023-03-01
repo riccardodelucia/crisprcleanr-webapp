@@ -34,7 +34,7 @@ import { computed } from 'vue';
 import {
   getInnerChartSizes,
   augmentedExtent,
-} from '@computational-biology-web-unit/ht-vue/utilities';
+} from '@computational-biology-web-unit/ht-vue';
 
 export default {
   name: 'ChromosomeChartFocus',

@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { setupTooltip } from '@computational-biology-web-unit/ht-vue/utilities';
+import { setupTooltip } from '@computational-biology-web-unit/ht-vue';
 import { computed } from 'vue';
 
 export default {

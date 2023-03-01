@@ -27,9 +27,8 @@
 </template>
 
 <script>
-import { date } from '@computational-biology-web-unit/ht-vue/utilities';
 import { ref, watchEffect } from 'vue';
-import { resizeListener } from '@computational-biology-web-unit/ht-vue';
+import { resizeListener, date } from '@computational-biology-web-unit/ht-vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 
 export default {

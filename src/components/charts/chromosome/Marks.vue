@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { setupTooltip } from '@computational-biology-web-unit/ht-vue/utilities';
+import { setupTooltip } from '@computational-biology-web-unit/ht-vue';
 
 export default {
   name: 'ChromosomeMarks',

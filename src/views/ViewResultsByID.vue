@@ -161,20 +161,21 @@ import AppLayout from '@/layouts/AppLayout.vue';
 
 import { ref, reactive } from 'vue';
 
-import {
-  download,
-  date,
-} from '@computational-biology-web-unit/ht-vue/utilities';
-
 import { ContentLoader } from 'vue-content-loader';
 
 import imageList from '@/images.json';
 
 import imagePlaceholder from '@/assets/img/placeholder-image.png';
 
-import { useUserProfile } from '@computational-biology-web-unit/ht-vue/auth';
-import { resizeListener } from '@computational-biology-web-unit/ht-vue';
-import { sendErrorNotification } from '@computational-biology-web-unit/ht-vue';
+import {
+  download,
+  date,
+  resizeListener,
+} from '@computational-biology-web-unit/ht-vue';
+
+import { sendErrorNotification } from '../notifications';
+
+import { useAuth } from '../authentication/index.js';
 
 export default {
   name: 'ViewResultsByID',
@@ -202,9 +203,10 @@ export default {
     const data = ref({});
     const modalState = ref('closed');
 
-    const userProfile = useUserProfile();
+    const auth = useAuth();
+    const { userProfile } = auth;
 
-    const username = userProfile.value.username;
+    const username = userProfile.username;
 
     const imageListByCathegory = reactive({
       normImages: [],
@@ -230,7 +232,7 @@ export default {
         .catch((err) => {
           const message = err?.message;
           sendErrorNotification({
-            title: 'Unable to donwload genes signatures data',
+            title: 'Unable to download genes signatures data',
             message,
           });
           genesSignatures.value = 'error';

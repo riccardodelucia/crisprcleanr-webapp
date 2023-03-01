@@ -1,4 +1,4 @@
-import { setupTooltip } from '@computational-biology-web-unit/ht-vue/utilities';
+import { setupTooltip } from '@computational-biology-web-unit/ht-vue';
 
 export const setupMarksChart = ({ emit }) => {
   const { onMouseOver: updateTooltip, setTooltipContent } = setupTooltip();

@@ -31,7 +31,7 @@ import { scaleBand, scaleLinear } from 'd3';
 
 import Marks from '@/components/charts/boxplot/Marks.vue';
 
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue/utilities';
+import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
 
 import { computed } from 'vue';
 

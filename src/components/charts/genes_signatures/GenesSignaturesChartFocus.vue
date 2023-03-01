@@ -78,7 +78,7 @@
 import { extent, scaleLinear, scaleLog } from 'd3';
 import { ref, computed } from 'vue';
 
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue/utilities';
+import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
 import MarksCurve from '@/components/charts/genes_signatures/MarksCurve.vue';
 import MarksGenesSet from '@/components/charts/genes_signatures/MarksGenesSet.vue';
 

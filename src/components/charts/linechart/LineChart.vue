@@ -51,7 +51,7 @@
 import { scaleLinear, extent, line, bisector, pointer } from 'd3';
 
 import { ref, reactive } from 'vue';
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue/utilities';
+import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
 
 import tippy from 'tippy.js';
 import { hideAll } from 'tippy.js';

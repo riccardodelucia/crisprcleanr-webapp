@@ -7,11 +7,11 @@ import CcrAPI from '@/api/ccr.js';
 
 import fileServerAPI from '@/api/fileServer.js';
 
+import { addFileUpload } from '../uploads.js';
 import {
   sendSuccessNotification,
   sendErrorNotification,
-  addFileUpload,
-} from '@computational-biology-web-unit/ht-vue';
+} from '../notifications';
 
 ////////////////////////////////////////////////
 // MACHINE
@@ -444,7 +444,7 @@ const makeUploadFilesList = assign(
     const uploads = filesList.map((fileInfo) => {
       const filename = fileInfo.filename;
       const file = candidates[filename];
-      const { request, config } = fileServerAPI.getUploadSetup(
+      const { instance, config, controller } = fileServerAPI.setupUpload(
         file,
         fileInfo.objectKey
       );
@@ -452,8 +452,9 @@ const makeUploadFilesList = assign(
       return {
         ...fileInfo,
         file,
-        request,
+        instance,
         config,
+        controller,
       };
     });
 

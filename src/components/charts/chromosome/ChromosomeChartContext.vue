@@ -33,7 +33,7 @@
 import { scaleLinear, extent, select, brushX } from 'd3';
 import Marks from '@/components/charts/chromosome/Marks.vue';
 
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue/utilities';
+import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
 
 import { ref, onMounted } from 'vue';
 

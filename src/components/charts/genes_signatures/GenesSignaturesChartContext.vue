@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue/utilities';
+import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
 import { scaleLog, extent, scaleLinear } from 'd3';
 import MarksCurve from '@/components/charts/genes_signatures/MarksCurve.vue';
 

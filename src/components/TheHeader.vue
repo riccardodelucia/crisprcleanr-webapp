@@ -15,7 +15,7 @@
         <a :href="dashboardURL" target="_blank" class="link">
           <vue-feather type="grid" />
         </a>
-        <HTUser></HTUser>
+        <ht-user :auth="auth"></ht-user>
       </div>
     </template>
   </ht-header>
@@ -23,6 +23,8 @@
 
 <script>
 import getEnv from '@/utils/env.js';
+
+import { useAuth } from '../authentication/index.js';
 
 const dashboardURL = getEnv('VITE_URL_IORIO_DASHBOARD');
 
@@ -38,8 +40,9 @@ export default {
       default: false,
     },
   },
-  data() {
-    return { dashboardURL };
+  setup() {
+    const auth = useAuth();
+    return { dashboardURL, auth };
   },
 };
 </script>

@@ -1,31 +1,52 @@
 import getEnv from '@/utils/env.js';
 
-import { ConnectionManager } from '@computational-biology-web-unit/ht-vue/api';
+import axios from 'axios';
 
-import auth from '@/authentication/index.js';
+import { interceptorAuthorize } from '@/authentication/index.js';
+import { interceptorCamelize } from '@computational-biology-web-unit/ht-vue';
 
 const baseURL = `${getEnv('VITE_URL_IORIO_CCR_FILESERVER')}`;
 
-const connectionManager = new ConnectionManager(baseURL, auth);
-
 export default {
-  abortAndDeleteRequest(requestId) {
-    return connectionManager.abortAndDeleteRequest(requestId);
-  },
-  getUploadSetup(file, objectKey) {
-    const request = connectionManager.getRequest(objectKey);
+  setupUpload(file, objectKey) {
+    const controller = new AbortController();
 
-    const config = ConnectionManager.makeFileUploadConfig({
-      file,
-      url: 'upload/',
+    // cannot setup a timeout on upload , otherwise large file uploads get canceled
+    const instance = axios.create({
+      signal: controller.signal,
+      baseURL,
     });
-    config.headers['X-Object-Key'] = objectKey;
 
-    return { request, config };
+    instance.interceptors.request.use(interceptorAuthorize);
+
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    const config = {
+      url: 'upload/',
+      method: 'post',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Content-Range': `bytes=0-${file.size}/${file.size}`,
+        'X-Object-Key': objectKey,
+      },
+    };
+
+    return {
+      controller,
+      instance,
+      config,
+    };
   },
   downloadFile({ objectKey, blob = false }) {
+    const instance = axios.create({
+      baseURL,
+    });
+    instance.interceptors.request.use(interceptorAuthorize);
+    instance.interceptors.response.use(interceptorCamelize);
+
     const options = { url: 'download/', params: { 'object-key': objectKey } };
     if (blob) options.responseType = 'blob';
-    return connectionManager.sendRequest(options);
+    return instance(options);
   },
 };

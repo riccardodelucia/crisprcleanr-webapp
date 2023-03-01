@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue/utilities';
+import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
 import { computed } from 'vue';
 import { scaleLinear } from 'd3';
 

@@ -11,12 +11,8 @@ import View404NotFound from '@/views/View404NotFound.vue';
 
 import CcrAPI from '@/api/ccr.js';
 
-import getEnv from '@/utils/env.js';
-
-import auth from '@/authentication/index.js';
-import { sendErrorNotification } from '@computational-biology-web-unit/ht-vue';
-
-const appRootUrl = getEnv('VITE_URL_IORIO_CCR_WEBAPP');
+import { authorize } from '@/authentication/index.js';
+import { sendErrorNotification } from '../notifications';
 
 const manageRouteError = (from, error, title) => {
   if (error?.response?.status === 404) return '/404'; //this translates into catchAll route
@@ -57,9 +53,9 @@ const routes = [
   },
   {
     path: '/jobs',
-    meta: {
+    /*     meta: {
       requiresAuth: true,
-    },
+    }, */
     children: [
       {
         path: '',
@@ -123,8 +119,9 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
+    const appRootUrl = window.location.origin;
     const redirectUri = new URL(to.path, appRootUrl).toString();
-    return auth.authorize(redirectUri).then(() => true);
+    return authorize(redirectUri).then(() => true);
   }
   // This page did not require authentication
   return;

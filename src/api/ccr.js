@@ -1,39 +1,43 @@
 import getEnv from '@/utils/env.js';
-import { ConnectionManager } from '@computational-biology-web-unit/ht-vue/api';
-import auth from '@/authentication/index.js';
+import axios from 'axios';
+
+import { interceptorAuthorize } from '../authentication/index.js';
+import { interceptorCamelize } from '@computational-biology-web-unit/ht-vue';
 
 const baseURL = `${getEnv('VITE_URL_IORIO_CCR_BACKEND')}`;
 const connectionTimeout = `${getEnv('VITE_CONNECTION_TIMEOUT_MS')}`;
 
-const connectionManager = new ConnectionManager(baseURL, auth);
+const instance = axios.create({
+  baseURL,
+});
+
+instance.interceptors.request.use(interceptorAuthorize);
+instance.interceptors.response.use(interceptorCamelize);
 
 export default {
-  abortAndDeleteRequest(requestId) {
-    return connectionManager.abortAndDeleteRequest(requestId);
-  },
   submitJob(formData) {
-    return connectionManager.sendRequest({
+    return instance({
       method: 'post',
       url: 'jobs/',
       data: formData,
     });
   },
   getResultsList() {
-    return connectionManager.sendRequest({
+    return instance({
       method: 'get',
       url: 'jobs/',
       connectionTimeout,
     });
   },
   getResultByID(id) {
-    return connectionManager.sendRequest({
+    return instance({
       method: 'get',
       url: `jobs/${id}`,
       connectionTimeout,
     });
   },
   getStaticResource(resource) {
-    return connectionManager.sendRequest({
+    return instance({
       method: 'get',
       url: `/static/${resource}`,
       responseType: 'blob',
