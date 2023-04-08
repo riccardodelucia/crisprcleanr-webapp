@@ -18,7 +18,7 @@
       brush-direction="horizontal"
     >
     </ht-brush-area>
-    <Marks
+    <ChromosomeMarks
       :points="data.sgRnaArray"
       :segments="data.segments"
       :x-scale="xScale"
@@ -31,7 +31,7 @@
 
 <script>
 import { scaleLinear, extent, select, brushX } from 'd3';
-import Marks from '@/components/charts/chromosome/Marks.vue';
+import ChromosomeMarks from '@/components/charts/chromosome/ChromosomeMarks.vue';
 
 import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
 
@@ -39,7 +39,7 @@ import { ref, onMounted } from 'vue';
 
 export default {
   name: 'ChromosomeChartContext',
-  components: { Marks },
+  components: { ChromosomeMarks },
   props: {
     data: {
       type: Object,

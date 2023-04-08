@@ -17,6 +17,13 @@ print pipeline defined variables:
     - echo "CI_REGISTRY_IMAGE = $CI_REGISTRY_IMAGE"
     - echo "CI_COMMIT_TAG = $CI_COMMIT_TAG"
 
+
+.install packages:
+    before_script:
+      - npm config set -- //${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
+      - npm config set @${CI_PROJECT_NAMESPACE}:registry=https://${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/
+      - npm install
+
 ####################################################################################################
 # merge request pipeline: run this job only when a merge request is opened to save pipeline runs
 
@@ -33,12 +40,10 @@ lint-dockerfile:
 
 
 lint-code:
-  extends: .lint
   image: node:18-alpine
-  before_script:
-    - npm config set -- //${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
-    - npm config set @${CI_PROJECT_NAMESPACE}:registry=https://${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/
-    - npm install
+  extends:
+    - .lint
+    - .install packages
   script:
     - npm run lint
 
@@ -55,12 +60,10 @@ lint-code:
 
 build website:
   stage: build
-  extends: .master branch
+  extends:
+    - .install packages
+    - .master branch
   image: node:18-alpine
-  before_script:
-    - npm config set -- //${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
-    - npm config set @${CI_PROJECT_NAMESPACE}:registry=https://${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/
-    - npm install
   script:
     - npm run build
     - echo $BUILD > dist/build.html

@@ -13,7 +13,7 @@
     <!-- Segments are clipped through a clip path, instead of filtering data. This is
     convenient, since segments are very lightweight to manage, and the filtering algorithm would have
     to trim segment endpoints according to the current selected area. -->
-    <Marks
+    <ChromosomeMarks
       :points="focusData.sgRnaArray"
       :segments="data.segments"
       :x-scale="xScale"
@@ -27,7 +27,7 @@
 
 <script>
 import { scaleLinear, extent } from 'd3';
-import Marks from '@/components/charts/chromosome/Marks.vue';
+import ChromosomeMarks from '@/components/charts/chromosome/ChromosomeMarks.vue';
 
 import { computed } from 'vue';
 
@@ -38,7 +38,7 @@ import {
 
 export default {
   name: 'ChromosomeChartFocus',
-  components: { Marks },
+  components: { ChromosomeMarks },
   props: {
     data: {
       type: Object,

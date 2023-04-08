@@ -15,13 +15,13 @@
       :key="index"
       :transform="`translate(${xScale(box.label)},0)`"
     >
-      <Marks
+      <BoxPlotMarks
         v-bind="$attrs"
         :x-scale="xScale"
         :y-scale="yScale"
         :data="box"
         clip-path="url(#clip-boxplots)"
-      ></Marks>
+      ></BoxPlotMarks>
     </g>
   </g>
 </template>
@@ -29,7 +29,7 @@
 <script>
 import { scaleBand, scaleLinear } from 'd3';
 
-import Marks from '@/components/charts/boxplot/Marks.vue';
+import BoxPlotMarks from '@/components/charts/boxplot/BoxPlotMarks.vue';
 
 import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
 
@@ -37,7 +37,7 @@ import { computed } from 'vue';
 
 export default {
   name: 'BoxPlotChartFocus',
-  components: { Marks },
+  components: { BoxPlotMarks },
   props: {
     data: {
       type: Array,
