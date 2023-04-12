@@ -27,15 +27,20 @@
     </ht-brush-area>
 
     <g :transform="`translate(${innerWidth}, 0)`">
-      <ht-chart-axis :scale="yScale" position="right"></ht-chart-axis>
+      <g ref="yAxis"></g>
     </g>
   </g>
 </template>
 
 <script>
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
-import { scaleLog, extent, scaleLinear } from 'd3';
+import {
+  getInnerChartSizes,
+  makeReactiveAxis,
+} from '@computational-biology-web-unit/ht-vue';
+import { select, scaleLog, extent, scaleLinear, axisRight } from 'd3';
 import MarksCurve from '@/components/charts/genes_signatures/MarksCurve.vue';
+
+import { ref } from 'vue';
 
 export default {
   name: 'GenesSignaturesChartContext',
@@ -59,9 +64,10 @@ export default {
     },
   },
   setup(props) {
+    const yAxis = ref(null);
     const margin = {
       top: 20,
-      right: 20,
+      right: 35,
       bottom: 40,
       left: 0,
     };
@@ -74,11 +80,15 @@ export default {
 
     const yScale = scaleLog().domain(props.yDomain).range([0, innerHeight]);
 
+    makeReactiveAxis(() => {
+      select(yAxis.value).call(axisRight(yScale));
+    });
+
     const xDomain = extent(props.data.genes.map((item) => item.x));
 
     const xScale = scaleLinear().domain(xDomain).range([0, innerWidth]);
 
-    return { margin, innerWidth, innerHeight, yScale, xScale };
+    return { margin, innerWidth, innerHeight, yAxis, yScale, xScale };
   },
 };
 </script>

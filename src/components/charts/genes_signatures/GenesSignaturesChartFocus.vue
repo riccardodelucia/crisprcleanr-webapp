@@ -13,9 +13,10 @@
     >
       Depletion Rank
     </text>
-    <ht-chart-axis :scale="yScale" position="left" />
+    <g ref="yAxis"></g>
+
     <g :transform="`translate(0, ${innerHeight})`">
-      <ht-chart-axis :scale="xScale" position="bottom" />
+      <g ref="xAxis"></g>
       <text
         :transform="`translate(${curveWidth / 2}, ${xAxisLabelOffset})`"
         class="axis-label"
@@ -30,6 +31,7 @@
       :y2="innerHeight"
       stroke="black"
       stroke-dasharray="4 2"
+      stroke-opacity="0.2"
     />
     <line
       :x1="0"
@@ -65,7 +67,7 @@
         :thr="data.threshold"
       ></MarksGenesSet>
       <text
-        :transform="`translate(0, ${innerHeight + 28})`"
+        :transform="`translate(0, ${innerHeight + xAxisLabelOffset})`"
         class="genes-set__label"
       >
         Recall: {{ selectedGenesSetRecall }}
@@ -75,10 +77,20 @@
 </template>
 
 <script>
-import { extent, scaleLinear, scaleLog } from 'd3';
+import {
+  extent,
+  scaleLinear,
+  scaleLog,
+  select,
+  axisLeft,
+  axisBottom,
+} from 'd3';
 import { ref, computed } from 'vue';
 
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
+import {
+  getInnerChartSizes,
+  makeReactiveAxis,
+} from '@computational-biology-web-unit/ht-vue';
 import MarksCurve from '@/components/charts/genes_signatures/MarksCurve.vue';
 import MarksGenesSet from '@/components/charts/genes_signatures/MarksGenesSet.vue';
 
@@ -102,6 +114,9 @@ export default {
     },
   },
   setup(props) {
+    const yAxis = ref(null);
+    const xAxis = ref(null);
+
     const margin = {
       top: 20,
       right: 20,
@@ -123,9 +138,17 @@ export default {
 
     const xScale = scaleLinear().domain(xDomain).range([0, curveWidth]);
 
+    makeReactiveAxis(() => {
+      select(xAxis.value).call(axisBottom(xScale));
+    });
+
     const yScale = computed(() =>
       scaleLog().domain(props.yDomain).range([0, innerHeight])
     );
+
+    makeReactiveAxis(() => {
+      select(yAxis.value).call(axisLeft(yScale.value));
+    });
 
     const selectedGene = ref(null);
 
@@ -151,10 +174,12 @@ export default {
 
     return {
       margin,
+      xAxis,
       xScale,
-      xAxisLabelOffset: 30,
+      xAxisLabelOffset: 35,
+      yAxis,
       yScale,
-      yAxisLabelOffset: 35,
+      yAxisLabelOffset: 40,
       innerWidth,
       innerHeight,
       curveWidth,

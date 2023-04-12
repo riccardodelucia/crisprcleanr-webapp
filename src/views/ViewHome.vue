@@ -215,7 +215,10 @@
 
 <script>
 import CcrAPI from '@/api/ccr.js';
-import { download } from '@computational-biology-web-unit/ht-vue';
+import {
+  download,
+  parseErrorMesssage,
+} from '@computational-biology-web-unit/ht-vue';
 
 import { sendErrorNotification } from '../notifications';
 
@@ -232,7 +235,7 @@ export default {
           download(response.data, filename);
         })
         .catch((error) => {
-          const message = error?.message;
+          const message = parseErrorMesssage(error);
           sendErrorNotification({
             title: 'Unable to download sample data',
             message,

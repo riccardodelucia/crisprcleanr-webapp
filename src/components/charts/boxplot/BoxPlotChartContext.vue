@@ -17,15 +17,18 @@
       </text>
     </ht-brush-area>
     <g :transform="`translate(${innerWidth}, 0)`">
-      <ht-chart-axis :scale="yScale" position="right"></ht-chart-axis>
+      <g ref="yAxis"></g>
     </g>
   </g>
 </template>
 
 <script>
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
-import { computed } from 'vue';
-import { scaleLinear } from 'd3';
+import {
+  getInnerChartSizes,
+  makeReactiveAxis,
+} from '@computational-biology-web-unit/ht-vue';
+import { computed, ref } from 'vue';
+import { scaleLinear, select, axisRight } from 'd3';
 
 export default {
   name: 'BoxPlotChartContext',
@@ -44,9 +47,10 @@ export default {
     },
   },
   setup(props) {
+    const yAxis = ref(null);
     const margin = {
       top: 20,
-      right: 30,
+      right: 60,
       bottom: 30,
       left: 0,
     };
@@ -61,7 +65,11 @@ export default {
       return scaleLinear().domain(props.yDomain).range([0, innerHeight]);
     });
 
-    return { margin, innerWidth, innerHeight, yScale };
+    makeReactiveAxis(() => {
+      select(yAxis.value).call(axisRight(yScale.value));
+    });
+
+    return { margin, innerWidth, innerHeight, yScale, yAxis };
   },
 };
 </script>

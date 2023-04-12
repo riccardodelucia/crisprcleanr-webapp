@@ -9,7 +9,7 @@
     @mouseleave="onMouseLeave"
   >
     <g ref="chart" :transform="`translate(${margin.left}, ${margin.top})`">
-      <ht-chart-axis :scale="yScale" position="left" />
+      <g ref="yAxis"></g>
       <text
         :transform="`translate(${-yAxisLabelOffset}, ${
           innerHeight / 2
@@ -19,7 +19,7 @@
         {{ yLabel }}
       </text>
       <g :transform="`translate(0, ${innerHeight})`">
-        <ht-chart-axis :scale="xScale" position="bottom" />
+        <g ref="xAxis"></g>
         <text
           :transform="`translate(${innerWidth / 2}, ${xAxisLabelOffset})`"
           class="axis-label"
@@ -48,10 +48,22 @@
 </template>
 
 <script>
-import { scaleLinear, extent, line, bisector, pointer } from 'd3';
+import {
+  scaleLinear,
+  extent,
+  line,
+  bisector,
+  pointer,
+  select,
+  axisLeft,
+  axisBottom,
+} from 'd3';
 
 import { ref, reactive } from 'vue';
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
+import {
+  getInnerChartSizes,
+  makeReactiveAxis,
+} from '@computational-biology-web-unit/ht-vue';
 
 import tippy from 'tippy.js';
 import { hideAll } from 'tippy.js';
@@ -73,8 +85,8 @@ const height = 500;
 const margin = {
   top: 20,
   right: 0,
-  bottom: 40,
-  left: 50,
+  bottom: 50,
+  left: 60,
 };
 
 export default {
@@ -90,6 +102,10 @@ export default {
     yDomain: { type: Array, required: true },
   },
   setup(props) {
+    const yAxis = ref(null);
+
+    const xAxis = ref(null);
+
     const { innerWidth, innerHeight } = getInnerChartSizes(
       width,
       height,
@@ -98,9 +114,17 @@ export default {
 
     const xScale = scaleLinear().domain(props.xDomain).range([0, innerWidth]);
 
+    makeReactiveAxis(() => {
+      select(xAxis.value).call(axisBottom(xScale));
+    });
+
     const yScale = scaleLinear()
       .domain(extent(props.yDomain))
       .range([innerHeight, 0]);
+
+    makeReactiveAxis(() => {
+      select(yAxis.value).call(axisLeft(yScale));
+    });
 
     const curve = line()
       .x((d) => xScale(d.x))
@@ -136,9 +160,11 @@ export default {
       innerHeight,
       curve,
       xScale,
-      xAxisLabelOffset: 30,
+      xAxisLabelOffset: 40,
+      xAxis,
       yScale,
-      yAxisLabelOffset: 30,
+      yAxis,
+      yAxisLabelOffset: 40,
       cursorPoint,
       tooltipShow,
       tooltipContent,

@@ -171,6 +171,7 @@ import {
   download,
   date,
   resizeListener,
+  parseErrorMesssage,
 } from '@computational-biology-web-unit/ht-vue';
 
 import { sendErrorNotification } from '../notifications';
@@ -229,8 +230,8 @@ export default {
         .then((response) => {
           genesSignatures.value = response.data;
         })
-        .catch((err) => {
-          const message = err?.message;
+        .catch((error) => {
+          const message = parseErrorMesssage(error);
           sendErrorNotification({
             title: 'Unable to download genes signatures data',
             message,
@@ -282,8 +283,8 @@ export default {
             image.value = img;
             modalState.value = 'opened';
           })
-          .catch((err) => {
-            const message = err?.message;
+          .catch((error) => {
+            const message = parseErrorMesssage(error);
             sendErrorNotification({
               title: `Unable to open chart ${img.chart}`,
               message,
@@ -307,7 +308,7 @@ export default {
           download(response.data, file);
         })
         .catch((error) => {
-          const message = error?.message;
+          const message = parseErrorMesssage(error);
           sendErrorNotification({
             title: `Unable to download file ${file}`,
             message,

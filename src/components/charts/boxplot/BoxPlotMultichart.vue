@@ -126,7 +126,7 @@ export default {
     const needsToggleSwitch = props.data?.norm && props.data?.raw;
 
     const chartFocusWidth = 900;
-    const chartContextWidth = 90;
+    const chartContextWidth = 130;
     const width = chartFocusWidth + chartContextWidth;
 
     return {

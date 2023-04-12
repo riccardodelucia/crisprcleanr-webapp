@@ -6,10 +6,9 @@
       </clipPath>
     </defs>
     <g :transform="`translate(0, ${innerHeight})`">
-      <ht-chart-axis :scale="xScale" position="bottom" />
+      <g ref="xAxis"></g>
     </g>
-    <D3Axis :scale="yScale" position="left" />
-
+    <g ref="yAxis"></g>
     <g
       v-for="(box, index) in filteredData"
       :key="index"
@@ -27,13 +26,16 @@
 </template>
 
 <script>
-import { scaleBand, scaleLinear } from 'd3';
+import { scaleBand, scaleLinear, select, axisBottom, axisLeft } from 'd3';
 
 import BoxPlotMarks from '@/components/charts/boxplot/BoxPlotMarks.vue';
 
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
+import {
+  getInnerChartSizes,
+  makeReactiveAxis,
+} from '@computational-biology-web-unit/ht-vue';
 
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 export default {
   name: 'BoxPlotChartFocus',
@@ -58,6 +60,9 @@ export default {
     },
   },
   setup(props) {
+    const xAxis = ref(null);
+    const yAxis = ref(null);
+
     const margin = {
       top: 20,
       right: 10,
@@ -74,9 +79,20 @@ export default {
       .range([0, innerWidth])
       .padding(0.5);
 
+    makeReactiveAxis(() => {
+      select(xAxis.value).call(axisBottom(xScale));
+      select(xAxis.value).select('.domain').remove();
+      select(xAxis.value).selectAll('.tick line').remove();
+    });
+
     const yScale = computed(() => {
       return scaleLinear().domain(props.yDomain).range([0, innerHeight]);
     });
+
+    makeReactiveAxis(() => {
+      select(yAxis.value).call(axisLeft(yScale.value));
+    });
+
     const filteredData = computed(() => {
       return props.data.map((boxplot) => ({
         ...boxplot,
@@ -93,7 +109,9 @@ export default {
       innerWidth,
       innerHeight,
       xScale,
+      xAxis,
       yScale,
+      yAxis,
       filteredData,
     };
   },

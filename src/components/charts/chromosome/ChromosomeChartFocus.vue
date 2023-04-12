@@ -5,10 +5,9 @@
         <rect :width="innerWidth" :height="innerHeight" />
       </clipPath>
     </defs>
-    <ht-chart-axis :scale="yScale" position="left" :tick-size="-innerWidth" />
-
+    <g ref="yAxis"></g>
     <g :transform="`translate(0, ${innerHeight})`">
-      <ht-chart-axis :scale="xScale" position="bottom" />
+      <g ref="xAxis"></g>
     </g>
     <!-- Segments are clipped through a clip path, instead of filtering data. This is
     convenient, since segments are very lightweight to manage, and the filtering algorithm would have
@@ -26,14 +25,15 @@
 </template>
 
 <script>
-import { scaleLinear, extent } from 'd3';
+import { scaleLinear, extent, select, axisLeft, axisBottom } from 'd3';
 import ChromosomeMarks from '@/components/charts/chromosome/ChromosomeMarks.vue';
 
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import {
   getInnerChartSizes,
   augmentedExtent,
+  makeReactiveAxis,
 } from '@computational-biology-web-unit/ht-vue';
 
 export default {
@@ -62,6 +62,9 @@ export default {
     },
   },
   setup(props) {
+    const yAxis = ref(null);
+    const xAxis = ref(null);
+
     const margin = {
       top: 5,
       right: 50,
@@ -83,8 +86,18 @@ export default {
       .domain(augmentedYExtent)
       .range([innerHeight, 0]);
 
+    makeReactiveAxis(() => {
+      select(yAxis.value).call(axisLeft(yScale).tickSize(-innerWidth));
+      select(yAxis.value).select('.domain').remove();
+      select(yAxis.value).selectAll('.tick').attr('stroke-opacity', 0.2);
+    });
+
     const xScale = computed(() => {
       return scaleLinear().domain(extent(props.xDomain)).range([0, innerWidth]);
+    });
+
+    makeReactiveAxis(() => {
+      select(xAxis.value).call(axisBottom(xScale.value));
     });
 
     const focusData = computed(() => {
@@ -102,6 +115,8 @@ export default {
       innerHeight,
       margin,
       xScale,
+      xAxis,
+      yAxis,
       yScale,
       focusData,
     };

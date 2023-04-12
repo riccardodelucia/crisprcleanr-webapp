@@ -285,7 +285,7 @@ export function getDataFieldValue(state, field) {
 }
 
 export function getDataFieldErrorMessage(state, field) {
-  return state.context.dataFields[field].errorMessage.value;
+  return state.context.dataFields[field].errorMessage.value || '';
 }
 
 export function getFileFieldValue(state, field) {
@@ -293,7 +293,7 @@ export function getFileFieldValue(state, field) {
 }
 
 export function getFileFieldErrorMessage(state, field) {
-  return state.context.fileFields[field].errorMessage.value;
+  return state.context.fileFields[field].errorMessage.value || '';
 }
 
 function getFieldValue(context, field) {
@@ -513,7 +513,7 @@ export const getInterpretedMachine = () => {
   // step 2
   dataFields['normMinReads'] = useField(
     'normMinReads',
-    number().positive().required(),
+    number().typeError('This must be a valid number').positive().required(),
     { initialValue: 30 }
   );
   dataFields['method'] = useField('method', string().required());
@@ -531,30 +531,34 @@ export const getInterpretedMachine = () => {
   fileFields['fileCounts'] = useField('fileCounts', string().required());
   dataFields['nControls'] = useField(
     'nControls',
-    number().positive().required(),
+    number().typeError('This must be a valid number').positive().required(),
     { initialValue: 1 }
   );
 
   // step 4 verison B
   fileFields['filesFASTQcontrols'] = useField(
     'filesFASTQcontrols',
-    array().required()
+    array().min(1, 'You must specify at least 1 file').required(),
+    { initialValue: [] }
   );
 
   fileFields['filesFASTQsamples'] = useField(
     'filesFASTQsamples',
-    array().required()
+    array().min(1, 'You must specify at least 1 file').required(),
+    { initialValue: [] }
   );
 
   // step 4 verison C
   fileFields['filesBAMcontrols'] = useField(
     'filesBAMcontrols',
-    array().required()
+    array().min(1, 'You must specify at least 1 file').required(),
+    { initialValue: [] }
   );
 
   fileFields['filesBAMsamples'] = useField(
     'filesBAMsamples',
-    array().required()
+    array().min(1, 'You must specify at least 1 file').required(),
+    { initialValue: [] }
   );
 
   return useMachine(submitJobMachine, {

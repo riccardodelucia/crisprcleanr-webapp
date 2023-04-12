@@ -1,7 +1,7 @@
 <template>
   <g :transform="`translate(${margin.left}, ${margin.top})`">
     <g :transform="`translate(0, ${innerHeight})`">
-      <ht-chart-axis :scale="xScale" position="bottom" />
+      <g ref="xAxis"></g>
       <text
         :transform="`translate(${innerWidth / 2}, ${xAxisLabelOffset})`"
         class="axis-label"
@@ -30,10 +30,13 @@
 </template>
 
 <script>
-import { scaleLinear, extent, select, brushX } from 'd3';
+import { scaleLinear, extent, select, brushX, axisBottom } from 'd3';
 import ChromosomeMarks from '@/components/charts/chromosome/ChromosomeMarks.vue';
 
-import { getInnerChartSizes } from '@computational-biology-web-unit/ht-vue';
+import {
+  getInnerChartSizes,
+  makeReactiveAxis,
+} from '@computational-biology-web-unit/ht-vue';
 
 import { ref, onMounted } from 'vue';
 
@@ -60,6 +63,8 @@ export default {
   },
   emits: { brush: null },
   setup(props, { emit }) {
+    const xAxis = ref(null);
+
     const margin = {
       top: 20,
       right: 50,
@@ -80,6 +85,10 @@ export default {
     const xScale = scaleLinear()
       .domain([0, props.data.sgRnaArray.length])
       .range([0, innerWidth]);
+
+    makeReactiveAxis(() => {
+      select(xAxis.value).call(axisBottom(xScale));
+    });
 
     const updateScale = ({ selection }) => {
       const extent = selection ? selection.map(xScale.invert) : props.xDomain;
@@ -104,6 +113,7 @@ export default {
       innerHeight,
       margin,
       xScale,
+      xAxis,
       yScale,
       brush,
       xAxisLabelOffset: 40,

@@ -19,7 +19,10 @@ print pipeline defined variables:
 
 
 .install packages:
+    variables:
+      PACKAGE_REGISTRY_PROJECT_ID: 194 # because before_script doesn't have access to CICD custom variables
     before_script:
+      - echo $PACKAGE_REGISTRY_PROJECT_ID
       - npm config set -- //${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
       - npm config set @${CI_PROJECT_NAMESPACE}:registry=https://${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/
       - npm install

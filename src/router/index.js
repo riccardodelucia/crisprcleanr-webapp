@@ -14,9 +14,11 @@ import CcrAPI from '@/api/ccr.js';
 import { authorize } from '@/authentication/index.js';
 import { sendErrorNotification } from '../notifications';
 
+import { parseErrorMesssage } from '@computational-biology-web-unit/ht-vue';
+
 const manageRouteError = (from, error, title) => {
   if (error?.response?.status === 404) return '/404'; //this translates into catchAll route
-  const message = error?.message;
+  const message = parseErrorMesssage(error);
   sendErrorNotification({
     title,
     message,
@@ -53,9 +55,9 @@ const routes = [
   },
   {
     path: '/jobs',
-    /*     meta: {
+    meta: {
       requiresAuth: true,
-    }, */
+    },
     children: [
       {
         path: '',
