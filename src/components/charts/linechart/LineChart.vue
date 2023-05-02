@@ -63,7 +63,7 @@ import { ref, reactive } from 'vue';
 import {
   getInnerChartSizes,
   makeReactiveAxis,
-} from '@computational-biology-web-unit/ht-vue';
+} from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 import tippy from 'tippy.js';
 import { hideAll } from 'tippy.js';

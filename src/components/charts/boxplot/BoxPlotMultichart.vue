@@ -35,7 +35,7 @@
 import BoxPlotChartFocus from '@/components/charts/boxplot/BoxPlotChartFocus.vue';
 import BoxPlotChartContext from '@/components/charts/boxplot/BoxPlotChartContext.vue';
 
-import { augmentedExtent } from '@computational-biology-web-unit/ht-vue';
+import { augmentedExtent } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 import { ref, computed, watchEffect } from 'vue';
 

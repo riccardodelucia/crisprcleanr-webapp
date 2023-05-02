@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { resizeListener } from '@computational-biology-web-unit/ht-vue';
+import { resizeListener } from '@computational-biology-sw-web-dev-unit/ht-vue';
 import { ref } from 'vue';
 import TheHeader from '@/components/TheHeader.vue';
 import TheSidenav from '@/components/TheSidenav.vue';

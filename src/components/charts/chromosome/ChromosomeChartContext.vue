@@ -36,7 +36,7 @@ import ChromosomeMarks from '@/components/charts/chromosome/ChromosomeMarks.vue'
 import {
   getInnerChartSizes,
   makeReactiveAxis,
-} from '@computational-biology-web-unit/ht-vue';
+} from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 import { ref, onMounted } from 'vue';
 

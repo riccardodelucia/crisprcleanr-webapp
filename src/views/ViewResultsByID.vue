@@ -172,7 +172,7 @@ import {
   date,
   resizeListener,
   parseErrorMesssage,
-} from '@computational-biology-web-unit/ht-vue';
+} from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 import { sendErrorNotification } from '../notifications';
 

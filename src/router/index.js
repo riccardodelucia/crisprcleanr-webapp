@@ -14,7 +14,7 @@ import CcrAPI from '@/api/ccr.js';
 import { authorize } from '@/authentication/index.js';
 import { sendErrorNotification } from '../notifications';
 
-import { parseErrorMesssage } from '@computational-biology-web-unit/ht-vue';
+import { parseErrorMesssage } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 const manageRouteError = (from, error, title) => {
   if (error?.response?.status === 404) return '/404'; //this translates into catchAll route

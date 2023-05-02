@@ -33,7 +33,7 @@ import BoxPlotMarks from '@/components/charts/boxplot/BoxPlotMarks.vue';
 import {
   getInnerChartSizes,
   makeReactiveAxis,
-} from '@computational-biology-web-unit/ht-vue';
+} from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 import { computed, ref } from 'vue';
 

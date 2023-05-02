@@ -36,7 +36,7 @@
 import {
   getInnerChartSizes,
   makeReactiveAxis,
-} from '@computational-biology-web-unit/ht-vue';
+} from '@computational-biology-sw-web-dev-unit/ht-vue';
 import { select, scaleLog, extent, scaleLinear, axisRight } from 'd3';
 import MarksCurve from '@/components/charts/genes_signatures/MarksCurve.vue';
 

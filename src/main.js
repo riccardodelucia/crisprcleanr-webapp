@@ -15,8 +15,8 @@ import 'tippy.js/dist/tippy.css'; // optional for styling
 
 import VueFeather from 'vue-feather';
 
-import { HTVue } from '@computational-biology-web-unit/ht-vue';
-import '@computational-biology-web-unit/ht-design/style.css';
+import { HTVue } from '@computational-biology-sw-web-dev-unit/ht-vue';
+import '@computational-biology-sw-web-dev-unit/ht-design/style.css';
 
 nProgress.configure({ showSpinner: false });
 

@@ -26,7 +26,7 @@
 import {
   getInnerChartSizes,
   makeReactiveAxis,
-} from '@computational-biology-web-unit/ht-vue';
+} from '@computational-biology-sw-web-dev-unit/ht-vue';
 import { computed, ref } from 'vue';
 import { scaleLinear, select, axisRight } from 'd3';
 
