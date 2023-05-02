@@ -135,9 +135,9 @@ tag image:
     ENV_FILE: deploy.env
     TAG: $BUILD
   script:
-    - envsubst < templates/$ENV_FILE > .env
-    - envsubst < templates/deploy.sh > deploy.sh
-    - envsubst < templates/docker-compose.deploy.yml > docker-compose.deploy.yml
+    - envsubst < deploy/$ENV_FILE > .env
+    - envsubst < deploy/deploy.sh > deploy.sh
+    - envsubst < deploy/docker-compose.deploy.yml > docker-compose.deploy.yml
     - ssh -l $USER -o StrictHostKeyChecking=no $VM_HOSTNAME "mkdir -p $VM_TARGET_DIR"
     - scp deploy.sh $USER@$VM_HOSTNAME:$VM_TARGET_DIR/deploy.sh
     - scp docker-compose.deploy.yml $USER@$VM_HOSTNAME:$VM_TARGET_DIR/docker-compose.yml
