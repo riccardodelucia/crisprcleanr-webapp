@@ -93,7 +93,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .brush-area rect {
   fill: #fafafa;
   stroke: #ebebeb;

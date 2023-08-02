@@ -1,11 +1,13 @@
 <template>
   <AppLayout>
-    <FormFill
-      :key="key"
-      :config="$route.params.config"
-      @submitted="incKey"
-    ></FormFill
-  ></AppLayout>
+    <div class="app-content">
+      <FormFill
+        :key="key"
+        :config="$route.params.config"
+        @submitted="incKey"
+      ></FormFill>
+    </div>
+  </AppLayout>
 </template>
 
 <script>

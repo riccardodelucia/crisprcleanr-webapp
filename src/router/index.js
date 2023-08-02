@@ -11,10 +11,17 @@ import View404NotFound from '@/views/View404NotFound.vue';
 
 import CcrAPI from '@/api/ccr.js';
 
-import { authorize } from '@/authentication/index.js';
-import { sendErrorNotification } from '../notifications';
+import { authorize, getAuth } from '@/authentication/index.js';
+
+import fileServerAPI from '@/api/fileServer.js';
+
+import { sendErrorNotification } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 import { parseErrorMesssage } from '@computational-biology-sw-web-dev-unit/ht-vue';
+
+import nProgress from 'nprogress';
+
+import imageList from '@/images.json';
 
 const manageRouteError = (from, error, title) => {
   if (error?.response?.status === 404) return '/404'; //this translates into catchAll route
@@ -85,18 +92,57 @@ const routes = [
         component: ViewResultsByID,
         props: true,
         beforeEnter(to, from) {
+          const id = to.params.id;
+          const auth = getAuth();
+          const username = auth.userProfile.username;
+          let result, genesSignatures, images;
           return CcrAPI.getResultByID(to.params.id)
             .then((response) => {
-              to.params.result = response.data;
+              result = response.data;
+              to.params.result = result;
+              if (result.status === 'success') {
+                const objectKey = `/${username}/${id}/genes_signatures.json`;
+                return fileServerAPI
+                  .downloadFile({ objectKey })
+                  .then((response) => {
+                    genesSignatures = response.data;
+                    to.params.genesSignatures = genesSignatures;
+                    const imageListWithURL = imageList.map(async (image) => {
+                      try {
+                        const objectKey = `/${username}/${id}/${image.imgUri}`;
+                        const response = await fileServerAPI.downloadFile({
+                          objectKey,
+                          blob: true,
+                        });
+                        return {
+                          ...image,
+                          src: URL.createObjectURL(response.data),
+                        };
+                      } catch (error) {
+                        return {
+                          ...image,
+                          src: null,
+                        };
+                      }
+                    });
+                    return Promise.all(imageListWithURL);
+                  })
+                  .then((response) => {
+                    images = response;
+                    to.params.images = images;
+                    return true;
+                  });
+              }
               return true;
             })
-            .catch((error) =>
+            .catch((error) => {
               manageRouteError(
                 from,
                 error,
                 `Unable to load results data for job ${to.params.id}`
-              )
-            );
+              );
+              return false;
+            });
         },
       },
     ],
@@ -119,7 +165,14 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
+router.beforeEach((to, from) => {
+  // TODO investigate why this happens
+  // Because vue-router triggers navigation to the same /jobs route twice
+  if (to.path === from.path) {
+    return false;
+  }
+
+  nProgress.start();
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     const appRootUrl = window.location.origin;
     const redirectUri = new URL(to.path, appRootUrl).toString();
@@ -127,6 +180,10 @@ router.beforeEach((to) => {
   }
   // This page did not require authentication
   return;
+});
+
+router.afterEach(() => {
+  nProgress.done();
 });
 
 export default router;

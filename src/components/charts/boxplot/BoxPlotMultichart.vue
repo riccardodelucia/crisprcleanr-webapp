@@ -1,32 +1,16 @@
 <template>
   <div class="controls-container">
-    <ht-toggle-switch
-      v-if="data.raw && data.norm"
-      v-model="showNormalizedData"
-      :option="!showNormalizedData ? 'raw' : 'normalized'"
-    />
+    <ht-toggle-switch v-if="data.raw && data.norm" v-model="showNormalizedData"
+      :option="!showNormalizedData ? 'raw' : 'normalized'" />
   </div>
-  <svg
-    preserveAspectRatio="xMinYMin meet"
-    :viewBox="[0, 0, width, height].join(' ')"
-    :width="width"
-    :height="height"
-  >
+  <svg ref="chart" class="ht-chart" preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')"
+    :width="width" :height="height">
     <g>
-      <BoxPlotChartFocus
-        :data="selectedChartData"
-        :width="chartFocusWidth"
-        :height="height"
-        :y-domain="yDomainFocus"
-      />
+      <BoxPlotChartFocus :data="selectedChartData" :width="chartFocusWidth" :height="height" :y-domain="yDomainFocus" />
     </g>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
-      <BoxPlotChartContext
-        :width="chartContextWidth"
-        :height="height"
-        :y-domain="yDomainContext"
-        @brush="brushed"
-      ></BoxPlotChartContext>
+      <BoxPlotChartContext :width="chartContextWidth" :height="height" :y-domain="yDomainContext" @brush="brushed">
+      </BoxPlotChartContext>
     </g>
   </svg>
 </template>
@@ -37,7 +21,7 @@ import BoxPlotChartContext from '@/components/charts/boxplot/BoxPlotChartContext
 
 import { augmentedExtent } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, provide } from 'vue';
 
 const setupChart = (data) => {
   const processData = (data) => {
@@ -92,6 +76,9 @@ export default {
     },
   },
   setup(props) {
+    const chart = ref(null);
+    provide('chart', chart);
+
     const { chartDataUnnormalized, chartDataNormalized } = setupChart(
       props.data
     );
@@ -145,13 +132,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .controls-container {
   display: flex;
   align-items: center;
-
-  * {
-    margin-right: 0.4em;
-  }
+  margin-bottom: var(--size-4);
 }
 </style>

@@ -11,7 +11,7 @@ import { addFileUpload } from '../uploads.js';
 import {
   sendSuccessNotification,
   sendErrorNotification,
-} from '../notifications';
+} from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 ////////////////////////////////////////////////
 // MACHINE

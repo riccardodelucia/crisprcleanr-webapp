@@ -1,148 +1,139 @@
 <template>
   <AppLayout>
-    <div class="app-content">
+    <div class="app-content ht-layout-stack">
       <h2>Results</h2>
-      <button
-        class="btn btn--secondary"
-        @click="$router.push({ name: 'resultsList' })"
-      >
-        <vue-feather type="arrow-left"></vue-feather> Results List
-      </button>
-
+      <router-link :to="{ name: 'resultsList' }" class="ht-button" data-type="secondary">
+        <div class="ht-flex-align-center"><vue-feather type="arrow-left"></vue-feather><span>Results List</span></div>
+      </router-link>
       <div class="results">
-        <div class="card results__details">
-          <h3>Details</h3>
+        <div class="ht-card ht-container details">
+          <h2>Details</h2>
           <ul>
-            <li v-for="field in resultDataMap" :key="field[1]">
-              <b>{{ field[0] }}:</b> {{ field[1] }}
+            <li><b>ID:</b> {{ result.id }}</li>
+            <li><b>Title:</b> {{ result.title }}</li>
+            <li><b>Email:</b> {{ result.email }}</li>
+            <li><b>Data Label:</b> {{ result.label }}</li>
+            <li><b>Status:</b> {{ result.status }}</li>
+            <li><b>Date Time:</b> {{ result.dateTime }}</li>
+            <li><b>Number of Controls:</b> {{ result.nControls }}</li>
+            <li>
+              <b>Min number of reads in the control sample:</b>
+              {{ result.normMinReads }}
             </li>
+            <li><b>Normalization Method:</b> {{ result.method }}</li>
+            <li v-if="result.libraryBuiltin">
+              <b>Library Builtin:</b> {{ result.libraryBuiltin }}
+            </li>
+            <li v-if="result.libraryFile">
+              <b>Library File:</b> {{ result.libraryFile }}
+            </li>
+            <li v-if="result.fileCounts">
+              <b>Counts File:</b> {{ result.fileCounts }}
+            </li>
+            <li v-if="result.filesFASTQcontrols">
+              <b>FASTQ Controls:</b> {{ result.filesFASTQcontrols }}
+            </li>
+            <li v-if="result.filesFASTQsamples">
+              <b>FASTQ Samples:</b> {{ result.filesFASTQsamples }}
+            </li>
+            <li v-if="result.filesBAMcontrols">
+              <b>BAM Controls:</b> {{ result.filesBAMcontrols }}
+            </li>
+            <li v-if="result.filesBAMsamples">
+              <b>BAM Samples:</b> {{ result.filesBAMsamples }}
+            </li>
+            <li v-if="result.errorMsg"><b>Error:</b> {{ result.errorMsg }}</li>
           </ul>
           <p v-if="result.status === 'pending'">
             Further content will be shown upon successful job completion...
           </p>
         </div>
 
-        <div class="card results__notes">
-          <h3>Notes</h3>
+        <div class="ht-card ht-container notes">
+          <h2>Notes</h2>
           <p>{{ result.notes }}</p>
         </div>
 
-        <div v-if="result.status === 'success'" class="card results__downloads">
-          <h3 class="margin-bottom">Downloads</h3>
-          <div class="btns-group">
-            <button
-              v-for="(file, index) in fileList"
-              :key="index"
-              class="btn btn--primary btn--sm"
-              type="button"
-              @click="onClick(file, id)"
-            >
-              {{ file }}&nbsp;<span>
+        <div v-if="result.status === 'success'" class="ht-card ht-container downloads">
+          <h2>Downloads</h2>
+          <div class="buttons-container">
+            <a v-for="(file, index) in fileList" :key="index" class="ht-button" type="button" @click="onClick(file, id)">
+              <div class="ht-flex-align-center">{{ file }}
                 <vue-feather type="download" />
-              </span>
-            </button>
+              </div>
+            </a>
           </div>
         </div>
 
         <template v-if="result.status === 'success'">
-          <div class="card results__genes-signatures">
-            <ContentLoader
-              v-if="!genesSignatures"
-              viewBox="0 0 520 700"
-              :animate="!genesSignatures"
-            >
-              <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
-              <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
-              <rect x="40" y="75" rx="0" ry="0" width="80" height="630" />
-              <rect x="140" y="125" rx="0" ry="0" width="80" height="580" />
-              <rect x="240" y="105" rx="0" ry="0" width="80" height="610" />
-              <rect x="340" y="35" rx="0" ry="0" width="80" height="670" />
-              <rect x="440" y="55" rx="0" ry="0" width="80" height="650" />
-            </ContentLoader>
-            <GenesSignaturesMultichart
-              v-else-if="typeof genesSignatures === 'object'"
-              :data="genesSignatures"
-            >
+          <div v-if="genesSignatures" class="ht-card ht-container chart">
+            <GenesSignaturesMultichart :data="genesSignatures">
             </GenesSignaturesMultichart>
-            <svg v-else viewBox="0 0 520 700">
-              <g
-                stroke="var(--color-grey-lighter)"
-                fill="var(--color-grey-lighter)"
-              >
-                <rect x="20" y="5" rx="0" ry="0" width="1" height="700" />
-                <rect x="20" y="699" rx="0" ry="0" width="520" height="2" />
-                <rect x="40" y="75" rx="0" ry="0" width="80" height="630" />
-                <rect x="140" y="125" rx="0" ry="0" width="80" height="580" />
-                <rect x="240" y="105" rx="0" ry="0" width="80" height="610" />
-                <rect x="340" y="35" rx="0" ry="0" width="80" height="670" />
-                <rect x="440" y="55" rx="0" ry="0" width="80" height="650" />
-              </g>
-            </svg>
           </div>
 
-          <ht-accordion
-            label="Normalised Counts and Depletion Fold-Changes Charts"
-            class="card color--1 results__thumbnails"
-          >
-            <div class="thumbnails__content">
-              <div
-                v-for="img in imageListByCathegory.normImages"
-                :key="img.filename"
-                class="thumbnail"
-                @click="openModal(img, id)"
-              >
-                <img class="thumbnail__img" :src="img.src" :alt="img.title" />
-                <p class="thumbnail__caption">{{ img.label }}</p>
-              </div>
-            </div>
-          </ht-accordion>
-
-          <ht-accordion
-            label="Chromosome Charts"
-            class="card color--2 results__thumbnails"
-            height="42rem"
-          >
-            <div class="thumbnails__content">
-              <div
-                v-for="img in imageListByCathegory.chrImages"
-                :key="img.filename"
-                class="thumbnail"
-                @click="openModal(img, id)"
-              >
-                <img class="thumbnail__img" :src="img.src" :alt="img.title" />
-                <p class="thumbnail__caption">{{ img.label }}</p>
-              </div>
-            </div>
-          </ht-accordion>
-
-          <ht-accordion
-            label="QC Assessment Charts"
-            class="card color--3 results__thumbnails"
-          >
-            <div class="thumbnails__content">
-              <div
-                v-for="img in imageListByCathegory.qcImages"
-                :key="img.filename"
-                class="thumbnail"
-                @click="openModal(img, id)"
-              >
-                <img class="thumbnail__img" :src="img.src" :alt="img.title" />
-                <p class="thumbnail__caption">{{ img.label }}</p>
-              </div>
-            </div>
-          </ht-accordion>
+          <div class="thumbnails-1">
+            <ht-accordion class="ht-card ht-container color--1">
+              <template #header>
+                <span>
+                  Normalised Counts and Depletion Fold-Changes Charts
+                </span>
+              </template>
+              <template #panel>
+                <div class="thumbnails__content ht-grid-auto">
+                  <div v-for="img in imageListByCathegory.normImages" :key="img.filename" class="thumbnail"
+                    @click="openModal(img, id)">
+                    <img :src="img.src ? img.src : imagePlaceholder" :alt="img.title" />
+                    <p>{{ img.label }}</p>
+                  </div>
+                </div>
+              </template>
+            </ht-accordion>
+          </div>
+          <div class="thumbnails-2">
+            <ht-accordion class="ht-card ht-container color--2">
+              <template #header>
+                <span>Chromosome Charts</span>
+              </template>
+              <template #panel>
+                <div class="thumbnails__content ht-grid-auto">
+                  <div v-for="img in imageListByCathegory.chrImages" :key="img.filename" class="thumbnail"
+                    @click="openModal(img, id)">
+                    <img :src="img.src" :alt="img.title" />
+                    <p>{{ img.label }}</p>
+                  </div>
+                </div>
+              </template>
+            </ht-accordion>
+          </div>
+          <div class="thumbnails-3">
+            <ht-accordion label="QC Assessment Charts" class="ht-card ht-container color--3">
+              <template #header>
+                <span>QC Assessment Charts</span>
+              </template>
+              <template #panel>
+                <div class="thumbnails__content ht-grid-auto">
+                  <div v-for="img in imageListByCathegory.qcImages" :key="img.filename" class="thumbnail"
+                    @click="openModal(img, id)">
+                    <img :src="img.src" :alt="img.title" />
+                    <p>{{ img.label }}</p>
+                  </div>
+                </div>
+              </template>
+            </ht-accordion>
+          </div>
         </template>
       </div>
 
-      <ht-modal v-if="modalState != 'closed'" @modal-close="closeModal">
-        <h4 class="center">{{ image.label }}</h4>
-        <component
-          :is="image.component"
-          v-if="modalState === 'opened'"
-          :data="data"
-        />
-        <div v-else-if="modalState === 'loading'">Loading...</div>
-      </ht-modal>
+      <dialog id="modal" ref="modal" class="modal">
+        <header>
+          <h2>
+            {{ image.label ? image.label : 'Loading...' }}
+          </h2>
+          <ht-button-icon type="button" label="Close Modal" icon-type="x" aria-controls="modal" @click="closeModal">
+          </ht-button-icon>
+        </header>
+        <component :is="image.component" v-if="data" :data="data" />
+      </dialog>
     </div>
   </AppLayout>
 </template>
@@ -163,20 +154,18 @@ import { ref, reactive } from 'vue';
 
 import { ContentLoader } from 'vue-content-loader';
 
-import imageList from '@/images.json';
-
 import imagePlaceholder from '@/assets/img/placeholder-image.png';
 
 import {
   download,
   date,
-  resizeListener,
   parseErrorMesssage,
 } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
-import { sendErrorNotification } from '../notifications';
+import { sendErrorNotification } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 import { useAuth } from '../authentication/index.js';
+
 
 export default {
   name: 'ViewResultsByID',
@@ -198,11 +187,17 @@ export default {
       type: Object,
       required: true,
     },
+    genesSignatures: { type: Object, default: () => ({}) },
+    images: {
+      type: Array,
+      default: () => [],
+    },
   },
   setup(props) {
     const image = ref({});
     const data = ref({});
-    const modalState = ref('closed');
+    //const modalState = ref('closed');
+    const modal = ref(null);
 
     const auth = useAuth();
     const { userProfile } = auth;
@@ -214,90 +209,51 @@ export default {
       chrImages: [],
       qcImages: [],
     });
-    const genesSignatures = ref(null);
 
-    const modalAvailable = ref(false);
+    imageListByCathegory.normImages = props.images.filter(
+      (image) => image.section === 'norm'
+    );
+    imageListByCathegory.chrImages = props.images
+      .filter((image) => image.section === 'chr')
+      .sort((image1, image2) => {
+        const a = parseInt(image1.filename.match(/(\d+)/)[0]);
+        const b = parseInt(image2.filename.match(/(\d+)/)[0]);
+        return a - b;
+      });
+    imageListByCathegory.qcImages = props.images.filter(
+      (image) => image.section === 'qc'
+    );
 
-    resizeListener(() => {
-      modalAvailable.value = window.innerWidth > 1000;
-      if (!modalAvailable.value) closeModal();
-    });
+    const openModal = (img, id) => {
+      const body = document.querySelector("body");
+      body.classList.add("ht-prevent-scroll");
+      modal.value.showModal();
+      image.value = {};
+      data.value = {};
 
-    if (props.result.status === 'success') {
-      const objectKey = `/${username}/${props.id}/genes_signatures.json`;
+      const objectKey = `/${username}/${id}/${img.chart}.json`;
       fileServerAPI
         .downloadFile({ objectKey })
         .then((response) => {
-          genesSignatures.value = response.data;
+          data.value = response.data;
+          image.value = img;
         })
         .catch((error) => {
+          modal.value.close();
           const message = parseErrorMesssage(error);
           sendErrorNotification({
-            title: 'Unable to download genes signatures data',
+            title: `Unable to open chart ${img.chart}`,
             message,
           });
-          genesSignatures.value = 'error';
         });
-
-      const imageListWithURL = imageList.map(async (image) => {
-        try {
-          const objectKey = `/${username}/${props.id}/${image.imgUri}`;
-          const response = await fileServerAPI.downloadFile({
-            objectKey,
-            blob: true,
-          });
-          return { ...image, src: URL.createObjectURL(response.data) };
-        } catch (error) {
-          return {
-            ...image,
-            src: imagePlaceholder,
-          };
-        }
-      });
-
-      Promise.all(imageListWithURL).then((images) => {
-        imageListByCathegory.normImages = images.filter(
-          (image) => image.section === 'norm'
-        );
-        imageListByCathegory.chrImages = images
-          .filter((image) => image.section === 'chr')
-          .sort((image1, image2) => {
-            const a = parseInt(image1.filename.match(/(\d+)/)[0]);
-            const b = parseInt(image2.filename.match(/(\d+)/)[0]);
-            return a - b;
-          });
-        imageListByCathegory.qcImages = images.filter(
-          (image) => image.section === 'qc'
-        );
-      });
-    }
-
-    const openModal = (img, id) => {
-      if (modalAvailable.value) {
-        modalState.value = 'loading';
-        const objectKey = `/${username}/${id}/${img.chart}.json`;
-        fileServerAPI
-          .downloadFile({ objectKey })
-          .then((response) => {
-            data.value = response.data;
-            image.value = img;
-            modalState.value = 'opened';
-          })
-          .catch((error) => {
-            const message = parseErrorMesssage(error);
-            sendErrorNotification({
-              title: `Unable to open chart ${img.chart}`,
-              message,
-            });
-            closeModal();
-          });
-      } else closeModal();
     };
 
     const closeModal = () => {
+      const body = document.querySelector("body");
+      body.classList.remove("ht-prevent-scroll");
+      modal.value.close();
       image.value = {};
       data.value = {};
-      modalState.value = 'closed';
     };
 
     const onClick = (file, id) => {
@@ -316,94 +272,92 @@ export default {
         });
     };
 
-    const labelFieldPairs = {
-      id: 'ID',
-      title: 'Title',
-      email: 'Email',
-      label: 'Data label',
-      status: 'Status',
-      dateTime: 'Date Time',
-      nControls: 'Number of controls',
-      normMinReads: 'Min number of reads in the control sample',
-      method: 'Normalization Method',
-      libraryBuiltin: 'Default Library',
-      libraryFile: 'Library File',
-      fileCounts: 'Counts File',
-      filesFASTQcontrols: 'FASTQ Controls',
-      filesFASTQsamples: 'FASTQ Samples',
-      filesBAMcontrols: 'BAM Controls',
-      filesBAMsamples: 'BAM Samples',
-      errorMsg: 'Error',
-    };
-
-    const resultDataMap = new Map();
-    Object.entries(props.result).forEach(([key, field]) => {
-      if (key !== 'notes' && field && labelFieldPairs[key]) {
-        let fieldValue = field;
-        if (Array.isArray(field)) {
-          fieldValue = field.join(', ');
-        }
-        resultDataMap.set(labelFieldPairs[key], fieldValue);
-      }
-    });
-
     return {
       fileList,
-      modalAvailable,
       openModal,
       closeModal,
+      modal,
       onClick,
       image,
       data,
-      modalState,
       date,
-      genesSignatures,
       imageListByCathegory,
-      resultDataMap,
+      imagePlaceholder,
     };
   },
 };
 </script>
 
-<style lang="scss">
-.app-content {
-  margin: var(--space-md);
+<style lang="postcss" scoped>
+.app-content h2:first-child {
+  margin-bottom: var(--size-3);
+}
+
+
+.color--1,
+.color--2,
+.color--3 {
+  --accordion-header-color: var(--ht-text-color-1-light);
+  --accordion-panel-color: var(--ht-text-color-1-light);
 }
 
 .color {
   &--1 {
-    background-color: var(--color-content-1);
+    background-color: var(--purple-3);
   }
+
   &--2 {
-    background-color: var(--color-content-2);
+    background-color: var(--green-3);
   }
+
   &--3 {
-    background-color: var(--color-content-3);
+    background-color: var(--indigo-3);
   }
 }
+
 .results {
   display: grid;
-  grid-template-columns: minmax(min-content, 50rem) 50rem 1fr;
-  grid-template-rows: repeat(8, min-content);
+
   grid-column-gap: 1.2em;
   grid-row-gap: 1.5em;
-  margin-top: 1em;
-  margin-bottom: 2em;
-  grid-auto-flow: row dense;
+  grid-template-areas:
+    'details'
+    'chart'
+    'notes'
+    'downloads'
+    'thumbnails-1'
+    'thumbnails-2'
+    'thumbnails-3';
 
-  @media only screen and (max-width: 900px) {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5em;
+  @media (min-width: 60em) {
+    grid-template-columns: minmax(min-content, 30rem) 30rem;
+    grid-template-areas:
+      'details chart'
+      'notes chart'
+      'downloads downloads'
+      'thumbnails-1 thumbnails-1'
+      'thumbnails-2 thumbnails-2'
+      'thumbnails-3 thumbnails-3';
   }
 
-  &__details {
-    grid-column: 1 / 2;
-    grid-row: 1 / 4;
+  .details {
+    grid-area: details;
+
   }
 
-  &__notes {
-    grid-column: 1 / 2;
+  .details,
+  .notes,
+  .downloads {
+    h2 {
+      color: var(--ht-text-color-1);
+      font-size: var(--font-size-4);
+      margin-bottom: var(--size-2);
+    }
+  }
+
+
+  .notes {
+    grid-area: notes;
 
     p {
       max-height: 30rem;
@@ -411,63 +365,75 @@ export default {
     }
   }
 
-  &__genes-signatures {
-    grid-column: 2 / 3;
-    grid-row: 1 / 5;
-    max-width: 60rem;
+  .chart {
+    grid-area: chart;
   }
 
-  &__downloads {
-    grid-column: 1 / 3;
+  .details,
+  .notes,
+  .chart {
+    max-width: 30rem;
   }
 
-  &__download-buttons-container {
-    display: flex;
-    gap: 1em;
-    flex-wrap: wrap;
+  .downloads {
+    grid-area: downloads;
+
+    .buttons-container {
+      display: flex;
+      align-items: center;
+      gap: var(--size-2);
+      flex-direction: column;
+      align-items: stretch;
+
+      @media (min-width: 40em) {
+        flex-direction: row;
+      }
+    }
   }
 
-  &__thumbnails {
-    grid-column: 1/ -1;
+  .thumbnails-1 {
+    grid-area: thumbnails-1;
+  }
+
+  .thumbnails-2 {
+    grid-area: thumbnails-2;
+  }
+
+  .thumbnails-3 {
+    grid-area: thumbnails-3;
   }
 
   .thumbnails__content {
-    display: grid;
-    justify-items: left;
-    gap: 1em;
-    grid-template-columns: repeat(auto-fit, minmax(min-content, 32rem));
+    max-height: 30rem;
+    overflow-y: scroll;
   }
 }
 
 .thumbnail {
-  overflow: hidden;
-  background-color: white;
   padding: 0.5rem;
-
-  transition: all 0.5s;
-
   cursor: pointer;
-  &:hover {
-    transform: translateY(-0.3em);
+
+  img {
+    width: 100%;
+    margin-bottom: var(--size-3);
   }
 
-  &__img {
-    height: 30rem;
-    width: 30rem;
-    object-fit: contain;
-    margin-bottom: auto;
-  }
-
-  &__caption {
+  p {
     text-align: center;
-    color: black;
-    font-weight: 400;
-    padding: 0.6em 0.3em;
+  }
+}
 
-    &:active,
-    &:link,
-    &:visited {
-      text-decoration: none;
+.modal {
+
+  &>header {
+    position: relative;
+
+    padding-right: 2rem;
+
+    button {
+      position: absolute;
+      top: 0;
+      right: 0;
     }
   }
 }

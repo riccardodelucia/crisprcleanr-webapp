@@ -1,5 +1,6 @@
 <template>
   <svg
+    class="htd-chart"
     preserveAspectRatio="xMinYMin meet"
     :viewBox="[0, 0, width, height].join(' ')"
     :width="width"
@@ -36,12 +37,15 @@
       <path :d="curve" class="chart__path" />
       <circle
         v-show="tooltipShow"
-        id="cursor"
+        ref="cursor"
+        v-tippy="{
+          appendTo: modal,
+          duration: 0,
+        }"
         :cx="cursorPoint.x"
         :cy="cursorPoint.y"
         r="3"
         class="chart__point"
-        :data-tippy-content="tooltipContent"
       />
     </g>
   </svg>
@@ -64,9 +68,6 @@ import {
   getInnerChartSizes,
   makeReactiveAxis,
 } from '@computational-biology-sw-web-dev-unit/ht-vue';
-
-import tippy from 'tippy.js';
-import { hideAll } from 'tippy.js';
 
 const bisectD3 = bisector((d) => d.x).left;
 
@@ -102,54 +103,52 @@ export default {
     yDomain: { type: Array, required: true },
   },
   setup(props) {
-    const yAxis = ref(null);
-
-    const xAxis = ref(null);
-
     const { innerWidth, innerHeight } = getInnerChartSizes(
       width,
       height,
       margin
     );
 
-    const xScale = scaleLinear().domain(props.xDomain).range([0, innerWidth]);
+    const chart = ref(null);
+    const modal = document.body.querySelector('#modal');
 
-    makeReactiveAxis(() => {
-      select(xAxis.value).call(axisBottom(xScale));
-    });
+    const cursor = ref(null);
+    const cursorPoint = reactive({ x: 0, y: 0 });
+    const tooltipShow = ref(false);
 
+    const yAxis = ref(null);
     const yScale = scaleLinear()
       .domain(extent(props.yDomain))
       .range([innerHeight, 0]);
-
     makeReactiveAxis(() => {
       select(yAxis.value).call(axisLeft(yScale));
+    });
+
+    const xAxis = ref(null);
+    const xScale = scaleLinear().domain(props.xDomain).range([0, innerWidth]);
+    makeReactiveAxis(() => {
+      select(xAxis.value).call(axisBottom(xScale));
     });
 
     const curve = line()
       .x((d) => xScale(d.x))
       .y((d) => yScale(d.y))(props.data);
 
-    const chart = ref(null);
-
-    const cursorPoint = reactive({ x: 0, y: 0 });
-    const tooltipShow = ref(false);
-    const tooltipContent = ref('');
-
     const onMouseOver = (event) => {
       tooltipShow.value = true;
       const datum = bisect(event, xScale, props.data, chart.value);
       cursorPoint.x = xScale(datum.x);
       cursorPoint.y = yScale(datum.y);
-      tooltipContent.value = `Threshold: ${datum.threshold}`;
-      hideAll({ duration: 0 });
-      const instance = tippy('#cursor', { duration: 0 });
-      instance[0].show();
+
+      cursor.value._tippy.setProps({
+        content: `Threshold: ${datum.threshold}`,
+      });
+      cursor.value._tippy.show();
     };
 
     const onMouseLeave = () => {
       tooltipShow.value = false;
-      hideAll({ duration: 0 });
+      cursor.value._tippy.hide();
     };
 
     return {
@@ -167,16 +166,17 @@ export default {
       yAxisLabelOffset: 40,
       cursorPoint,
       tooltipShow,
-      tooltipContent,
       chart,
       onMouseOver,
       onMouseLeave,
+      cursor,
+      modal,
     };
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .chart {
   &__path {
     stroke: blue;

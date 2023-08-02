@@ -1,35 +1,39 @@
 <template>
   <WebLayout>
-    <div class="terms">
-      <h1 class="terms__title">CRISPRcleanR WebApp (Beta)</h1>
-      <h2 class="terms__subtitle">
-        Information on the processing of personal data pursuant to Article 13 of
-        Regulation (EU) 2016/679 of the European Parliament and of the Council
-      </h2>
+    <div class="ht-wrapper ht-layout-stack text-wrapper">
+      <h1>
+        CRISPRcleanR WebApp
+        <br />
+        <span>
+          Information on the processing of personal data pursuant to Article 13
+          of Regulation (EU) 2016/679 of the European Parliament and of the
+          Council
+        </span>
+      </h1>
 
       <p>
-        <b>Human Technopole Foundation</b>, with registered offices in Viale
-        Rita Levi-Montalcini 1, 20157, Milano (MI), Italia, Tel. +39/02
-        30247001, e-mail:
-        <a href="mailto:dpo@fht.org">dpo@fht.org.</a> (hereinafter, also
-        “<b>HT</b>” or “<b>Foundation</b>” or “<b>Data Controller</b>”), makes
-        available to all interested users (hereinafter, also “<b>Users</b>” and,
-        individually “<b>User</b>” or “<b>Data subjects</b>” and, individually
-        “<b>Data subject</b>”), a WebApp, named “CRISPRcleanR Web App (Beta)”,
-        aimed at allowing users, free of charge, the unsupervised correction of
-        gene-independent effects in CRISPR knockout screens encompassing
-        pre-processing and normalization of single-guide RNA counts,
-        pre/post-correction quality-control assessment and interactive
-        visualizations (hereinafter, also “<b>WebApp</b>”).
+        <b>Human Technopole Foundation</b>, with registered
+        offices in Viale Rita Levi-Montalcini 1, 20157, Milano (MI), Italia,
+        Tel. +39/02 30247001, e-mail:
+        <a href="mailto:dpo@fht.org">dpo@fht.org.</a>
+        (hereinafter, also “<b>HT</b>” or “<b>Foundation</b>” or “<b>Data Controller</b>”), makes available to
+        all interested users (hereinafter, also “<b>Users</b>” and, individually “<b>User</b>” or “<b>Data subjects</b>”
+        and, individually “<b>Data subject</b>”), a
+        WebApp, named “CRISPRcleanR Web App (Beta)”, aimed at allowing users,
+        free of charge, the unsupervised correction of gene-independent effects
+        in CRISPR knockout screens encompassing pre-processing and normalization
+        of single-guide RNA counts, pre/post-correction quality-control
+        assessment and interactive visualizations (hereinafter, also “<b>WebApp</b>”).
       </p>
 
       <p>
         Human Technopole, in the role of Data Controller, provides, with this
-        document, the privacy information (hereinafter, "<b>Information</b>"),
-        pursuant to articles 13 of Regulation (EU) 2016/679 (hereinafter, also
-        "GDPR") and of Legislative Decree 196/2003, as amended by Legislative
-        Decree 101/2018 (hereinafter, "<b>Privacy Code</b>"), to the data
-        subjects whose personal data are processed within the WebApp.
+        document, the privacy information (hereinafter, "<b>Information</b>"), pursuant to articles 13 of Regulation (EU)
+        2016/679 (hereinafter,
+        also "GDPR") and of Legislative Decree 196/2003, as amended by
+        Legislative Decree 101/2018 (hereinafter, "<b>Privacy Code</b>"), to the data subjects whose personal data are
+        processed within the
+        WebApp.
       </p>
 
       <p>
@@ -39,17 +43,18 @@
         community provisions on the protection of personal data.
       </p>
 
-      <h3 class="terms__article">
+      <h2>
         Contacts of the Data Protection Officer (“DPO”)
-      </h3>
+      </h2>
       <p>
         The Data Protection Officer can be contacted at the following e-mail
-        address: <a href="mailto:dpo@fht.org">dpo@fht.org.</a>
+        address:
+        <a href="mailto:dpo@fht.org">dpo@fht.org.</a>
       </p>
 
-      <h3 class="terms__article">
+      <h2>
         Purposes and legal basis of the data processing
-      </h3>
+      </h2>
       <p>
         The WebApp allows the user to access to a Reserved Area by entering his
         username and password.
@@ -59,11 +64,11 @@
         available to the user to:
       </p>
       <ul>
-        <li class="terms__list-item">
+        <li>
           submit his job with the experiment metadata and details (clicking on
           the button “Submit”);
         </li>
-        <li class="terms__list-item">
+        <li>
           identify and access his results (clicking on the button “Results”).
         </li>
       </ul>
@@ -88,22 +93,22 @@
         user is optional.
       </p>
 
-      <h3 class="terms__article">Nature of the data processed</h3>
+      <h2>Nature of the data processed</h2>
       <p>HT collects the following personal data:</p>
       <ul>
-        <li class="terms__list-item">
+        <li>
           Authentication credentials (username and related password);
         </li>
-        <li class="terms__list-item">E-mail address.</li>
+        <li>E-mail address.</li>
       </ul>
       <p>
         HT processes the data to provide to the data subject the authenticated
         access to the HT services.
       </p>
 
-      <h3 class="terms__article">
+      <h2>
         Recipients or categories of recipients of the personal data
-      </h3>
+      </h2>
       <p>
         No personal data communicated by users will be communicated to third
         parties, unless the communication is required by law or is strictly
@@ -115,12 +120,12 @@
         exclusively for the purposes listed in this Information, by:
       </p>
       <ul>
-        <li class="terms__list-item">
+        <li>
           employees and collaborators of the Data Controller, as authorized
           personnel for data processing ("Authorized subjects"), acting on Data
           Controller’s behalf and instructions (for all user account data).
         </li>
-        <li class="terms__list-item">
+        <li>
           third parties appointed by the Data Controller as Data Processor for
           the processing of personal data, pursuant to art. 28 of the GDPR. Data
           Processors are only provided with the information necessary to perform
@@ -130,7 +135,7 @@
         </li>
       </ul>
 
-      <h3 class="terms__article">Data retention period</h3>
+      <h2>Data retention period</h2>
       <p>
         Personal data are stored for as long as the account is open. Thereafter,
         the storage is prolonged for as long as the service is live, even if
@@ -139,10 +144,10 @@
         external audits it they arise.
       </p>
 
-      <h3 class="terms__article">
+      <h2>
         Transfer of personal data to a third country or international
         organization
-      </h3>
+      </h2>
       <p>
         Personal data will be stored and processed within the European Union.
       </p>
@@ -152,7 +157,7 @@
         guarantees, as required by national and EU legislation.
       </p>
 
-      <h3 class="terms__article">Rights of the data subjects</h3>
+      <h2>Rights of the data subjects</h2>
       <p>
         Data subjects have the right to obtain access to their personal data and
         the correction or cancellation of such data or the limitation of the
@@ -160,14 +165,16 @@
         provided by the GDPR.
       </p>
 
-      <h3 class="terms__article">Complaint to the Supervisory Authority</h3>
+      <h2>
+        Complaint to the Supervisory Authority
+      </h2>
       <p>
         Data subjects have the right to lodge a complaint to the Supervisory
         Authority, pursuant to Article 77 of the GDPR, if they think that the
         processing of their data violates the provisions of the GDPR.
       </p>
 
-      <h3 class="terms__article">Contacts</h3>
+      <h2>Contacts</h2>
       <p>
         To exercise the rights provided for by the GDPR, data subjects may
         contact the reference Foundation, at the address given in the
@@ -176,17 +183,13 @@
         <a href="mailto:dpo@fht.org">dpo@fht.org.</a>
       </p>
 
-      <p class="terms__update">
-        This Privacy Policy is updated to April 14, 2022.
+      <p>
+        <i>This Privacy Policy is updated to April 14, 2022.</i>
       </p>
-      <div class="terms__button-container">
-        <button
-          class="button button--primary button--large"
-          type="button"
-          @click="$router.push({ name: 'home' })"
-        >
+      <div class="ht-center-2d button-container">
+        <router-link :to="{ name: 'home' }" class="ht-button">
           Back to Home
-        </button>
+        </router-link>
       </div>
     </div>
   </WebLayout>
@@ -200,3 +203,38 @@ export default {
   components: { WebLayout },
 };
 </script>
+
+<style lang="postcss" scoped>
+h1 {
+  font-size: var(--font-size-7);
+  line-height: var(--font-lineheight-00);
+  margin-bottom: var(--size-8);
+
+  span {
+    font-size: var(--font-size-5);
+  }
+}
+
+.text-wrapper {
+  margin-top: var(--size-10);
+  margin-bottom: var(--size-6);
+  text-align: center;
+  --width: 60ch;
+}
+
+h2 {
+  font-size: var(--font-size-5);
+  line-height: var(--font-lineheight-1);
+}
+
+p,
+ul,
+ol {
+  text-align: justify;
+}
+
+.button-container {
+  margin-top: var(--size-10);
+  margin-bottom: var(--size-8);
+}
+</style>

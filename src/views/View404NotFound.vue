@@ -1,14 +1,10 @@
 <template>
-  <div class="message-page">
-    <h3>Not found 🔍</h3>
+  <div class="message-page ht-skin-brand-gradient">
+    <h2>Not found 🔍</h2>
     <p>The content you're looking for is not there.</p>
-    <button
-      class="btn btn--primary btn--lg"
-      type="button"
-      @click="$router.push({ name: 'home' })"
-    >
+    <router-link :to="{ name: 'home' }" class="ht-button">
       Back to Home
-    </button>
+    </router-link>
   </div>
 </template>
 
@@ -19,17 +15,13 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="postcss" scoped>
 .message-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-
-  background-image: var(--color-gradient-ht-theme);
-
-  background-size: cover;
-  background-repeat: no-repeat;
+  gap: var(--size-3);
 }
 </style>

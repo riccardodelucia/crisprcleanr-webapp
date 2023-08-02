@@ -1,161 +1,100 @@
 <template>
   <template v-if="!state.hasTag('submitting') && !state.matches('submitted')">
-    <div class="card form-container">
-      <h2>Submit a new job</h2>
-      <ht-form-progress-bar
-        :steps="progressSteps"
-        :current-step="currentStep"
-        class="u-margin-bottom-small"
-      >
+    <div class="ht-card ht-container ht-layout-stack">
+      <h1>Submit a new job</h1>
+      <ht-form-progress-bar :steps="progressSteps" :current-step="currentStep">
       </ht-form-progress-bar>
-      <form ref="form" class="job-form" @submit.prevent="submit">
+      <form @submit.prevent="submit">
         <template v-if="state.matches('enteringGeneralInfo')">
-          <h4>{{ progressSteps[0] }}</h4>
-          <ht-input
-            :label="labelFieldPairs.title"
-            :model-value="getDataFieldValue(state, 'title')"
-            type="text"
-            placeholder="Your title here"
-            :error="getDataFieldErrorMessage(state, 'title')"
-            @update:model-value="onInput($event, 'title')"
-          >
+          <h2>{{ progressSteps[0] }}</h2>
+          <ht-input class="ht-formgroup" :label="labelFieldPairs.title" :model-value="getDataFieldValue(state, 'title')"
+            type="text" placeholder="Your title here" :error="getDataFieldErrorMessage(state, 'title')"
+            @update:model-value="onInput($event, 'title')">
           </ht-input>
-          <ht-input
-            :label="labelFieldPairs.label"
-            :model-value="getDataFieldValue(state, 'label')"
-            type="text"
-            placeholder="Your data label here"
-            :error="getDataFieldErrorMessage(state, 'label')"
-            @update:model-value="onInput($event, 'label')"
-          >
+          <ht-input class="ht-formgroup" :label="labelFieldPairs.label" :model-value="getDataFieldValue(state, 'label')"
+            type="text" placeholder="Your data label here" :error="getDataFieldErrorMessage(state, 'label')"
+            @update:model-value="onInput($event, 'label')">
           </ht-input>
-          <ht-checkbox
-            class="margin-bottom"
-            option="Send email upon job completion"
-            :model-value="getDataFieldValue(state, 'sendEmail')"
-            @update:model-value="onInput($event, 'sendEmail')"
-          >
+          <ht-checkbox class="ht-formgroup" option="Send email upon job completion"
+            :model-value="getDataFieldValue(state, 'sendEmail')" @update:model-value="onInput($event, 'sendEmail')">
           </ht-checkbox>
-          <ht-textarea
-            :label="labelFieldPairs.notes"
-            :model-value="getDataFieldValue(state, 'notes')"
-            placeholder="Your notes here"
-            @update:model-value="onInput($event, 'notes')"
-          />
+          <ht-textarea class="ht-formgroup" :label="labelFieldPairs.notes"
+            :model-value="getDataFieldValue(state, 'notes')" placeholder="Your notes here"
+            @update:model-value="onInput($event, 'notes')" />
         </template>
 
         <template v-if="state.matches('enteringSettings')">
-          <h4>{{ progressSteps[1] }}</h4>
-          <ht-input
-            :label="labelFieldPairs.normMinReads"
-            :model-value="getDataFieldValue(state, 'normMinReads')"
-            type="number"
+          <h2>{{ progressSteps[1] }}</h2>
+          <ht-input class="ht-formgroup" :label="labelFieldPairs.normMinReads"
+            :model-value="getDataFieldValue(state, 'normMinReads')" type="number"
             :error="getDataFieldErrorMessage(state, 'normMinReads')"
-            @update:model-value="onInput($event, 'normMinReads')"
-          >
+            @update:model-value="onInput($event, 'normMinReads')">
           </ht-input>
-          <ht-select
-            v-model="normalization"
-            :label="labelFieldPairs.method"
-            :options="normalizationOptions"
-            :error="getDataFieldErrorMessage(state, 'method')"
-          >
+          <ht-select v-model="normalization" class="ht-formgroup" :label="labelFieldPairs.method"
+            :options="normalizationOptions" :error="getDataFieldErrorMessage(state, 'method')">
           </ht-select>
         </template>
 
         <template v-if="state.matches('enteringLibrary')">
-          <h4>{{ progressSteps[2] }}</h4>
-          <ht-radio-group
-            class="margin-bottom"
-            label="Library type"
-            :options="libraryTypeOptions"
-            :model-value="libraryType"
-            @update:model-value="sendLibraryType"
-          >
+          <h2>{{ progressSteps[2] }}</h2>
+          <ht-radio-group class="ht-formgroup" label="Library type" :options="libraryTypeOptions"
+            :model-value="libraryType" @update:model-value="sendLibraryType">
           </ht-radio-group>
-          <ht-select
-            v-if="state.hasTag('libraryBuiltin')"
-            v-model="libraryBuiltin"
-            :label="labelFieldPairs.libraryBuiltin"
-            :options="libraryOptions"
-            :error="getDataFieldErrorMessage(state, 'libraryBuiltin')"
-          >
+          <ht-select v-if="state.hasTag('libraryBuiltin')" v-model="libraryBuiltin" class="ht-formgroup"
+            :label="labelFieldPairs.libraryBuiltin" :options="libraryOptions"
+            :error="getDataFieldErrorMessage(state, 'libraryBuiltin')">
           </ht-select>
-          <ht-input-file
-            v-if="state.hasTag('libraryFile')"
-            :label="labelFieldPairs.libraryFile"
-            :model-value="getFileFieldValue(state, 'libraryFile')"
-            :error="getFileFieldErrorMessage(state, 'libraryFile')"
-            @update:model-value="onInput($event, 'libraryFile')"
-          >
+          <ht-input-file v-if="state.hasTag('libraryFile')" :label="labelFieldPairs.libraryFile"
+            :model-value="getFileFieldValue(state, 'libraryFile')" :error="getFileFieldErrorMessage(state, 'libraryFile')"
+            @update:model-value="onInput($event, 'libraryFile')">
           </ht-input-file>
         </template>
 
         <template v-if="state.matches('enteringFiles')">
-          <h4>{{ progressSteps[3] }}</h4>
-          <ht-radio-group
-            class="margin-bottom"
-            label="Data type"
-            :options="fileTypeOptions"
-            :model-value="fileType"
-            @update:model-value="sendFileType"
-          >
+          <h2>{{ progressSteps[3] }}</h2>
+          <ht-radio-group class="ht-formgroup" label="Data type" :options="fileTypeOptions" :model-value="fileType"
+            @update:model-value="sendFileType">
           </ht-radio-group>
           <template v-if="state.hasTag('fileCounts')">
-            <ht-input-file
-              :label="labelFieldPairs.fileCounts"
-              :model-value="getFileFieldValue(state, 'fileCounts')"
-              :error="getFileFieldErrorMessage(state, 'fileCounts')"
-              @update:model-value="onInput($event, 'fileCounts')"
-            >
+            <ht-input-file class="ht-formgroup" :label="labelFieldPairs.fileCounts"
+              :model-value="getFileFieldValue(state, 'fileCounts')" :error="getFileFieldErrorMessage(state, 'fileCounts')"
+              @update:model-value="onInput($event, 'fileCounts')">
             </ht-input-file>
-            <ht-input
-              :label="labelFieldPairs.nControls"
-              :model-value="getDataFieldValue(state, 'nControls')"
-              type="number"
-              :error="getDataFieldErrorMessage(state, 'nControls')"
-              @update:model-value="onInput($event, 'nControls')"
-            >
+            <ht-input class="ht-formgroup" :label="labelFieldPairs.nControls"
+              :model-value="getDataFieldValue(state, 'nControls')" type="number"
+              :error="getDataFieldErrorMessage(state, 'nControls')" @update:model-value="onInput($event, 'nControls')">
             </ht-input>
           </template>
 
           <template v-if="state.hasTag('filesFASTQ')">
-            <ht-input-file
-              :label="labelFieldPairs.filesFASTQcontrols"
+            <ht-input-file class="ht-formgroup" multiple :label="labelFieldPairs.filesFASTQcontrols"
               :model-value="getFileFieldValue(state, 'filesFASTQcontrols')"
               :error="getFileFieldErrorMessage(state, 'filesFASTQcontrols')"
-              @update:model-value="onInput($event, 'filesFASTQcontrols')"
-            >
+              @update:model-value="onInput($event, 'filesFASTQcontrols')">
             </ht-input-file>
-            <ht-input-file
-              :label="labelFieldPairs.filesFASTQsamples"
+            <ht-input-file class="ht-formgroup" multiple :label="labelFieldPairs.filesFASTQsamples"
               :model-value="getFileFieldValue(state, 'filesFASTQsamples')"
               :error="getFileFieldErrorMessage(state, 'filesFASTQsamples')"
-              @update:model-value="onInput($event, 'filesFASTQsamples')"
-            >
+              @update:model-value="onInput($event, 'filesFASTQsamples')">
             </ht-input-file>
           </template>
 
           <template v-if="state.hasTag('filesBAM')">
-            <ht-input-file
-              :label="labelFieldPairs.filesBAMcontrols"
+            <ht-input-file class="ht-formgroup" multiple :label="labelFieldPairs.filesBAMcontrols"
               :model-value="getFileFieldValue(state, 'filesBAMcontrols')"
               :error="getFileFieldErrorMessage(state, 'filesBAMcontrols')"
-              @update:model-value="onInput($event, 'filesBAMcontrols')"
-            >
+              @update:model-value="onInput($event, 'filesBAMcontrols')">
             </ht-input-file>
-            <ht-input-file
-              :label="labelFieldPairs.filesBAMsamples"
+            <ht-input-file class="ht-formgroup" multiple :label="labelFieldPairs.filesBAMsamples"
               :model-value="getFileFieldValue(state, 'filesBAMsamples')"
               :error="getFileFieldErrorMessage(state, 'filesBAMsamples')"
-              @update:model-value="onInput($event, 'filesBAMsamples')"
-            >
+              @update:model-value="onInput($event, 'filesBAMsamples')">
             </ht-input-file>
           </template>
         </template>
 
         <template v-if="state.matches('review')">
-          <h4>{{ progressSteps[4] }}</h4>
+          <h2>{{ progressSteps[4] }}</h2>
           <ul>
             <li v-for="field in formDataReview(state)" :key="field">
               <b>{{ field[0] }}:</b> {{ field[1] }}
@@ -163,23 +102,14 @@
           </ul>
         </template>
 
-        <div class="btns-group margin-top--lg">
-          <button
-            v-if="!state.matches('enteringGeneralInfo')"
-            type="button"
-            class="btn btn--primary prev-button"
-            @click="previous"
-          >
+        <div class="buttons-container">
+          <button v-if="!state.matches('enteringGeneralInfo')" type="button" @click="previous">
             Previous Step
           </button>
-          <button
-            v-if="!state.matches('review')"
-            type="submit"
-            class="btn btn--primary next-button"
-          >
+          <button v-if="!state.matches('review')" type="submit" class="next-button">
             Next Step
           </button>
-          <button v-else type="submit" class="btn btn--secondary submit-button">
+          <button v-else type="submit" class="next-button" data-type="secondary">
             Submit
           </button>
         </div>
@@ -212,10 +142,6 @@ export default {
 
     const onInput = (event, field) => {
       send('INPUT', { payload: event, field });
-    };
-
-    const onChange = (event, field) => {
-      send('CHANGE', { payload: event, field });
     };
 
     const submit = () => {
@@ -350,7 +276,6 @@ export default {
     return {
       state,
       onInput,
-      onChange,
       previous,
       submit,
       getDataFieldValue,
@@ -376,19 +301,32 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.form-container {
+<style lang="postcss" scoped>
+@import '@computational-biology-sw-web-dev-unit/ht-design/style.css';
+
+h1 {
+  color: var(--ht-text-color-2);
+  font-size: var(--font-size-5);
+}
+
+h2 {
+  color: var(--ht-text-color-1);
+  font-size: var(--font-size-4);
+}
+
+.buttons-container {
+  display: flex;
+  gap: var(--flex-gap, 1em);
+  justify-content: space-between;
+
+  margin-top: var(--size-7);
+
+  & button:only-child {
+    margin-left: auto;
+  }
+}
+
+.ht-card {
   max-width: 50rem;
-  margin: var(--space-lg);
-}
-
-.prev-button,
-.next-button,
-.submit-button {
-  width: 18rem;
-}
-
-.next-button {
-  margin-left: auto;
 }
 </style>

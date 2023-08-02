@@ -16,12 +16,28 @@ import 'tippy.js/dist/tippy.css'; // optional for styling
 import VueFeather from 'vue-feather';
 
 import { HTVue } from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { HTNotificationsPlugin } from '@computational-biology-sw-web-dev-unit/ht-vue';
+
 import '@computational-biology-sw-web-dev-unit/ht-design/style.css';
+
+import '@computational-biology-sw-web-dev-unit/ht-vue/style.css';
+
+import VueTippy from 'vue-tippy';
 
 nProgress.configure({ showSpinner: false });
 
 authInit().then(() => {
-  const app = createApp(App).use(authPlugin).use(HTVue).use(store).use(router);
+  const app = createApp(App)
+    .use(authPlugin)
+    .use(HTVue)
+    .use(HTNotificationsPlugin)
+    .use(store)
+    .use(router);
+
+  app.use(VueTippy, {
+    directive: 'tippy',
+    component: 'tippy',
+  });
 
   app.component(VueFeather.name, VueFeather);
 

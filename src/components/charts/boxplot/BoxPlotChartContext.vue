@@ -1,18 +1,9 @@
 <template>
-  <g class="brush-area" :transform="`translate(${margin.left}, ${margin.top})`"
-    ><ht-brush-area
-      :width="innerWidth"
-      :height="innerHeight"
-      v-bind="$attrs"
-      :domain="yDomain"
-      :scale="yScale"
-    >
+  <g class="brush-area" :transform="`translate(${margin.left}, ${margin.top})`"><ht-brush-area :width="innerWidth"
+      :height="innerHeight" v-bind="$attrs" :domain="yDomain" :scale="yScale">
       <rect x="0" y="0" :width="innerWidth" :height="innerHeight" />
-      <text
-        :transform="`translate(${innerWidth / 2}, ${
-          innerHeight / 2
-        }) rotate(90 0 0)`"
-      >
+      <text :transform="`translate(${innerWidth / 2}, ${innerHeight / 2
+        }) rotate(90 0 0)`">
         Drag to zoom
       </text>
     </ht-brush-area>
@@ -55,6 +46,7 @@ export default {
       left: 0,
     };
 
+    // eslint-disable-next-line
     const { innerWidth, innerHeight } = getInnerChartSizes(
       props.width,
       props.height,
@@ -74,17 +66,19 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .brush-area rect {
   fill: #f5f5f5;
   stroke: #b1b1b1;
   stroke-width: 2px;
   stroke-dasharray: 4 2;
 }
+
 .brush-area text {
   text-anchor: middle;
   fill: #b1b1b1;
 }
+
 .brush-area__group text {
   fill: #b1b1b1;
 }

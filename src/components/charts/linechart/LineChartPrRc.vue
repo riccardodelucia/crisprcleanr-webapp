@@ -1,52 +1,27 @@
 <template>
   <div class="linechart-container">
-    <LineChart
-      :data="chartData"
-      :x-domain="xDomain"
-      :x-label="xLabel"
-      :y-domain="yDomain"
-      :y-label="yLabel"
-    >
+    <LineChart :data="chartData" :x-domain="xDomain" :x-label="xLabel" :y-domain="yDomain" :y-label="yLabel">
       <template #default="{ lineChartProps }">
         <g>
-          <line
-            class="chart__line chart__line--dashed"
-            :x1="0"
-            :y1="lineChartProps.scales.yScale(metrics.precision)"
-            :x2="lineChartProps.sizes.innerWidth"
-            :y2="lineChartProps.scales.yScale(metrics.precision)"
-          />
-          <line
-            class="chart__line"
-            :x1="lineChartProps.scales.xScale(metrics.recall)"
-            :y1="lineChartProps.sizes.innerHeight"
-            :x2="lineChartProps.scales.xScale(metrics.recall)"
-            :y2="0"
-          />
-          <line
-            class="chart__line"
-            :x1="0"
-            :y1="lineChartProps.scales.yScale(metrics.rnd)"
-            :x2="lineChartProps.sizes.innerWidth"
-            :y2="lineChartProps.scales.yScale(metrics.rnd)"
-          />
+          <line class="chart__line chart__line--dashed" :x1="0"
+            :y1="lineChartProps.scales.yScale(metrics.precisionAt5Fdr)" :x2="lineChartProps.sizes.innerWidth"
+            :y2="lineChartProps.scales.yScale(metrics.precisionAt5Fdr)" />
+          <line class="chart__line" :x1="lineChartProps.scales.xScale(metrics.recallAt5Fdr)"
+            :y1="lineChartProps.sizes.innerHeight" :x2="lineChartProps.scales.xScale(metrics.recallAt5Fdr)" :y2="0" />
+          <!-- <line class="chart__line" :x1="0" :y1="lineChartProps.scales.yScale(metrics.rnd)"
+            :x2="lineChartProps.sizes.innerWidth" :y2="lineChartProps.scales.yScale(metrics.rnd)" /> -->
         </g>
       </template>
     </LineChart>
     <div>
-      <ul class="metrics__list">
-        <li
-          v-for="[key, value] in Object.entries(metrics)"
-          :key="key"
-          class="metrics__element"
-        >
+      <ul class="metrics">
+        <li v-for="[key, value] in Object.entries(metrics)" :key="key">
           <b>{{
             `${key
               .split(/(?=[A-Z]+|[0-9])/)
               .join(' ')
               .toLowerCase()}: `
-          }}</b
-          >{{ `${value}` }}
+          }}</b>{{ `${value}` }}
         </li>
       </ul>
     </div>
@@ -86,22 +61,17 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .linechart-container {
   display: flex;
   gap: 1em;
 }
 
 .metrics {
-  &__list {
-    list-style: none;
-    width: 20rem;
-    text-align: left;
-    font-size: 1.5rem;
-  }
+  list-style: none;
 
-  &__element {
-    margin-bottom: 1em;
+  li {
+    margin-bottom: var(--size-3);
   }
 }
 

@@ -90,3 +90,7 @@ export const plugin = {
 export function useAuth() {
   return inject('auth');
 }
+
+export function getAuth() {
+  return auth;
+}

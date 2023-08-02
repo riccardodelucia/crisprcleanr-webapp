@@ -3,24 +3,23 @@
     <line
       v-for="(gene, idx) in geneSet"
       :key="idx"
+      v-tippy="{
+        content: gene.gene,
+        duration: 0,
+      }"
       :x1="0"
       :x2="width"
       :y1="yScale(gene.rank)"
       :y2="yScale(gene.rank)"
       :stroke="gene.rank <= thr ? 'blue' : 'grey'"
-      :class="{
-        selected: gene.gene === modelValue,
-      }"
-      :data-tippy-content="gene.gene"
-      @mouseover="onMouseOver($event, gene)"
+      :data-gene="gene.gene"
+      @mouseover="onMouseOver(gene)"
       @mouseleave="onMouseLeave(gene)"
     ></line
   ></g>
 </template>
 
 <script>
-import { setupMarksChart } from './genes-signatures-chart.js';
-
 export default {
   name: 'MarksGenesSet',
   props: {
@@ -33,25 +32,33 @@ export default {
       type: Number,
       default: 0,
     },
-    modelValue: { type: String, default: '' },
     thr: {
       type: Number,
       default: 0,
     },
   },
-  setup(props, context) {
-    const { onMouseOver, onMouseLeave } = setupMarksChart(context);
+  setup() {
+    const onMouseOver = (gene) => {
+      const sel = document.querySelector(`circle[data-gene='${gene.gene}']`);
+      sel && sel.classList.add('selected');
+    };
+
+    const onMouseLeave = (gene) => {
+      const sel = document.querySelector(`circle[data-gene='${gene.gene}']`);
+      sel && sel.classList.remove('selected');
+    };
     return { onMouseOver, onMouseLeave };
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .marks {
   line {
     stroke-width: 2;
     opacity: 0.2;
 
+    &:hover,
     &.selected {
       stroke: red;
       stroke-width: 4;

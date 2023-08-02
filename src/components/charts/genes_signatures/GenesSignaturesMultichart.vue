@@ -1,29 +1,12 @@
 <template>
-  <ht-select
-    v-model="genesSet"
-    label="Reference Genes Set"
-    :options="genesSetsOptions"
-  >
+  <ht-select v-model="genesSet" label="Reference Genes Set" :options="genesSetsOptions">
   </ht-select>
-  <svg
-    preserveAspectRatio="xMinYMin meet"
-    :viewBox="[0, 0, width, height].join(' ')"
-  >
-    <GenesSignaturesChartFocus
-      :data="chartData"
-      :width="chartFocusWidth"
-      :height="height"
-      :y-domain="yDomainFocus"
-      :genes-set="genesSet.genesSet"
-    ></GenesSignaturesChartFocus>
+  <svg class="ht-chart" preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
+    <GenesSignaturesChartFocus :data="chartData" :width="chartFocusWidth" :height="height" :y-domain="yDomainFocus"
+      :genes-set="genesSet.genesSet"></GenesSignaturesChartFocus>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
-      <GenesSignaturesChartContext
-        :data="chartData"
-        :width="chartContextWidth"
-        :height="height"
-        :y-domain="yDomainContext"
-        @brush="brushed"
-      ></GenesSignaturesChartContext>
+      <GenesSignaturesChartContext :data="chartData" :width="chartContextWidth" :height="height"
+        :y-domain="yDomainContext" @brush="brushed"></GenesSignaturesChartContext>
     </g>
   </svg>
 </template>
@@ -127,7 +110,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
+select {
+  margin-bottom: var(--size-3);
+}
+
 .chart__line {
   stroke-width: 1;
 

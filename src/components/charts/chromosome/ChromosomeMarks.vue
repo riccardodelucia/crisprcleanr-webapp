@@ -4,32 +4,40 @@
       <circle
         v-for="point in points"
         :key="`point${point.idx}`"
+        v-tippy="{
+          content: setTooltipContent(point),
+          appendTo: modal,
+          duration: 0,
+          allowHTML: true,
+        }"
         class="chromosome__sgrna"
         :cx="xScale(point.idx)"
         :cy="yScale(point.avgLogFc)"
         :r="pointRadius"
-        :data-tippy-content="setTooltipContent(point)"
-        @mouseover="onMouseOver"
       ></circle>
     </g>
     <g v-show="selections.segments">
       <line
         v-for="segment in segments"
         :key="`segment${segment.idxStart}`"
+        v-tippy="{
+          content: setTooltipContent(segment),
+          appendTo: modal,
+          duration: 0,
+          allowHTML: true,
+        }"
         class="chromosome__segment"
         :x1="xScale(segment.idxStart)"
         :x2="xScale(segment.idxEnd)"
         :y1="yScale(segment.avgLogFc)"
         :y2="yScale(segment.avgLogFc)"
-        :data-tippy-content="setTooltipContent(segment)"
-        @mouseover="onMouseOver"
       ></line>
     </g>
   </g>
 </template>
 
 <script>
-import { setupTooltip } from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { setTooltipContent } from '../../../utils';
 
 export default {
   name: 'ChromosomeMarks',
@@ -60,14 +68,14 @@ export default {
     },
   },
   setup() {
-    const { onMouseOver, setTooltipContent } = setupTooltip();
+    const modal = document.body.querySelector('#modal');
 
-    return { setTooltipContent, onMouseOver };
+    return { setTooltipContent, modal };
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .chromosome {
   &__sgrna {
     fill: #1ca700;

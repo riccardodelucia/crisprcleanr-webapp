@@ -1,38 +1,20 @@
 <template>
   <div class="controls-container">
-    <ht-checkbox v-model="selections.guides" option="sgRNA log FCs" />
-    <ht-checkbox v-model="selections.segments" option="Equal logFCs segments" />
-
-    <div class="controls-container__normalization">
-      <ht-toggle-switch
-        v-model="showNormalizedData"
-        :option="showNormalizedData ? 'post correction' : 'pre correction'"
-      />
+    <div class="ht-flex">
+      <ht-checkbox v-model="selections.guides" option="sgRNA log FCs" />
+      <ht-checkbox v-model="selections.segments" option="Equal logFCs segments" />
     </div>
+    <ht-toggle-switch v-model="showNormalizedData" :option="showNormalizedData ? 'post correction' : 'pre correction'" />
   </div>
-  <svg
-    preserveAspectRatio="xMinYMin meet"
-    :viewBox="[0, 0, width, height].join(' ')"
-    :width="width"
-    :height="height"
-  >
+  <svg class="ht-chart" preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')" :width="width"
+    :height="height">
     <g>
-      <ChromosomeChartFocus
-        :data="selectedChartData"
-        :width="width"
-        :height="chartFocusHeight"
-        :x-domain="xDomainFocus"
-        :selections="selections"
-      />
+      <ChromosomeChartFocus :data="selectedChartData" :width="width" :height="chartFocusHeight" :x-domain="xDomainFocus"
+        :selections="selections" />
     </g>
     <g :transform="`translate(0, ${chartFocusHeight})`">
-      <ChromosomeChartContext
-        :data="selectedChartData"
-        :width="width"
-        :height="chartContextHeight"
-        :x-domain="xDomainContext"
-        @brush="brushed"
-      ></ChromosomeChartContext>
+      <ChromosomeChartContext :data="selectedChartData" :width="width" :height="chartContextHeight"
+        :x-domain="xDomainContext" @brush="brushed"></ChromosomeChartContext>
     </g>
   </svg>
 </template>
@@ -113,21 +95,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .controls-container {
-  margin: 0 2em;
-  margin-bottom: 1em;
+  margin-bottom: var(--size-4);
   display: flex;
   gap: 2em;
   align-items: center;
   flex-wrap: wrap;
-  align-content: center;
+  justify-content: space-between;
 
-  &__normalization {
-    margin-left: auto;
-    flex: 0 0 20rem;
-    display: flex;
-    gap: 0.4em;
-  }
 }
 </style>

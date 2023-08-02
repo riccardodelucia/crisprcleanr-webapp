@@ -9,18 +9,9 @@
       <g ref="xAxis"></g>
     </g>
     <g ref="yAxis"></g>
-    <g
-      v-for="(box, index) in filteredData"
-      :key="index"
-      :transform="`translate(${xScale(box.label)},0)`"
-    >
-      <BoxPlotMarks
-        v-bind="$attrs"
-        :x-scale="xScale"
-        :y-scale="yScale"
-        :data="box"
-        clip-path="url(#clip-boxplots)"
-      ></BoxPlotMarks>
+    <g v-for="(box, index) in filteredData" :key="index" :transform="`translate(${xScale(box.label)},0)`">
+      <BoxPlotMarks v-bind="$attrs" :x-scale="xScale" :y-scale="yScale" :data="box" clip-path="url(#clip-boxplots)">
+      </BoxPlotMarks>
     </g>
   </g>
 </template>
@@ -69,6 +60,7 @@ export default {
       bottom: 30,
       left: 50,
     };
+
     const { innerWidth, innerHeight } = getInnerChartSizes(
       props.width,
       props.height,

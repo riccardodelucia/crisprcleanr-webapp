@@ -52,7 +52,6 @@
     </text>
 
     <MarksCurve
-      v-model="selectedGene"
       :data="filteredData"
       :width="innerWidth"
       :x-scale="xScale"
@@ -60,7 +59,6 @@
     ></MarksCurve>
     <g :transform="`translate(${curveWidth + paddingX}, 0)`">
       <MarksGenesSet
-        v-model="selectedGene"
         :gene-set="filteredData.genesSet"
         :width="geneSetWidth"
         :y-scale="yScale"
@@ -150,8 +148,6 @@ export default {
       select(yAxis.value).call(axisLeft(yScale.value));
     });
 
-    const selectedGene = ref(null);
-
     const selectedGenesSetRecall = computed(() => {
       const recall = props.data.genesSets[props.genesSet].score * 100;
       return `${recall.toFixed(2)}%`;
@@ -185,7 +181,6 @@ export default {
       curveWidth,
       geneSetWidth,
       paddingX,
-      selectedGene,
       filteredData,
       selectedGenesSetRecall,
     };
@@ -193,7 +188,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .axis-label {
   text-anchor: middle;
   font-family: sans-serif;
