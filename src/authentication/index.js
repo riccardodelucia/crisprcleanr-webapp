@@ -1,6 +1,6 @@
 import Keycloak from 'keycloak-js';
 import { reactive, inject } from 'vue';
-import getEnv from '@/utils/env.js';
+import { getEnv } from '@/utils.js';
 
 const authServerURL = `${getEnv('VITE_URL_AUTH_SERVER')}`;
 
@@ -71,7 +71,11 @@ export function authorize(redirectUri = window.location.origin) {
 }
 
 export function init() {
-  return keycloak.init({ checkLoginIframe: false, enableLogging: true });
+  const env = getEnv('VITE_ENV');
+  return keycloak.init({
+    checkLoginIframe: false,
+    enableLogging: env !== 'prod',
+  });
 }
 
 export async function interceptorAuthorize(config) {

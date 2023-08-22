@@ -1,4 +1,4 @@
-import getEnv from '@/utils/env.js';
+import { getEnv } from '@/utils.js';
 
 import axios from 'axios';
 

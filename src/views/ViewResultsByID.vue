@@ -165,6 +165,7 @@ import {
 import { sendErrorNotification } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 import { useAuth } from '../authentication/index.js';
+import nProgress from 'nprogress';
 
 
 export default {
@@ -196,7 +197,6 @@ export default {
   setup(props) {
     const image = ref({});
     const data = ref({});
-    //const modalState = ref('closed');
     const modal = ref(null);
 
     const auth = useAuth();
@@ -257,13 +257,16 @@ export default {
     };
 
     const onClick = (file, id) => {
+      nProgress.start();
       const objectKey = `/${username}/${id}/${file}`;
       fileServerAPI
         .downloadFile({ objectKey, blob: true })
         .then((response) => {
           download(response.data, file);
+          nProgress.done();
         })
         .catch((error) => {
+          nProgress.done();
           const message = parseErrorMesssage(error);
           sendErrorNotification({
             title: `Unable to download file ${file}`,

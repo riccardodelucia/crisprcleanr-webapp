@@ -8,8 +8,7 @@
             :y2="lineChartProps.scales.yScale(metrics.precisionAt5Fdr)" />
           <line class="chart__line" :x1="lineChartProps.scales.xScale(metrics.recallAt5Fdr)"
             :y1="lineChartProps.sizes.innerHeight" :x2="lineChartProps.scales.xScale(metrics.recallAt5Fdr)" :y2="0" />
-          <!-- <line class="chart__line" :x1="0" :y1="lineChartProps.scales.yScale(metrics.rnd)"
-            :x2="lineChartProps.sizes.innerWidth" :y2="lineChartProps.scales.yScale(metrics.rnd)" /> -->
+
         </g>
       </template>
     </LineChart>

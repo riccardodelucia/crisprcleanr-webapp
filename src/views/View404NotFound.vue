@@ -1,5 +1,5 @@
 <template>
-  <div class="message-page ht-skin-brand-gradient">
+  <div class="message-page ht-skin-brand-gradient ht-lightmode">
     <h2>Not found 🔍</h2>
     <p>The content you're looking for is not there.</p>
     <router-link :to="{ name: 'home' }" class="ht-button">

@@ -4,3 +4,7 @@ export const setTooltipContent = function (data) {
   }, '');
   return `<ul style="list-style: none;">${msg}</ul>`;
 };
+
+export function getEnv(name) {
+  return window?.configs?.[name] || import.meta.env[name];
+}

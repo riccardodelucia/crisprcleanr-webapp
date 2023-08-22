@@ -22,8 +22,6 @@ import '@computational-biology-sw-web-dev-unit/ht-design/style.css';
 
 import '@computational-biology-sw-web-dev-unit/ht-vue/style.css';
 
-import VueTippy from 'vue-tippy';
-
 nProgress.configure({ showSpinner: false });
 
 authInit().then(() => {
@@ -33,11 +31,6 @@ authInit().then(() => {
     .use(HTNotificationsPlugin)
     .use(store)
     .use(router);
-
-  app.use(VueTippy, {
-    directive: 'tippy',
-    component: 'tippy',
-  });
 
   app.component(VueFeather.name, VueFeather);
 

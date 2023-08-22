@@ -1,24 +1,15 @@
 <template>
   <g class="marks">
-    <circle
-      v-for="(gene, idx) in data.genes"
-      :key="idx"
-      v-tippy="{
-        content: gene.gene,
-        duration: 0,
-      }"
-      :cx="xScale(gene.x)"
-      :cy="yScale(gene.y)"
-      :r="pointRadius"
-      stroke="black"
-      :data-gene="gene.gene"
-      @mouseover="onMouseOver(gene)"
-      @mouseleave="onMouseLeave(gene)"
-    ></circle
-  ></g>
+    <circle v-for="(gene, idx) in data.genes" :key="idx" :cx="xScale(gene.x)" :cy="yScale(gene.y)" :r="pointRadius"
+      stroke="black" :data-gene="gene.gene" @mouseover="onMouseOver($event, gene)" @mouseleave="onMouseLeave(gene)">
+    </circle>
+  </g>
 </template>
 
 <script>
+import { useTooltip } from '@computational-biology-sw-web-dev-unit/ht-vue';
+
+
 export default {
   name: 'MarksCurve',
   props: {
@@ -32,11 +23,11 @@ export default {
     },
     xScale: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
     yScale: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
     width: {
       type: Number,
@@ -44,12 +35,20 @@ export default {
     },
   },
   setup() {
-    const onMouseOver = (gene) => {
+
+    const { showTooltip, hideTooltip } = useTooltip();
+
+
+    const onMouseOver = (event, gene) => {
+
+      showTooltip(event, gene.gene);
+
       const sel = document.querySelector(`line[data-gene='${gene.gene}']`);
       sel && sel.classList.add('selected');
     };
 
     const onMouseLeave = (gene) => {
+      hideTooltip();
       const sel = document.querySelector(`line[data-gene='${gene.gene}']`);
       sel && sel.classList.remove('selected');
     };
@@ -59,16 +58,14 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-/* .marks {
-  circle {
-    fill: black;
+circle {
+  fill: black;
 
-    &:hover,
-    &.selected {
-      fill: red;
-      stroke: red;
-      stroke-width: 8;
-    }
+  &:hover,
+  &.selected {
+    fill: red;
+    stroke: red;
+    stroke-width: 8;
   }
-} */
+}
 </style>

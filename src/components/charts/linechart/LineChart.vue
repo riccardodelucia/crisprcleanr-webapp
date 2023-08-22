@@ -1,52 +1,24 @@
 <template>
-  <svg
-    class="htd-chart"
-    preserveAspectRatio="xMinYMin meet"
-    :viewBox="[0, 0, width, height].join(' ')"
-    :width="width"
-    :height="height"
-    @mouseover="onMouseOver"
-    @mousemove="onMouseOver"
-    @mouseleave="onMouseLeave"
-  >
+  <svg class="htd-chart" preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')" :width="width"
+    :height="height" @mouseover="onMouseOver" @mousemove="onMouseOver" @mouseleave="onMouseLeave">
     <g ref="chart" :transform="`translate(${margin.left}, ${margin.top})`">
       <g ref="yAxis"></g>
-      <text
-        :transform="`translate(${-yAxisLabelOffset}, ${
-          innerHeight / 2
-        }) rotate(-90)`"
-        class="axis-label"
-      >
+      <text :transform="`translate(${-yAxisLabelOffset}, ${innerHeight / 2
+        }) rotate(-90)`" class="axis-label">
         {{ yLabel }}
       </text>
       <g :transform="`translate(0, ${innerHeight})`">
         <g ref="xAxis"></g>
-        <text
-          :transform="`translate(${innerWidth / 2}, ${xAxisLabelOffset})`"
-          class="axis-label"
-        >
+        <text :transform="`translate(${innerWidth / 2}, ${xAxisLabelOffset})`" class="axis-label">
           {{ xLabel }}
         </text>
       </g>
-      <slot
-        :line-chart-props="{
-          sizes: { innerHeight, innerWidth },
-          scales: { xScale, yScale },
-        }"
-      ></slot>
+      <slot :line-chart-props="{
+        sizes: { innerHeight, innerWidth },
+        scales: { xScale, yScale },
+      }"></slot>
       <path :d="curve" class="chart__path" />
-      <circle
-        v-show="tooltipShow"
-        ref="cursor"
-        v-tippy="{
-          appendTo: modal,
-          duration: 0,
-        }"
-        :cx="cursorPoint.x"
-        :cy="cursorPoint.y"
-        r="3"
-        class="chart__point"
-      />
+      <circle v-show="tooltipShow" ref="cursor" :cx="cursorPoint.x" :cy="cursorPoint.y" r="3" class="chart__point" />
     </g>
   </svg>
 </template>
@@ -63,11 +35,13 @@ import {
   axisBottom,
 } from 'd3';
 
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import {
   getInnerChartSizes,
-  makeReactiveAxis,
+  makeReactiveAxis
 } from '@computational-biology-sw-web-dev-unit/ht-vue';
+
+import tippy from 'tippy.js';
 
 const bisectD3 = bisector((d) => d.x).left;
 
@@ -113,6 +87,15 @@ export default {
     const modal = document.body.querySelector('#modal');
 
     const cursor = ref(null);
+
+    onMounted(() => {
+      const instance = tippy(cursor.value);
+      instance.setProps({
+        appendTo: modal,
+        duration: 0,
+      });
+    })
+
     const cursorPoint = reactive({ x: 0, y: 0 });
     const tooltipShow = ref(false);
 

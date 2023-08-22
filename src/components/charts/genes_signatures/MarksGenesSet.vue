@@ -1,32 +1,21 @@
 <template>
   <g class="marks">
-    <line
-      v-for="(gene, idx) in geneSet"
-      :key="idx"
-      v-tippy="{
-        content: gene.gene,
-        duration: 0,
-      }"
-      :x1="0"
-      :x2="width"
-      :y1="yScale(gene.rank)"
-      :y2="yScale(gene.rank)"
-      :stroke="gene.rank <= thr ? 'blue' : 'grey'"
-      :data-gene="gene.gene"
-      @mouseover="onMouseOver(gene)"
-      @mouseleave="onMouseLeave(gene)"
-    ></line
-  ></g>
+    <line v-for="(gene, idx) in geneSet" :key="idx" :x1="0" :x2="width" :y1="yScale(gene.rank)" :y2="yScale(gene.rank)"
+      :stroke="gene.rank <= thr ? 'blue' : 'grey'" :data-gene="gene.gene" @mouseover="onMouseOver($event, gene)"
+      @mouseleave="onMouseLeave(gene)"></line>
+  </g>
 </template>
 
 <script>
+import { useTooltip } from '@computational-biology-sw-web-dev-unit/ht-vue';
+
 export default {
   name: 'MarksGenesSet',
   props: {
     geneSet: { type: Array, default: () => [] },
     yScale: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
     width: {
       type: Number,
@@ -38,12 +27,19 @@ export default {
     },
   },
   setup() {
-    const onMouseOver = (gene) => {
+
+    const { showTooltip, hideTooltip } = useTooltip();
+
+    const onMouseOver = (event, gene) => {
+      showTooltip(event, gene.gene);
+
       const sel = document.querySelector(`circle[data-gene='${gene.gene}']`);
       sel && sel.classList.add('selected');
     };
 
     const onMouseLeave = (gene) => {
+      hideTooltip();
+
       const sel = document.querySelector(`circle[data-gene='${gene.gene}']`);
       sel && sel.classList.remove('selected');
     };

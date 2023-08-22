@@ -37,7 +37,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
 .fixed-container {
   position: fixed;
   right: 0;
@@ -52,5 +52,9 @@ export default {
 
 .upload-controller {
   --background-color: var(--ht-surface-2);
+}
+
+.ht-card {
+  box-shadow: var(--shadow-3);
 }
 </style>

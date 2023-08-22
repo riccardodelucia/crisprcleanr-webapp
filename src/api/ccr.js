@@ -1,4 +1,4 @@
-import getEnv from '@/utils/env.js';
+import { getEnv } from '@/utils.js';
 import axios from 'axios';
 
 import { interceptorAuthorize } from '../authentication/index.js';
@@ -7,30 +7,36 @@ import { interceptorCamelize } from '@computational-biology-sw-web-dev-unit/ht-v
 const baseURL = `${getEnv('VITE_URL_IORIO_CCR_BACKEND')}`;
 const connectionTimeout = `${getEnv('VITE_CONNECTION_TIMEOUT_MS')}`;
 
+const protectedInstance = axios.create({
+  baseURL,
+});
+
 const instance = axios.create({
   baseURL,
 });
 
-instance.interceptors.request.use(interceptorAuthorize);
+protectedInstance.interceptors.request.use(interceptorAuthorize);
+protectedInstance.interceptors.response.use(interceptorCamelize);
+
 instance.interceptors.response.use(interceptorCamelize);
 
 export default {
   submitJob(formData) {
-    return instance({
+    return protectedInstance({
       method: 'post',
       url: 'jobs/',
       data: formData,
     });
   },
   getResultsList() {
-    return instance({
+    return protectedInstance({
       method: 'get',
       url: 'jobs/',
       connectionTimeout,
     });
   },
   getResultByID(id) {
-    return instance({
+    return protectedInstance({
       method: 'get',
       url: `jobs/${id}`,
       connectionTimeout,

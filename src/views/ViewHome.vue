@@ -75,7 +75,7 @@
         </article>
       </section>
       <section class="section-grid section-security">
-        <div>
+        <div class="ht-layout-stack">
           <h2>Your data in a secure place 🔐</h2>
           <p>
             Your data <b>privacy</b> is very important to us. To use
@@ -209,18 +209,26 @@ import {
 import { sendErrorNotification } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 import WebLayout from '@/layouts/WebLayout.vue';
+
+import nProgress from 'nprogress';
+
 export default {
   title: 'CRISPRcleanR',
   name: 'ViewCRISPRcleanRHome',
   components: { WebLayout },
   methods: {
     downloadSampleData() {
+      nProgress.start();
       const filename = 'CRISPRcleanR_WebApp_example_files.zip';
+
       return CcrAPI.getStaticResource(filename)
         .then((response) => {
+
           download(response.data, filename);
+          nProgress.done();
         })
         .catch((error) => {
+          nProgress.done();
           const message = parseErrorMesssage(error);
           sendErrorNotification({
             title: 'Unable to download sample data',
@@ -334,6 +342,7 @@ video {
     h2 {
       font-size: var(--font-size-3);
       text-align: center;
+      line-height: var(--font-lineheight-1);
     }
   }
 }

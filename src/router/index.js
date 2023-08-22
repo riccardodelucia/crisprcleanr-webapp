@@ -92,6 +92,7 @@ const routes = [
         component: ViewResultsByID,
         props: true,
         beforeEnter(to, from) {
+          nProgress.start();
           const id = to.params.id;
           const auth = getAuth();
           const username = auth.userProfile.username;
@@ -130,18 +131,19 @@ const routes = [
                   .then((response) => {
                     images = response;
                     to.params.images = images;
+                    nProgress.done();
                     return true;
                   });
-              }
-              return true;
+              } else return true;
             })
             .catch((error) => {
+              nProgress.done();
               manageRouteError(
                 from,
                 error,
                 `Unable to load results data for job ${to.params.id}`
               );
-              return false;
+              return '/404';
             });
         },
       },
@@ -151,12 +153,6 @@ const routes = [
     path: '/:catchAll(.*)',
     name: '404',
     component: View404NotFound,
-    beforeEnter(to) {
-      to.params.title = 'Not found 🔍';
-      to.params.message = "The content you're looking for is not there.";
-      return;
-    },
-    props: true,
   },
 ];
 
@@ -165,14 +161,13 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
   // TODO investigate why this happens
   // Because vue-router triggers navigation to the same /jobs route twice
-  if (to.path === from.path) {
+  /* if (to.path === from.path) {
     return false;
   }
-
-  nProgress.start();
+ */
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     const appRootUrl = window.location.origin;
     const redirectUri = new URL(to.path, appRootUrl).toString();
@@ -182,8 +177,12 @@ router.beforeEach((to, from) => {
   return;
 });
 
+/* router.beforeEach(() => {
+  nProgress.start();
+});
+
 router.afterEach(() => {
   nProgress.done();
 });
-
+ */
 export default router;

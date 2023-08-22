@@ -1,5 +1,5 @@
 <template>
-  <ht-select v-model="genesSet" label="Reference Genes Set" :options="genesSetsOptions">
+  <ht-select v-model="genesSet" class="ht-formgroup" label="Reference Genes Set" :options="genesSetsOptions">
   </ht-select>
   <svg class="ht-chart" preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
     <GenesSignaturesChartFocus :data="chartData" :width="chartFocusWidth" :height="height" :y-domain="yDomainFocus"

@@ -1,11 +1,7 @@
 <template>
   <AppLayout>
     <div class="app-content">
-      <FormFill
-        :key="key"
-        :config="$route.params.config"
-        @submitted="incKey"
-      ></FormFill>
+      <FormFill :key="key" :config="$route.params.config" @submitted="incKey"></FormFill>
     </div>
   </AppLayout>
 </template>
@@ -27,7 +23,7 @@ export default {
     };
   },
   methods: {
-    // This key is used top rerender the FormFill component. The objective is to force component restart, which can
+    // This key is used to force the rerender of the FormFill component. The objective is to force component restart, which can
     // restart the underlying submit machine, thus cleaning its context and history states.
     incKey() {
       this.key += 1;

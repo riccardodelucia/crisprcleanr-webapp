@@ -1,43 +1,21 @@
 <template>
   <g>
     <g v-show="selections.guides">
-      <circle
-        v-for="point in points"
-        :key="`point${point.idx}`"
-        v-tippy="{
-          content: setTooltipContent(point),
-          appendTo: modal,
-          duration: 0,
-          allowHTML: true,
-        }"
-        class="chromosome__sgrna"
-        :cx="xScale(point.idx)"
-        :cy="yScale(point.avgLogFc)"
-        :r="pointRadius"
-      ></circle>
+      <circle v-for="point in points" :key="`point${point.idx}`" class="chromosome__sgrna" :cx="xScale(point.idx)"
+        :cy="yScale(point.avgLogFc)" :r="pointRadius" @mouseover="onMouseOver($event, point)" @mouseleave="onMouseLeave">
+      </circle>
     </g>
     <g v-show="selections.segments">
-      <line
-        v-for="segment in segments"
-        :key="`segment${segment.idxStart}`"
-        v-tippy="{
-          content: setTooltipContent(segment),
-          appendTo: modal,
-          duration: 0,
-          allowHTML: true,
-        }"
-        class="chromosome__segment"
-        :x1="xScale(segment.idxStart)"
-        :x2="xScale(segment.idxEnd)"
-        :y1="yScale(segment.avgLogFc)"
-        :y2="yScale(segment.avgLogFc)"
-      ></line>
+      <line v-for="segment in segments" :key="`segment${segment.idxStart}`" class="chromosome__segment"
+        :x1="xScale(segment.idxStart)" :x2="xScale(segment.idxEnd)" :y1="yScale(segment.avgLogFc)"
+        :y2="yScale(segment.avgLogFc)" @mouseover="onMouseOver($event, segment)" @mouseleave="onMouseLeave"></line>
     </g>
   </g>
 </template>
 
 <script>
-import { setTooltipContent } from '../../../utils';
+import { setTooltipContent } from '@/utils.js';
+import { useTooltip } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 export default {
   name: 'ChromosomeMarks',
@@ -52,11 +30,11 @@ export default {
     },
     xScale: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
     yScale: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
     pointRadius: {
       type: Number,
@@ -68,9 +46,24 @@ export default {
     },
   },
   setup() {
+
     const modal = document.body.querySelector('#modal');
 
-    return { setTooltipContent, modal };
+    const { showTooltip, hideTooltip } = useTooltip({
+      appendTo: modal,
+      duration: 0,
+      allowHTML: true,
+    });
+
+    const onMouseOver = function (event, datum) {
+      showTooltip(event, setTooltipContent(datum));
+    }
+
+    const onMouseLeave = function () {
+      hideTooltip();
+    }
+
+    return { setTooltipContent, modal, onMouseOver, onMouseLeave };
   },
 };
 </script>
@@ -86,6 +79,7 @@ export default {
       opacity: 1;
     }
   }
+
   &__segment {
     stroke-width: 4;
     stroke: black;

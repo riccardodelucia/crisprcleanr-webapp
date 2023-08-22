@@ -108,4 +108,8 @@ export default {
 h4 {
   margin-bottom: var(--size-4);
 }
+
+.ht-card {
+  overflow-x: scroll;
+}
 </style>

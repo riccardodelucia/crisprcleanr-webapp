@@ -197,7 +197,7 @@ export default {
       normalization,
       () => {
         send('INPUT', {
-          payload: normalization.value?.method,
+          payload: normalization.value.method,
           field: 'method',
         });
       },
@@ -215,6 +215,7 @@ export default {
     ]);
     const libraryBuiltin = ref(null);
 
+    // avoid immediate:true, since this field is initialized with an empty object which would cause an undesired wrong preliminary validation
     watch(
       libraryBuiltin,
       () => {
@@ -223,7 +224,6 @@ export default {
           field: 'libraryBuiltin',
         });
       },
-      { immediate: true }
     );
 
     const libraryTypeArray = [

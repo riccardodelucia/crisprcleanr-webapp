@@ -271,9 +271,6 @@ const submitJobMachine = createMachine({
     INPUT: {
       actions: 'setFormFieldValue',
     },
-    CHANGE: {
-      actions: 'setFormFieldValue',
-    },
   },
 });
 
@@ -414,11 +411,7 @@ const actionSendErrorNotification = (_, event) => {
   });
 };
 
-const actionSendSuccessNotification = (
-  _,
-
-  { data: { data: filesList } }
-) => {
+const actionSendSuccessNotification = (_, { data: { data: filesList } }) => {
   const jobId = filesList[0].jobId;
   sendSuccessNotification({
     title: 'Job Submitted',
@@ -519,10 +512,9 @@ export const getInterpretedMachine = () => {
   dataFields['method'] = useField('method', string().required());
 
   // step 3 version A
-  dataFields['libraryBuiltin'] = useField(
-    'libraryBuiltin',
-    string().required()
-  );
+  dataFields['libraryBuiltin'] = useField('libraryBuiltin', string(), {
+    initialValue: '',
+  });
 
   // step 3 version B
   fileFields['libraryFile'] = useField('libraryFile', mixed().required());

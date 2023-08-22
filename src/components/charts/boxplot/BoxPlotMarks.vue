@@ -3,64 +3,33 @@
     <g class="boxplot">
       <line :x1="bandwidth / 2" :x2="bandwidth / 2" :y1="yScale(data.dist.w1)" :y2="yScale(data.dist.w2)"
         class="boxplot__range" />
-      <line v-tippy="{
-        content: `W1: ${data.dist.w1}`,
-        appendTo: modal,
-        duration: 0,
-        allowHTML: true,
-      }" :x1="0" :x2="bandwidth" :y1="yScale(data.dist.w1)" :y2="yScale(data.dist.w1)" class="boxplot__whisker-q" />
-      <line v-tippy="{
-        content: `W2: ${data.dist.w2}`,
-        appendTo: modal,
-        duration: 0,
-        allowHTML: true,
-      }" :x1="0" :x2="bandwidth" :y1="yScale(data.dist.w2)" :y2="yScale(data.dist.w2)" class="boxplot__whisker-q" />
-      <line v-tippy="{
-        content: `Std dev 1: ${data.dist.sd1}`,
-        appendTo: modal,
-        duration: 0,
-        allowHTML: true,
-      }" :x1="0" :x2="bandwidth" :y1="yScale(data.dist.sd1)" :y2="yScale(data.dist.sd1)"
-        class="boxplot__whisker-stdev" />
-      <line v-tippy="{
-        content: `Std dev 2: ${data.dist.sd2}`,
-        appendTo: modal,
-        duration: 0,
-        allowHTML: true,
-      }" :x1="0" :x2="bandwidth" :y1="yScale(data.dist.sd2)" :y2="yScale(data.dist.sd2)"
-        class="boxplot__whisker-stdev" />
-      <rect v-tippy="{
-        content: `IQR: ${data.dist.q3}`,
-        appendTo: modal,
-        duration: 0,
-        allowHTML: true,
-      }" :x="0" :y="yScale(data.dist.q3)" :width="bandwidth" :height="boxHeight" class="boxplot__box" />
-      <line v-tippy="{
-        content: `Median: ${data.dist.median}`,
-        appendTo: modal,
-        duration: 0,
-        allowHTML: true,
-      }" :x1="0" :x2="bandwidth" :y1="yScale(data.dist.median)" :y2="yScale(data.dist.median)"
-        class="boxplot__median" />
-      <line v-tippy="{
-        content: `Mean: ${data.dist.mean}`,
-        appendTo: modal,
-        duration: 0,
-        allowHTML: true,
-      }" :x1="0" :x2="bandwidth" :y1="yScale(data.dist.mean)" :y2="yScale(data.dist.mean)" class="boxplot__mean" />
+      <line :x1="0" :x2="bandwidth" :y1="yScale(data.dist.w1)" :y2="yScale(data.dist.w1)" class="boxplot__whisker-q"
+        @mouseover="onMouseOver($event, `W1: ${data.dist.w1}`)" @mouseleave="onMouseLeave" />
+      <line :x1="0" :x2="bandwidth" :y1="yScale(data.dist.w2)" :y2="yScale(data.dist.w2)" class="boxplot__whisker-q"
+        @mouseover="onMouseOver($event, `W2: ${data.dist.w2}`)" @mouseleave="onMouseLeave" />
+      <line :x1="0" :x2="bandwidth" :y1="yScale(data.dist.sd1)" :y2="yScale(data.dist.sd1)" class="boxplot__whisker-stdev"
+        @mouseover="onMouseOver($event, `Std dev 1: ${data.dist.sd1}`)" @mouseleave="onMouseLeave" />
+      <line :x1="0" :x2="bandwidth" :y1="yScale(data.dist.sd2)" :y2="yScale(data.dist.sd2)" class="boxplot__whisker-stdev"
+        @mouseover="onMouseOver($event, `Std dev 2: ${data.dist.sd2}`)" @mouseleave="onMouseLeave" />
+      <rect :x="0" :y="yScale(data.dist.q3)" :width="bandwidth" :height="boxHeight" class="boxplot__box"
+        @mouseover="onMouseOver($event, `IQR: ${data.dist.q3}`)" @mouseleave="onMouseLeave" />
+      <line :x1="0" :x2="bandwidth" :y1="yScale(data.dist.median)" :y2="yScale(data.dist.median)" class="boxplot__median"
+        @mouseover="onMouseOver($event, `Median: ${data.dist.median}`)" @mouseleave="onMouseLeave" />
+      <line :x1="0" :x2="bandwidth" :y1="yScale(data.dist.mean)" :y2="yScale(data.dist.mean)" class="boxplot__mean"
+        @mouseover="onMouseOver($event, `Mean: ${data.dist.mean}`)" @mouseleave="onMouseLeave" />
     </g>
 
-    <circle v-for="outlier in data.outliers" :key="outlier.location" v-tippy="{
-      content: setTooltipContent(outlier),
-      appendTo: modal,
-      duration: 0,
-      allowHTML: true,
-    }" r="4" :cx="bandwidth / 2 + outlier.xOffset" :cy="yScale(outlier.value)" class="boxplot__outliers" />
+    <circle v-for="outlier in data.outliers" :key="outlier.location" r="4" :cx="bandwidth / 2 + outlier.xOffset"
+      :cy="yScale(outlier.value)" class="boxplot__outliers" @mouseover="onMouseOver($event, outlier)"
+      @mouseleave="onMouseLeave" />
   </g>
 </template>
 
 <script>
-import { setTooltipContent } from '../../../utils';
+import { setTooltipContent } from '@/utils.js';
+
+import { useTooltip } from '@computational-biology-sw-web-dev-unit/ht-vue';
+
 import { computed } from 'vue';
 
 export default {
@@ -80,6 +49,26 @@ export default {
     },
   },
   setup(props) {
+
+    const modal = document.body.querySelector('#modal');
+
+    const { showTooltip, hideTooltip } = useTooltip({
+      appendTo: modal,
+      duration: 0,
+      allowHTML: true,
+    });
+
+    const onMouseOver = function (event, datum) {
+      if (typeof datum === "object")
+        showTooltip(event, setTooltipContent(datum));
+      else
+        showTooltip(event, datum);
+    }
+
+    const onMouseLeave = function () {
+      hideTooltip();
+    }
+
     const bandwidth = computed(() => {
       return props.xScale.bandwidth();
     });
@@ -89,9 +78,9 @@ export default {
       );
     });
 
-    const modal = document.body.querySelector('#modal');
 
-    return { setTooltipContent, bandwidth, boxHeight, modal };
+
+    return { setTooltipContent, bandwidth, boxHeight, modal, onMouseOver, onMouseLeave };
   },
 };
 </script>
