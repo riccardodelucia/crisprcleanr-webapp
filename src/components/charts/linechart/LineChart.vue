@@ -1,5 +1,5 @@
 <template>
-  <svg class="htd-chart" preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')" :width="width"
+  <svg class="ht-chart" preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')" :width="width"
     :height="height" @mouseover="onMouseOver" @mousemove="onMouseOver" @mouseleave="onMouseLeave">
     <g ref="chart" :transform="`translate(${margin.left}, ${margin.top})`">
       <g ref="yAxis"></g>
