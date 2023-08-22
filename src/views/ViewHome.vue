@@ -375,7 +375,7 @@ video {
 .section-grid {
   display: grid;
 
-  gap: var(--size-3);
+  gap: var(--size-8);
 
   place-items: center;
 
