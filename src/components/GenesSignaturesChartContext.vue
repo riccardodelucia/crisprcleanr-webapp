@@ -17,13 +17,13 @@
         stroke-dasharray="4 2"
         clip-path="url(#clip-genes)"
       />
-      <MarksCurve
+      <GenesSignaturesMarksCurve
         :width="innerWidth"
         :data="data"
         :x-scale="xScale"
         :y-scale="yScale"
         :point-radius="2"
-      ></MarksCurve>
+      ></GenesSignaturesMarksCurve>
     </ht-brush-area>
 
     <g :transform="`translate(${innerWidth}, 0)`">
@@ -38,13 +38,13 @@ import {
   makeReactiveAxis,
 } from '@computational-biology-sw-web-dev-unit/ht-vue';
 import { select, scaleLog, extent, scaleLinear, axisRight } from 'd3';
-import MarksCurve from '@/components/charts/genes_signatures/MarksCurve.vue';
+import GenesSignaturesMarksCurve from '@/components/GenesSignaturesMarksCurve.vue';
 
 import { ref } from 'vue';
 
 export default {
   name: 'GenesSignaturesChartContext',
-  components: { MarksCurve },
+  components: { GenesSignaturesMarksCurve },
   props: {
     width: {
       type: Number,

@@ -1,7 +1,16 @@
 <template>
   <g class="marks">
-    <circle v-for="(gene, idx) in data.genes" :key="idx" :cx="xScale(gene.x)" :cy="yScale(gene.y)" :r="pointRadius"
-      stroke="black" :data-gene="gene.gene" @mouseover="onMouseOver($event, gene)" @mouseleave="onMouseLeave(gene)">
+    <circle
+      v-for="(gene, idx) in data.genes"
+      :key="idx"
+      :cx="xScale(gene.x)"
+      :cy="yScale(gene.y)"
+      :r="pointRadius"
+      stroke="black"
+      :data-gene="gene.gene"
+      @mouseover="onMouseOver($event, gene)"
+      @mouseleave="onMouseLeave(gene)"
+    >
     </circle>
   </g>
 </template>
@@ -9,9 +18,8 @@
 <script>
 import { useTooltip } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
-
 export default {
-  name: 'MarksCurve',
+  name: 'GenesSignaturesMarksCurve',
   props: {
     data: {
       type: Object,
@@ -23,11 +31,11 @@ export default {
     },
     xScale: {
       type: Function,
-      default: () => { },
+      default: () => {},
     },
     yScale: {
       type: Function,
-      default: () => { },
+      default: () => {},
     },
     width: {
       type: Number,
@@ -35,12 +43,9 @@ export default {
     },
   },
   setup() {
-
     const { showTooltip, hideTooltip } = useTooltip();
 
-
     const onMouseOver = (event, gene) => {
-
       showTooltip(event, gene.gene);
 
       const sel = document.querySelector(`line[data-gene='${gene.gene}']`);

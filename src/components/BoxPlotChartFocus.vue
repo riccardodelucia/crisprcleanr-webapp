@@ -9,8 +9,18 @@
       <g ref="xAxis"></g>
     </g>
     <g ref="yAxis"></g>
-    <g v-for="(box, index) in filteredData" :key="index" :transform="`translate(${xScale(box.label)},0)`">
-      <BoxPlotMarks v-bind="$attrs" :x-scale="xScale" :y-scale="yScale" :data="box" clip-path="url(#clip-boxplots)">
+    <g
+      v-for="(box, index) in filteredData"
+      :key="index"
+      :transform="`translate(${xScale(box.label)},0)`"
+    >
+      <BoxPlotMarks
+        v-bind="$attrs"
+        :x-scale="xScale"
+        :y-scale="yScale"
+        :data="box"
+        clip-path="url(#clip-boxplots)"
+      >
       </BoxPlotMarks>
     </g>
   </g>
@@ -19,7 +29,7 @@
 <script>
 import { scaleBand, scaleLinear, select, axisBottom, axisLeft } from 'd3';
 
-import BoxPlotMarks from '@/components/charts/boxplot/BoxPlotMarks.vue';
+import BoxPlotMarks from '@/components/BoxPlotMarks.vue';
 
 import {
   getInnerChartSizes,

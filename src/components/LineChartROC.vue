@@ -1,24 +1,41 @@
 <template>
   <div class="linechart-container">
-    <LineChart :data="chartData" :x-domain="xDomain" :x-label="xLabel" :y-domain="yDomain" :y-label="yLabel">
+    <LineChart
+      :data="chartData"
+      :x-domain="xDomain"
+      :x-label="xLabel"
+      :y-domain="yDomain"
+      :y-label="yLabel"
+    >
       <template #default="{ lineChartProps }">
         <g>
-          <line class="chart__line chart__line--dashed" :x1="0" :y1="lineChartProps.scales.yScale(metrics.recallAt5Fdr)"
-            :x2="lineChartProps.sizes.innerWidth" :y2="lineChartProps.scales.yScale(metrics.recallAt5Fdr)" />
-          <line class="chart__line" :x1="0" :y1="lineChartProps.sizes.innerHeight" :x2="lineChartProps.sizes.innerWidth"
-            :y2="0" />
+          <line
+            class="chart__line chart__line--dashed"
+            :x1="0"
+            :y1="lineChartProps.scales.yScale(metrics.recallAt5Fdr)"
+            :x2="lineChartProps.sizes.innerWidth"
+            :y2="lineChartProps.scales.yScale(metrics.recallAt5Fdr)"
+          />
+          <line
+            class="chart__line"
+            :x1="0"
+            :y1="lineChartProps.sizes.innerHeight"
+            :x2="lineChartProps.sizes.innerWidth"
+            :y2="0"
+          />
         </g>
       </template>
     </LineChart>
     <div>
       <ul class="metrics">
         <li v-for="[key, value] in Object.entries(metrics)" :key="key">
-          <b>{{
-            `${key
-              .split(/(?=[A-Z]+|[0-9])/)
-              .join(' ')
-              .toLowerCase()}: `
-          }}
+          <b
+            >{{
+              `${key
+                .split(/(?=[A-Z]+|[0-9])/)
+                .join(' ')
+                .toLowerCase()}: `
+            }}
           </b>
           {{ `${value}` }}
         </li>
@@ -28,7 +45,7 @@
 </template>
 
 <script>
-import LineChart from '@/components/charts/linechart/LineChart.vue';
+import LineChart from '@/components/LineChart.vue';
 
 export default {
   name: 'LineChartROC',

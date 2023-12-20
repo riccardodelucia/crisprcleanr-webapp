@@ -1,31 +1,62 @@
 <template>
   <div class="controls-container">
-    <div class="ht-flex">
-      <ht-checkbox v-model="selections.guides" option="sgRNA log FCs" />
-      <ht-checkbox v-model="selections.segments" option="Equal logFCs segments" />
+    <div>
+      <ht-checkbox
+        v-model="showGuides"
+        name="showGuides"
+        :value="true"
+        label="sgRNA log FCs"
+      />
+      <ht-checkbox
+        v-model="showSegments"
+        :value="true"
+        name="showSegments"
+        label="Equal logFCs segments"
+      />
     </div>
-    <ht-toggle-switch v-model="showNormalizedData" :option="showNormalizedData ? 'post correction' : 'pre correction'" />
+    <div class="toggle-switch-container">
+      <ht-toggle-switch
+        v-model="showNormalizedData"
+        name="correction"
+        :value-on="toggleSwitchValueOn"
+        :value-off="toggleSwitchValueOff"
+      />
+    </div>
   </div>
-  <svg class="ht-chart" preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')" :width="width"
-    :height="height">
+  <svg
+    class="ht-chart"
+    preserveAspectRatio="xMinYMin meet"
+    :viewBox="[0, 0, width, height].join(' ')"
+    :width="width"
+    :height="height"
+  >
     <g>
-      <ChromosomeChartFocus :data="selectedChartData" :width="width" :height="chartFocusHeight" :x-domain="xDomainFocus"
-        :selections="selections" />
+      <ChromosomeChartFocus
+        :data="selectedChartData"
+        :width="width"
+        :height="chartFocusHeight"
+        :x-domain="xDomainFocus"
+      />
     </g>
     <g :transform="`translate(0, ${chartFocusHeight})`">
-      <ChromosomeChartContext :data="selectedChartData" :width="width" :height="chartContextHeight"
-        :x-domain="xDomainContext" @brush="brushed"></ChromosomeChartContext>
+      <ChromosomeChartContext
+        :data="selectedChartData"
+        :width="width"
+        :height="chartContextHeight"
+        :x-domain="xDomainContext"
+        @brush="brushed"
+      ></ChromosomeChartContext>
     </g>
   </svg>
 </template>
 
 <script>
-import ChromosomeChartFocus from '@/components/charts/chromosome/ChromosomeChartFocus.vue';
-import ChromosomeChartContext from '@/components/charts/chromosome/ChromosomeChartContext.vue';
+import ChromosomeChartFocus from '@/components/ChromosomeChartFocus.vue';
+import ChromosomeChartContext from '@/components/ChromosomeChartContext.vue';
 
 import { extent } from 'd3';
 
-import { ref, reactive, computed } from 'vue';
+import { ref, computed, provide } from 'vue';
 
 const setupChart = (data) => {
   const chartDataUnnormalized = {
@@ -62,7 +93,9 @@ export default {
     },
   },
   setup(props) {
-    const showNormalizedData = ref(true);
+    const toggleSwitchValueOn = 'post correction';
+    const toggleSwitchValueOff = 'pre correction';
+    const showNormalizedData = ref(toggleSwitchValueOn);
 
     const { chartDataUnnormalized, chartDataNormalized } = setupChart(
       props.data
@@ -76,8 +109,16 @@ export default {
     };
 
     const selectedChartData = computed(() =>
-      showNormalizedData.value ? chartDataNormalized : chartDataUnnormalized
+      showNormalizedData.value === toggleSwitchValueOn
+        ? chartDataNormalized
+        : chartDataUnnormalized
     );
+
+    const showGuides = ref(true);
+    const showSegments = ref(true);
+
+    provide('showGuides', showGuides);
+    provide('showSegments', showSegments);
 
     return {
       height: 500,
@@ -87,9 +128,12 @@ export default {
       selectedChartData,
       xDomainFocus,
       xDomainContext,
-      selections: reactive({ segments: true, guides: true }),
       showNormalizedData,
       brushed,
+      showGuides,
+      showSegments,
+      toggleSwitchValueOn,
+      toggleSwitchValueOff,
     };
   },
 };
@@ -103,6 +147,5 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
-
 }
 </style>

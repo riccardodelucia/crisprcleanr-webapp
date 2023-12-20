@@ -2,10 +2,16 @@
   <AppLayout>
     <div class="app-content ht-layout-stack">
       <h2>Results</h2>
-      <router-link :to="{ name: 'resultsList' }" class="ht-button" data-type="secondary">
-        <div class="ht-flex-align-center"><vue-feather type="arrow-left"></vue-feather><span>Results List</span></div>
+      <router-link
+        :to="{ name: 'resultsList' }"
+        class="ht-button"
+        data-type="secondary"
+      >
+        <div class="ht-flex-align-center">
+          <vue-feather type="arrow-left"></vue-feather><span>Results List</span>
+        </div>
       </router-link>
-      <div class="results">
+      <div v-if="result" class="results">
         <div class="ht-card ht-container details">
           <h2>Details</h2>
           <ul>
@@ -54,11 +60,21 @@
           <p>{{ result.notes }}</p>
         </div>
 
-        <div v-if="result.status === 'success'" class="ht-card ht-container downloads">
+        <div
+          v-if="result.status === 'success'"
+          class="ht-card ht-container downloads"
+        >
           <h2>Downloads</h2>
           <div class="buttons-container">
-            <a v-for="(file, index) in fileList" :key="index" class="ht-button" type="button" @click="onClick(file, id)">
-              <div class="ht-flex-align-center">{{ file }}
+            <a
+              v-for="(file, index) in fileList"
+              :key="index"
+              class="ht-button"
+              type="button"
+              @click="onClick(file, id)"
+            >
+              <div class="ht-flex-align-center">
+                {{ file }}
                 <vue-feather type="download" />
               </div>
             </a>
@@ -80,9 +96,16 @@
               </template>
               <template #panel>
                 <div class="thumbnails__content ht-grid-auto">
-                  <div v-for="img in imageListByCathegory.normImages" :key="img.filename" class="thumbnail"
-                    @click="openModal(img, id)">
-                    <img :src="img.src ? img.src : imagePlaceholder" :alt="img.title" />
+                  <div
+                    v-for="img in imageListByCathegory.normImages"
+                    :key="img.filename"
+                    class="thumbnail"
+                    @click="openModal(img, id)"
+                  >
+                    <img
+                      :src="img.src ? img.src : imagePlaceholder"
+                      :alt="img.title"
+                    />
                     <p>{{ img.label }}</p>
                   </div>
                 </div>
@@ -96,8 +119,12 @@
               </template>
               <template #panel>
                 <div class="thumbnails__content ht-grid-auto">
-                  <div v-for="img in imageListByCathegory.chrImages" :key="img.filename" class="thumbnail"
-                    @click="openModal(img, id)">
+                  <div
+                    v-for="img in imageListByCathegory.chrImages"
+                    :key="img.filename"
+                    class="thumbnail"
+                    @click="openModal(img, id)"
+                  >
                     <img :src="img.src" :alt="img.title" />
                     <p>{{ img.label }}</p>
                   </div>
@@ -106,14 +133,21 @@
             </ht-accordion>
           </div>
           <div class="thumbnails-3">
-            <ht-accordion label="QC Assessment Charts" class="ht-card ht-container color--3">
+            <ht-accordion
+              label="QC Assessment Charts"
+              class="ht-card ht-container color--3"
+            >
               <template #header>
                 <span>QC Assessment Charts</span>
               </template>
               <template #panel>
                 <div class="thumbnails__content ht-grid-auto">
-                  <div v-for="img in imageListByCathegory.qcImages" :key="img.filename" class="thumbnail"
-                    @click="openModal(img, id)">
+                  <div
+                    v-for="img in imageListByCathegory.qcImages"
+                    :key="img.filename"
+                    class="thumbnail"
+                    @click="openModal(img, id)"
+                  >
                     <img :src="img.src" :alt="img.title" />
                     <p>{{ img.label }}</p>
                   </div>
@@ -123,13 +157,20 @@
           </div>
         </template>
       </div>
+      <p v-else>Loading...</p>
 
       <dialog id="modal" ref="modal" class="modal">
         <header>
           <h2>
             {{ image.label ? image.label : 'Loading...' }}
           </h2>
-          <ht-button-icon type="button" label="Close Modal" icon-type="x" aria-controls="modal" @click="closeModal">
+          <ht-button-icon
+            type="button"
+            label="Close Modal"
+            icon-type="x"
+            aria-controls="modal"
+            @click="closeModal"
+          >
           </ht-button-icon>
         </header>
         <component :is="image.component" v-if="data" :data="data" />
@@ -142,31 +183,28 @@
 import fileServerAPI from '@/api/fileServer.js';
 import fileList from '@/files.json';
 
-import BoxPlotMultichart from '@/components/charts/boxplot/BoxPlotMultichart.vue';
-import ChromosomeMultichart from '@/components/charts/chromosome/ChromosomeMultichart.vue';
-import LineChartROC from '@/components/charts/linechart/LineChartROC.vue';
-import LineChartPrRc from '@/components/charts/linechart/LineChartPrRc.vue';
-import GenesSignaturesMultichart from '@/components/charts/genes_signatures/GenesSignaturesMultichart.vue';
+import BoxPlotMultichart from '@/components/BoxPlotMultichart.vue';
+import ChromosomeMultichart from '@/components/ChromosomeMultichart.vue';
+import LineChartROC from '@/components/LineChartROC.vue';
+import LineChartPrRc from '@/components/LineChartPrRc.vue';
+import GenesSignaturesMultichart from '@/components/GenesSignaturesMultichart.vue';
 
 import AppLayout from '@/layouts/AppLayout.vue';
 
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted, onErrorCaptured } from 'vue';
 
 import { ContentLoader } from 'vue-content-loader';
 
 import imagePlaceholder from '@/assets/img/placeholder-image.png';
 
-import {
-  download,
-  date,
-  parseErrorMesssage,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { download, date } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
-import { sendErrorNotification } from '@computational-biology-sw-web-dev-unit/ht-vue';
-
-import { useAuth } from '../authentication/index.js';
+import { useAuth } from '@/authentication.js';
 import nProgress from 'nprogress';
 
+import CcrAPI from '@/api/ccr.js';
+
+import imageList from '@/images.json';
 
 export default {
   name: 'ViewResultsByID',
@@ -183,15 +221,6 @@ export default {
     id: {
       type: String,
       default: '',
-    },
-    result: {
-      type: Object,
-      required: true,
-    },
-    genesSignatures: { type: Object, default: () => ({}) },
-    images: {
-      type: Array,
-      default: () => [],
     },
   },
   setup(props) {
@@ -210,47 +239,79 @@ export default {
       qcImages: [],
     });
 
-    imageListByCathegory.normImages = props.images.filter(
-      (image) => image.section === 'norm'
-    );
-    imageListByCathegory.chrImages = props.images
-      .filter((image) => image.section === 'chr')
-      .sort((image1, image2) => {
-        const a = parseInt(image1.filename.match(/(\d+)/)[0]);
-        const b = parseInt(image2.filename.match(/(\d+)/)[0]);
-        return a - b;
-      });
-    imageListByCathegory.qcImages = props.images.filter(
-      (image) => image.section === 'qc'
+    const result = ref(null);
+    const genesSignatures = ref(null);
+    const images = ref(null);
+
+    onMounted(() =>
+      CcrAPI.getResultByID(props.id).then((response) => {
+        const { data } = response;
+        result.value = data;
+
+        if (result.value.status === 'success') {
+          const objectKey = `/${username}/${props.id}/genes_signatures.json`;
+          return fileServerAPI
+            .downloadFile({ objectKey })
+            .then((response) => {
+              const { data } = response;
+              genesSignatures.value = data;
+              const imageListWithURL = imageList.map(async (image) => {
+                try {
+                  const objectKey = `/${username}/${props.id}/${image.imgUri}`;
+                  const response = await fileServerAPI.downloadFile({
+                    objectKey,
+                    blob: true,
+                  });
+                  return {
+                    ...image,
+                    src: URL.createObjectURL(response.data),
+                  };
+                } catch (error) {
+                  return {
+                    ...image,
+                    src: null,
+                  };
+                }
+              });
+              return Promise.all(imageListWithURL);
+            })
+            .then((resolvedPromiseArray) => {
+              images.value = resolvedPromiseArray;
+              imageListByCathegory.normImages = images.value.filter(
+                (image) => image.section === 'norm'
+              );
+              imageListByCathegory.chrImages = images.value
+                .filter((image) => image.section === 'chr')
+                .sort((image1, image2) => {
+                  const a = parseInt(image1.filename.match(/(\d+)/)[0]);
+                  const b = parseInt(image2.filename.match(/(\d+)/)[0]);
+                  return a - b;
+                });
+              imageListByCathegory.qcImages = images.value.filter(
+                (image) => image.section === 'qc'
+              );
+            });
+        }
+      })
     );
 
     const openModal = (img, id) => {
-      const body = document.querySelector("body");
-      body.classList.add("ht-prevent-scroll");
+      const body = document.querySelector('body');
+      body.classList.add('ht-prevent-scroll');
       modal.value.showModal();
       image.value = {};
       data.value = {};
 
       const objectKey = `/${username}/${id}/${img.chart}.json`;
-      fileServerAPI
-        .downloadFile({ objectKey })
-        .then((response) => {
-          data.value = response.data;
-          image.value = img;
-        })
-        .catch((error) => {
-          modal.value.close();
-          const message = parseErrorMesssage(error);
-          sendErrorNotification({
-            title: `Unable to open chart ${img.chart}`,
-            message,
-          });
-        });
+      return fileServerAPI.downloadFile({ objectKey }).then((response) => {
+        data.value = response.data;
+        image.value = img;
+      });
     };
 
     const closeModal = () => {
-      const body = document.querySelector("body");
-      body.classList.remove("ht-prevent-scroll");
+      const body = document.querySelector('body');
+      body.classList.remove('ht-prevent-scroll');
       modal.value.close();
       image.value = {};
       data.value = {};
@@ -259,21 +320,17 @@ export default {
     const onClick = (file, id) => {
       nProgress.start();
       const objectKey = `/${username}/${id}/${file}`;
-      fileServerAPI
+      return fileServerAPI
         .downloadFile({ objectKey, blob: true })
         .then((response) => {
           download(response.data, file);
           nProgress.done();
-        })
-        .catch((error) => {
-          nProgress.done();
-          const message = parseErrorMesssage(error);
-          sendErrorNotification({
-            title: `Unable to download file ${file}`,
-            message,
-          });
         });
     };
+
+    onErrorCaptured(() => {
+      nProgress.done();
+    });
 
     return {
       fileList,
@@ -286,6 +343,9 @@ export default {
       date,
       imageListByCathegory,
       imagePlaceholder,
+      result,
+      genesSignatures,
+      images,
     };
   },
 };
@@ -295,7 +355,6 @@ export default {
 .app-content h2:first-child {
   margin-bottom: var(--size-3);
 }
-
 
 .color--1,
 .color--2,
@@ -345,7 +404,6 @@ export default {
 
   .details {
     grid-area: details;
-
   }
 
   .details,
@@ -357,7 +415,6 @@ export default {
       margin-bottom: var(--size-2);
     }
   }
-
 
   .notes {
     grid-area: notes;
@@ -427,8 +484,7 @@ export default {
 }
 
 .modal {
-
-  &>header {
+  & > header {
     position: relative;
 
     padding-right: 2rem;

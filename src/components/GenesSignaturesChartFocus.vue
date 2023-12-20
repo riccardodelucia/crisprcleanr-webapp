@@ -51,19 +51,19 @@
       {{ data.thresholdLabel }}
     </text>
 
-    <MarksCurve
+    <GenesSignaturesMarksCurve
       :data="filteredData"
       :width="innerWidth"
       :x-scale="xScale"
       :y-scale="yScale"
-    ></MarksCurve>
+    ></GenesSignaturesMarksCurve>
     <g :transform="`translate(${curveWidth + paddingX}, 0)`">
-      <MarksGenesSet
+      <GenesSignaturesMarksGenesSet
         :gene-set="filteredData.genesSet"
         :width="geneSetWidth"
         :y-scale="yScale"
         :thr="data.threshold"
-      ></MarksGenesSet>
+      ></GenesSignaturesMarksGenesSet>
       <text
         :transform="`translate(0, ${innerHeight + xAxisLabelOffset})`"
         class="genes-set__label"
@@ -89,12 +89,12 @@ import {
   getInnerChartSizes,
   makeReactiveAxis,
 } from '@computational-biology-sw-web-dev-unit/ht-vue';
-import MarksCurve from '@/components/charts/genes_signatures/MarksCurve.vue';
-import MarksGenesSet from '@/components/charts/genes_signatures/MarksGenesSet.vue';
+import GenesSignaturesMarksCurve from '@/components/GenesSignaturesMarksCurve.vue';
+import GenesSignaturesMarksGenesSet from '@/components/GenesSignaturesMarksGenesSet.vue';
 
 export default {
-  name: 'GenesSignaturesFocus',
-  components: { MarksCurve, MarksGenesSet },
+  name: 'GenesSignaturesChartFocus',
+  components: { GenesSignaturesMarksCurve, GenesSignaturesMarksGenesSet },
   props: {
     data: {
       type: Object,

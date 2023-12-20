@@ -3,17 +3,27 @@
     <div class="app-content">
       <div class="ht-card ht-container">
         <h2>Results</h2>
-        <ht-datatable :columns="columns" :rows="results" :current-page="currentPage">
+        <p v-if="results.length === 0">loading...</p>
+        <ht-datatable
+          v-else
+          :columns="columns"
+          :rows="results"
+          :current-page="currentPage"
+        >
           <template #default="slotProps">
             <tr>
-              <td v-if="!isMobile">{{ slotProps.row.id }}</td>
-              <td v-if="!isMobile">
+              <td>{{ slotProps.row.id }}</td>
+              <td>
                 {{ date(slotProps.row.dateTime) }}
               </td>
               <td>{{ slotProps.row.title }}</td>
               <td>{{ slotProps.row.status }}</td>
               <td>
-                <router-link class="ht-button" data-type="ghost" :to="`/jobs/${slotProps.row.id}`">
+                <router-link
+                  class="ht-button"
+                  data-type="ghost"
+                  :to="`/jobs/${slotProps.row.id}`"
+                >
                   Show
                 </router-link>
               </td>
@@ -26,25 +36,19 @@
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue';
-import {
-  resizeListener,
-  date,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { onMounted, ref, watchEffect } from 'vue';
+import { date } from '@computational-biology-sw-web-dev-unit/ht-vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 
 import { useRoute } from 'vue-router';
+
+import CcrAPI from '@/api/ccr.js';
 
 export default {
   title: 'Jobs Results',
   name: 'ViewCRISPRcleanRResultsList',
   components: { AppLayout },
-  props: {
-    results: {
-      type: Array,
-      default: () => [],
-    },
-  },
+
   setup() {
     const route = useRoute();
 
@@ -54,51 +58,37 @@ export default {
       currentPage.value = parseInt(route.query?.page) || 1;
     });
 
-    const isMobile = ref(false);
+    const results = ref([]);
 
-    resizeListener(() => (isMobile.value = window.innerWidth < 770));
-
-    const columns = ref(null);
-
-    watchEffect(() => {
-      if (!isMobile.value) {
-        columns.value = [
-          { width: '30%', label: 'Job ID', name: 'id', type: 'string' },
-          {
-            width: '20%',
-            label: 'Submission Date',
-            name: 'dateTime',
-            type: 'date',
-          },
-          { width: '30%', label: 'Title', name: 'title', type: 'string' },
-          { width: '10%', label: 'Status', name: 'status', type: 'string' },
-
-          {
-            width: '10%',
-            label: 'Actions',
-            name: 'actions',
-            isSortable: false,
-          },
-        ];
-      } else {
-        columns.value = [
-          { width: 'min-content', label: 'Title', name: 'title' },
-          { width: 'min-content', label: 'Status', name: 'status' },
-          {
-            width: 'min-content',
-            label: 'Actions',
-            name: 'actions',
-            isSortable: false,
-          },
-        ];
-      }
+    onMounted(() => {
+      return CcrAPI.getResultsList().then((response) => {
+        results.value = response.data;
+      });
     });
+
+    const columns = [
+      { width: '30%', label: 'Job ID', name: 'id', type: 'string' },
+      {
+        width: '20%',
+        label: 'Submission Date',
+        name: 'dateTime',
+        type: 'date',
+      },
+      { width: '30%', label: 'Title', name: 'title', type: 'string' },
+      { width: '10%', label: 'Status', name: 'status', type: 'string' },
+      {
+        width: '10%',
+        label: 'Actions',
+        name: 'actions',
+        isSortable: false,
+      },
+    ];
 
     return {
       columns,
       date,
-      isMobile,
       currentPage,
+      results,
     };
   },
 };

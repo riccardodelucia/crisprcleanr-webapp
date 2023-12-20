@@ -1,12 +1,33 @@
 <template>
-  <ht-select v-model="genesSet" class="ht-formgroup" label="Reference Genes Set" :options="genesSetsOptions">
-  </ht-select>
-  <svg class="ht-chart" preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')">
-    <GenesSignaturesChartFocus :data="chartData" :width="chartFocusWidth" :height="height" :y-domain="yDomainFocus"
-      :genes-set="genesSet.genesSet"></GenesSignaturesChartFocus>
+  <div class="chart-select">
+    <ht-select
+      v-model="genesSet"
+      label="Reference Genes Set"
+      :options="genesSetsOptions"
+    >
+    </ht-select>
+  </div>
+
+  <svg
+    class="ht-chart"
+    preserveAspectRatio="xMinYMin meet"
+    :viewBox="[0, 0, width, height].join(' ')"
+  >
+    <GenesSignaturesChartFocus
+      :data="chartData"
+      :width="chartFocusWidth"
+      :height="height"
+      :y-domain="yDomainFocus"
+      :genes-set="genesSet"
+    ></GenesSignaturesChartFocus>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
-      <GenesSignaturesChartContext :data="chartData" :width="chartContextWidth" :height="height"
-        :y-domain="yDomainContext" @brush="brushed"></GenesSignaturesChartContext>
+      <GenesSignaturesChartContext
+        :data="chartData"
+        :width="chartContextWidth"
+        :height="height"
+        :y-domain="yDomainContext"
+        @brush="brushed"
+      ></GenesSignaturesChartContext>
     </g>
   </svg>
 </template>
@@ -15,8 +36,8 @@
 import { extent } from 'd3';
 import { ref, reactive } from 'vue';
 
-import GenesSignaturesChartFocus from '@/components/charts/genes_signatures/GenesSignaturesChartFocus.vue';
-import GenesSignaturesChartContext from '@/components/charts/genes_signatures/GenesSignaturesChartContext.vue';
+import GenesSignaturesChartFocus from '@/components/GenesSignaturesChartFocus.vue';
+import GenesSignaturesChartContext from '@/components/GenesSignaturesChartContext.vue';
 
 const setupChart = (data) => {
   const genes = data.curve
@@ -59,7 +80,7 @@ const setupChart = (data) => {
 };
 
 export default {
-  name: 'GeneSignatures',
+  name: 'GenesSignaturesMultichart',
   components: { GenesSignaturesChartFocus, GenesSignaturesChartContext },
   props: {
     data: {
@@ -79,16 +100,16 @@ export default {
     };
 
     const genesSetsOptions = reactive([
-      { label: 'Proteasome', genesSet: 'proteasome' },
-      { label: 'Spliceosome', genesSet: 'spliceosome' },
-      { label: 'Ribosomal Proteins', genesSet: 'ribosomalProteins' },
-      { label: 'DNA Replication', genesSet: 'dnaReplication' },
-      { label: 'RNA Polymerase', genesSet: 'rnaPolymerase' },
-      { label: 'BAGEL Essentials', genesSet: 'bagelEssential' },
-      { label: 'BAGEL Non Essential', genesSet: 'bagelNonEssential' },
+      { label: 'Proteasome', value: 'proteasome' },
+      { label: 'Spliceosome', value: 'spliceosome' },
+      { label: 'Ribosomal Proteins', value: 'ribosomalProteins' },
+      { label: 'DNA Replication', value: 'dnaReplication' },
+      { label: 'RNA Polymerase', value: 'rnaPolymerase' },
+      { label: 'BAGEL Essentials', value: 'bagelEssential' },
+      { label: 'BAGEL Non Essential', value: 'bagelNonEssential' },
     ]);
 
-    const genesSet = ref(genesSetsOptions[0]);
+    const genesSet = ref(genesSetsOptions[0].value);
 
     const chartFocusWidth = 450;
     const chartContextWidth = 70;
@@ -111,30 +132,13 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-select {
+.chart-select {
   margin-bottom: var(--size-3);
-}
+  display: grid;
+  grid-row-gap: var(--size-2);
 
-.chart__line {
-  stroke-width: 1;
-
-  &--dashed {
-    stroke-dasharray: 4 2;
+  :deep(label) {
+    font-weight: var(--font-weight-6);
   }
-
-  &--black {
-    stroke: black;
-  }
-
-  &--red {
-    stroke: red;
-  }
-}
-
-.axis-label {
-  text-anchor: middle;
-  font-family: sans-serif;
-  font-size: 15px;
-  color: black;
 }
 </style>

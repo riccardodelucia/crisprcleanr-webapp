@@ -31,7 +31,7 @@
 
 <script>
 import { scaleLinear, extent, select, brushX, axisBottom } from 'd3';
-import ChromosomeMarks from '@/components/charts/chromosome/ChromosomeMarks.vue';
+import ChromosomeMarks from '@/components/ChromosomeMarks.vue';
 
 import {
   getInnerChartSizes,

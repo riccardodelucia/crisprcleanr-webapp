@@ -18,7 +18,6 @@
       :x-scale="xScale"
       :y-scale="yScale"
       :point-radius="4"
-      :selections="selections"
       clip-path="url(#clip-segments)"
     />
   </g>
@@ -26,7 +25,7 @@
 
 <script>
 import { scaleLinear, extent, select, axisLeft, axisBottom } from 'd3';
-import ChromosomeMarks from '@/components/charts/chromosome/ChromosomeMarks.vue';
+import ChromosomeMarks from '@/components/ChromosomeMarks.vue';
 
 import { computed, ref } from 'vue';
 
@@ -51,10 +50,6 @@ export default {
     height: {
       type: Number,
       default: 0,
-    },
-    selections: {
-      type: Object,
-      default: () => ({ segments: true, guides: true }),
     },
     xDomain: {
       type: Array,

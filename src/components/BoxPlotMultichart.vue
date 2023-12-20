@@ -1,23 +1,50 @@
 <template>
   <div class="controls-container">
-    <ht-toggle-switch v-if="data.raw && data.norm" v-model="showNormalizedData"
-      :option="!showNormalizedData ? 'raw' : 'normalized'" />
+    <div class="toggle-switch-container">
+      <ht-toggle-switch
+        v-if="data.raw && data.norm"
+        v-model="showNormalizedData"
+        name="normalization"
+        :value-on="toggleSwitchValueOn"
+        :value-off="toggleSwitchValueOff"
+      />
+    </div>
+    <!-- <ht-toggle-switch
+      v-if="data.raw && data.norm"
+      v-model="showNormalizedData"
+      :option="!showNormalizedData ? 'raw' : 'normalized'"
+    /> -->
   </div>
-  <svg ref="chart" class="ht-chart" preserveAspectRatio="xMinYMin meet" :viewBox="[0, 0, width, height].join(' ')"
-    :width="width" :height="height">
+  <svg
+    ref="chart"
+    class="ht-chart"
+    preserveAspectRatio="xMinYMin meet"
+    :viewBox="[0, 0, width, height].join(' ')"
+    :width="width"
+    :height="height"
+  >
     <g>
-      <BoxPlotChartFocus :data="selectedChartData" :width="chartFocusWidth" :height="height" :y-domain="yDomainFocus" />
+      <BoxPlotChartFocus
+        :data="selectedChartData"
+        :width="chartFocusWidth"
+        :height="height"
+        :y-domain="yDomainFocus"
+      />
     </g>
     <g :transform="`translate(${chartFocusWidth}, 0)`">
-      <BoxPlotChartContext :width="chartContextWidth" :height="height" :y-domain="yDomainContext" @brush="brushed">
-      </BoxPlotChartContext>
+      <BoxPlotChartContext
+        :width="chartContextWidth"
+        :height="height"
+        :y-domain="yDomainContext"
+        @brush="brushed"
+      ></BoxPlotChartContext>
     </g>
   </svg>
 </template>
 
 <script>
-import BoxPlotChartFocus from '@/components/charts/boxplot/BoxPlotChartFocus.vue';
-import BoxPlotChartContext from '@/components/charts/boxplot/BoxPlotChartContext.vue';
+import BoxPlotChartFocus from '@/components/BoxPlotChartFocus.vue';
+import BoxPlotChartContext from '@/components/BoxPlotChartContext.vue';
 
 import { augmentedExtent } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
@@ -83,10 +110,15 @@ export default {
       props.data
     );
 
-    const showNormalizedData = ref(Boolean(props.data?.norm));
+    const toggleSwitchValueOn = 'normalized';
+    const toggleSwitchValueOff = 'raw';
+
+    const showNormalizedData = ref(toggleSwitchValueOn);
 
     const selectedChartData = computed(() =>
-      !showNormalizedData.value ? chartDataUnnormalized : chartDataNormalized
+      showNormalizedData.value === toggleSwitchValueOn
+        ? chartDataNormalized
+        : chartDataUnnormalized
     );
 
     const yDomainFocus = ref(null);
@@ -98,12 +130,14 @@ export default {
       chartDataNormalized && dataExtent(chartDataNormalized);
 
     watchEffect(() => {
-      yDomainFocus.value = showNormalizedData.value
-        ? yDomainMaxNormalized
-        : yDomainMaxUnnormalized;
-      yDomainContext.value = showNormalizedData.value
-        ? yDomainMaxNormalized
-        : yDomainMaxUnnormalized;
+      yDomainFocus.value =
+        showNormalizedData.value === toggleSwitchValueOn
+          ? yDomainMaxNormalized
+          : yDomainMaxUnnormalized;
+      yDomainContext.value =
+        showNormalizedData.value === toggleSwitchValueOn
+          ? yDomainMaxNormalized
+          : yDomainMaxUnnormalized;
     });
 
     const brushed = (extent) => {
@@ -121,6 +155,8 @@ export default {
       height: 500,
       chartFocusWidth,
       chartContextWidth,
+      toggleSwitchValueOn,
+      toggleSwitchValueOff,
       showNormalizedData,
       needsToggleSwitch,
       brushed,

@@ -15,8 +15,10 @@
           </p>
           <p>
             Publication:
-            <a target="_blank" href="https://doi.org/10.1016/j.crmeth.2022.100373">Vinceti, De Lucia et al. Cell Rep
-              Methods. 2023
+            <a
+              target="_blank"
+              href="https://doi.org/10.1016/j.crmeth.2022.100373"
+              >Vinceti, De Lucia et al. Cell Rep Methods. 2023
             </a>
           </p>
         </article>
@@ -24,7 +26,11 @@
           <router-link :to="{ name: 'submit' }" class="ht-button">
             Submit New Job
           </router-link>
-          <router-link :to="{ name: 'resultsList' }" class="ht-button" data-type="secondary">
+          <router-link
+            :to="{ name: 'resultsList' }"
+            class="ht-button"
+            data-type="secondary"
+          >
             Results
           </router-link>
           <a class="ht-button" data-type="ghost" @click="downloadSampleData">
@@ -94,7 +100,9 @@
             <b>CRISPRcleanR WebApp</b> allows to easily run CRISPRcleanR on your
             experimental data through an <b>easy-to-use interface</b>. New
             <b>jobs</b> can be submitted from the
-            <router-link :to="{ name: 'submit' }">dedicated section</router-link>
+            <router-link :to="{ name: 'submit' }"
+              >dedicated section</router-link
+            >
             in the app. A <b>multi-step form</b> will guide you through the job
             submission, where all relevant information needs to be filled. Not
             only CRISPRcleanR WebApp natively supports a set of
@@ -104,8 +112,9 @@
             CRISPR data can be provided either as <b>FASTQ/BAM files</b> or
             <b>pre-computed counts file</b>. Submitted jobs are available from
             the
-            <router-link :to="{ name: 'resultsList' }">results section</router-link>. For each job, a <b>dedicated result
-              page</b> is made available,
+            <router-link :to="{ name: 'resultsList' }"
+              >results section</router-link
+            >. For each job, a <b>dedicated result page</b> is made available,
             where you can <b>download</b> all job-related data, together with
             static plots. Finally, a comprehensive set of
             <b>interactive charts</b> allows you to get insight over the outcome
@@ -146,7 +155,10 @@
                 </li>
               </ul>
               <video controls class="section__video">
-                <source src="@/assets/videos/step_1_compressed.mp4" type="video/mp4" />
+                <source
+                  src="@/assets/videos/step_1_compressed.mp4"
+                  type="video/mp4"
+                />
               </video>
             </div>
           </template>
@@ -166,7 +178,10 @@
                 </li>
               </ul>
               <video controls class="section__video">
-                <source src="@/assets/videos/step_2_compressed.mp4" type="video/mp4" />
+                <source
+                  src="@/assets/videos/step_2_compressed.mp4"
+                  type="video/mp4"
+                />
               </video>
             </div>
           </template>
@@ -189,7 +204,10 @@
                 </li>
               </ul>
               <video controls class="section__video">
-                <source src="@/assets/videos/step_3_compressed.mp4" type="video/mp4" />
+                <source
+                  src="@/assets/videos/step_3_compressed.mp4"
+                  type="video/mp4"
+                />
               </video>
             </div>
           </template>
@@ -201,12 +219,7 @@
 
 <script>
 import CcrAPI from '@/api/ccr.js';
-import {
-  download,
-  parseErrorMesssage,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
-
-import { sendErrorNotification } from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { download } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
 import WebLayout from '@/layouts/WebLayout.vue';
 
@@ -216,33 +229,25 @@ export default {
   title: 'CRISPRcleanR',
   name: 'ViewCRISPRcleanRHome',
   components: { WebLayout },
+  errorCaptured() {
+    nProgress.done();
+    return true;
+  },
   methods: {
     downloadSampleData() {
       nProgress.start();
       const filename = 'CRISPRcleanR_WebApp_example_files.zip';
 
-      return CcrAPI.getStaticResource(filename)
-        .then((response) => {
-
-          download(response.data, filename);
-          nProgress.done();
-        })
-        .catch((error) => {
-          nProgress.done();
-          const message = parseErrorMesssage(error);
-          sendErrorNotification({
-            title: 'Unable to download sample data',
-            message,
-          });
-        });
+      return CcrAPI.getStaticResource(filename).then((response) => {
+        download(response.data, filename);
+        nProgress.done();
+      });
     },
   },
 };
 </script>
 
 <style lang="postcss" scoped>
-@import '@computational-biology-sw-web-dev-unit/ht-design/style.css';
-
 section {
   margin-bottom: var(--size-10);
 }
@@ -258,9 +263,11 @@ video {
 
 .section-hero {
   color: #fff;
-  background-image: linear-gradient(to right bottom,
+  background-image: linear-gradient(
+      to right bottom,
       rgba(31, 89, 160, 0.9),
-      rgba(22, 53, 92, 0.9)),
+      rgba(22, 53, 92, 0.9)
+    ),
     url('/src/assets/img/dna-unsplash.jpg');
   background-size: cover;
 
@@ -303,7 +310,7 @@ video {
       grid-area: links;
       gap: var(--size-2);
 
-      >* {
+      > * {
         flex: 1;
       }
     }
@@ -387,16 +394,17 @@ video {
     box-shadow: var(--shadow-3);
   }
 
-  &>*:first-child {
+  & > *:first-child {
     grid-area: info;
   }
 
-  &>*:last-child {
+  & > *:last-child {
     grid-area: image;
   }
 
   @media (min-width: 55em) {
     grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 'info image';
   }
 
   p {

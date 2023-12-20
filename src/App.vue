@@ -1,17 +1,28 @@
 <template>
   <router-view />
   <div class="fixed-container ht-layout-stack">
-    <div>
-      <ht-toast v-for="({ type, title, message, id }, idx) in notifications" :key="idx" :type="type" :title="title"
-        :toast-id="id" @close-notification="onCloseNotification">
-        <p>{{ message }}</p>
-      </ht-toast>
-    </div>
-    <div v-if="uploads.length > 0" class="ht-layout-stack">
-      <ht-file-upload-controller v-for="upload in uploads" :key="upload.id" class="upload-controller" :upload="upload"
-        @remove-upload="onRemoveUpload">
-      </ht-file-upload-controller>
-    </div>
+    <ht-toast
+      v-for="({ type, title, message, id }, idx) in notifications"
+      :key="idx"
+      :type="type"
+      :title="title"
+      :toast-id="id"
+      @close-notification="onCloseNotification"
+    >
+      <p>{{ message }}</p>
+    </ht-toast>
+    <template v-if="uploads.length > 0">
+      <div class="ht-card ht-container">
+        <FileUploadController
+          v-for="upload in uploads"
+          :key="upload.id"
+          class="upload-controller"
+          :upload="upload"
+          @remove-upload="onRemoveUpload"
+        >
+        </FileUploadController>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -22,10 +33,14 @@ import {
   removeNotification,
 } from '@computational-biology-sw-web-dev-unit/ht-vue';
 
+import FileUploadController from './components/FileUploadController.vue';
+
 export default {
+  components: { FileUploadController },
   data() {
     return { uploads, notifications };
   },
+
   methods: {
     onRemoveUpload(upload) {
       removeFileUpload(upload);
@@ -56,5 +71,9 @@ export default {
 
 .ht-card {
   box-shadow: var(--shadow-3);
+}
+
+.toggle-switch-container {
+  width: 12rem;
 }
 </style>
