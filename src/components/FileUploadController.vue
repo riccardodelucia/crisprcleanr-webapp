@@ -26,7 +26,7 @@
         v-if="state.matches('uploading')"
         type="button"
         icon-type="trash-2"
-        width="20px"
+        :width="20"
         @click="send('ABORT')"
       >
       </ht-button-icon>
@@ -34,7 +34,7 @@
         v-else
         type="button"
         icon-type="x-circle"
-        width="20px"
+        :width="20"
         @click="$emit('remove-upload', upload)"
       >
       </ht-button-icon>

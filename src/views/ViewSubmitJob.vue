@@ -3,6 +3,7 @@
     <div class="app-content">
       <div class="ht-card ht-container ht-layout-stack">
         <h1>Submit a new job</h1>
+        {{ values }}
         <ht-form-progress-bar
           :steps="progressSteps"
           :current-step="currentStep"

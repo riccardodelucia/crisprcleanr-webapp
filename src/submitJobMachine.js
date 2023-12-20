@@ -181,8 +181,11 @@ const assignSubmitData = assign({
     submitData.sendEmail = formData?.sendEmail ? true : false;
     submitData.normMinReads = formData.normMinReads;
     submitData.method = formData.method;
-    if (currentSchema.enteringLibrary === 'libraryBuiltin')
+    if (currentSchema.enteringLibrary === 'libraryBuiltin') {
       submitData.libraryBuiltin = formData.libraryBuiltin;
+      submitData.nControls = formData.nControls;
+    }
+
     if (currentSchema.enteringLibrary === 'libraryFile')
       submitData.libraryFile = formData.libraryFile;
     if (currentSchema.enteringFiles === 'fileCounts')
