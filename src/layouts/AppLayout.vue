@@ -1,5 +1,22 @@
 <template>
-  <ht-layout-app :sidenav-object="sidenavObject">
+  <ht-layout-app sidenav-title="CRISPRcleanR">
+    <template #sidenav-list>
+      <li class="sidenav-link">
+        <RouterLink active-class="active" to="/home">
+          <VueFeather type="home"></VueFeather><span>Home</span>
+        </RouterLink>
+      </li>
+      <li class="sidenav-link">
+        <RouterLink active-class="active" to="/submit">
+          <VueFeather type="upload"></VueFeather><span>Submit</span>
+        </RouterLink>
+      </li>
+      <li class="sidenav-link">
+        <RouterLink active-class="active" to="/jobs">
+          <VueFeather type="eye"></VueFeather><span>Results</span>
+        </RouterLink>
+      </li>
+    </template>
     <template #header>
       <ul class="ht-reset ht-flex">
         <li>
@@ -13,45 +30,43 @@
 </template>
 
 <script>
+import VueFeather from 'vue-feather';
+import { RouterLink } from 'vue-router';
+
 export default {
   name: 'AppLayout',
-
-  setup() {
-    const sidenavObject = {
-      title: 'CRISPRcleanR',
-      links: [
-        { id: 1, name: 'home', label: 'Home', type: 'home', url: "/home" },
-        {
-          id: 2,
-          name: 'submit',
-          label: 'Submit New Job',
-          type: 'upload',
-          url: "/submit"
-        },
-        {
-          id: 3,
-          name: 'resultsList',
-          label: 'Results',
-          type: 'eye',
-          url: "/jobs"
-        },
-      ],
-    };
-
-    return {
-      sidenavObject,
-    };
-  },
+  components: { VueFeather, RouterLink },
 };
 </script>
 
-<style lang="postcss">
-.app-content {
-  padding: var(--size-4);
-  overflow-x: scroll;
+<style lang="postcss" scoped>
+.sidenav-link {
+  margin-bottom: var(--size-1);
 }
 
-#main {
-  overflow-x: scroll;
+.sidenav-link > a {
+  display: flex;
+  align-items: center;
+  padding: var(--size-2);
+  gap: var(--size-3);
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+
+  &.active {
+    background-color: var(--ht-color-secondary);
+  }
+
+  &:not(.active):hover {
+    background-color: var(--ht-color-secondary);
+  }
+
+  &:not(.active):hover span {
+    transform: translateX(0.5em);
+  }
+
+  & > span {
+    transition: transform 0.3s ease-in-out;
+  }
 }
 </style>

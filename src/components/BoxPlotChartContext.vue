@@ -1,9 +1,18 @@
 <template>
-  <g class="brush-area" :transform="`translate(${margin.left}, ${margin.top})`"><ht-brush-area :width="innerWidth"
-      :height="innerHeight" v-bind="$attrs" :domain="yDomain" :scale="yScale">
+  <g class="brush-area" :transform="`translate(${margin.left}, ${margin.top})`"
+    ><ht-brush-area
+      :width="innerWidth"
+      :height="innerHeight"
+      v-bind="$attrs"
+      :domain="yDomain"
+      :scale="yScale"
+    >
       <rect x="0" y="0" :width="innerWidth" :height="innerHeight" />
-      <text :transform="`translate(${innerWidth / 2}, ${innerHeight / 2
-        }) rotate(90 0 0)`">
+      <text
+        :transform="`translate(${innerWidth / 2}, ${
+          innerHeight / 2
+        }) rotate(90 0 0)`"
+      >
         Drag to zoom
       </text>
     </ht-brush-area>
@@ -14,11 +23,8 @@
 </template>
 
 <script>
-import {
-  getInnerChartSizes,
-  makeReactiveAxis,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
-import { computed, ref } from 'vue';
+import { getInnerChartSizes } from '../utils.js';
+import { computed, ref, watchEffect } from 'vue';
 import { scaleLinear, select, axisRight } from 'd3';
 
 export default {
@@ -57,9 +63,14 @@ export default {
       return scaleLinear().domain(props.yDomain).range([0, innerHeight]);
     });
 
-    makeReactiveAxis(() => {
-      select(yAxis.value).call(axisRight(yScale.value));
-    });
+    watchEffect(
+      () => {
+        select(yAxis.value).call(axisRight(yScale.value));
+      },
+      {
+        flush: 'post',
+      }
+    );
 
     return { margin, innerWidth, innerHeight, yScale, yAxis };
   },

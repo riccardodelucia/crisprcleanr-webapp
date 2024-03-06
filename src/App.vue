@@ -76,4 +76,13 @@ export default {
 .toggle-switch-container {
   width: 12rem;
 }
+
+.app-content {
+  padding: var(--size-4);
+  overflow-x: scroll;
+}
+
+#main {
+  overflow-x: scroll;
+}
 </style>

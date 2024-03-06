@@ -37,7 +37,7 @@
 
 <script>
 import { onMounted, ref, watchEffect } from 'vue';
-import { date } from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { date } from '../utils.js';
 import AppLayout from '@/layouts/AppLayout.vue';
 
 import { useRoute } from 'vue-router';

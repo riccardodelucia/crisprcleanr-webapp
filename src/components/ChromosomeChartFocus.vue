@@ -27,13 +27,11 @@
 import { scaleLinear, extent, select, axisLeft, axisBottom } from 'd3';
 import ChromosomeMarks from '@/components/ChromosomeMarks.vue';
 
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 
-import {
-  getInnerChartSizes,
-  augmentedExtent,
-  makeReactiveAxis,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { getInnerChartSizes } from '../utils.js';
+
+import { augmentedExtent } from '../utils.js';
 
 export default {
   name: 'ChromosomeChartFocus',
@@ -81,19 +79,29 @@ export default {
       .domain(augmentedYExtent)
       .range([innerHeight, 0]);
 
-    makeReactiveAxis(() => {
-      select(yAxis.value).call(axisLeft(yScale).tickSize(-innerWidth));
-      select(yAxis.value).select('.domain').remove();
-      select(yAxis.value).selectAll('.tick').attr('stroke-opacity', 0.2);
-    });
+    watchEffect(
+      () => {
+        select(yAxis.value).call(axisLeft(yScale).tickSize(-innerWidth));
+        select(yAxis.value).select('.domain').remove();
+        select(yAxis.value).selectAll('.tick').attr('stroke-opacity', 0.2);
+      },
+      {
+        flush: 'post',
+      }
+    );
 
     const xScale = computed(() => {
       return scaleLinear().domain(extent(props.xDomain)).range([0, innerWidth]);
     });
 
-    makeReactiveAxis(() => {
-      select(xAxis.value).call(axisBottom(xScale.value));
-    });
+    watchEffect(
+      () => {
+        select(xAxis.value).call(axisBottom(xScale.value));
+      },
+      {
+        flush: 'post',
+      }
+    );
 
     const focusData = computed(() => {
       return {

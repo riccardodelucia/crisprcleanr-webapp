@@ -2,7 +2,7 @@ import { getEnv } from '@/utils.js';
 import axios from 'axios';
 
 import { interceptorAuthorize } from '@/authentication.js';
-import { interceptorCamelize } from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { interceptorCamelize } from '../utils.js';
 
 const baseURL = `${getEnv('VITE_URL_IORIO_CCR_BACKEND')}`;
 const connectionTimeout = `${getEnv('VITE_CONNECTION_TIMEOUT_MS')}`;

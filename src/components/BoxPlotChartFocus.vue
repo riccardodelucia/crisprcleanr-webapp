@@ -31,12 +31,9 @@ import { scaleBand, scaleLinear, select, axisBottom, axisLeft } from 'd3';
 
 import BoxPlotMarks from '@/components/BoxPlotMarks.vue';
 
-import {
-  getInnerChartSizes,
-  makeReactiveAxis,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { getInnerChartSizes } from '../utils.js';
 
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 
 export default {
   name: 'BoxPlotChartFocus',
@@ -81,19 +78,29 @@ export default {
       .range([0, innerWidth])
       .padding(0.5);
 
-    makeReactiveAxis(() => {
-      select(xAxis.value).call(axisBottom(xScale));
-      select(xAxis.value).select('.domain').remove();
-      select(xAxis.value).selectAll('.tick line').remove();
-    });
+    watchEffect(
+      () => {
+        select(xAxis.value).call(axisBottom(xScale));
+        select(xAxis.value).select('.domain').remove();
+        select(xAxis.value).selectAll('.tick line').remove();
+      },
+      {
+        flush: 'post',
+      }
+    );
 
     const yScale = computed(() => {
       return scaleLinear().domain(props.yDomain).range([0, innerHeight]);
     });
 
-    makeReactiveAxis(() => {
-      select(yAxis.value).call(axisLeft(yScale.value));
-    });
+    watchEffect(
+      () => {
+        select(yAxis.value).call(axisLeft(yScale.value));
+      },
+      {
+        flush: 'post',
+      }
+    );
 
     const filteredData = computed(() => {
       return props.data.map((boxplot) => ({

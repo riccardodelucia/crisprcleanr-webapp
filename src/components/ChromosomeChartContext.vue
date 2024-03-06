@@ -33,12 +33,9 @@
 import { scaleLinear, extent, select, brushX, axisBottom } from 'd3';
 import ChromosomeMarks from '@/components/ChromosomeMarks.vue';
 
-import {
-  getInnerChartSizes,
-  makeReactiveAxis,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { getInnerChartSizes } from '../utils.js';
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 
 export default {
   name: 'ChromosomeChartContext',
@@ -86,9 +83,14 @@ export default {
       .domain([0, props.data.sgRnaArray.length])
       .range([0, innerWidth]);
 
-    makeReactiveAxis(() => {
-      select(xAxis.value).call(axisBottom(xScale));
-    });
+    watchEffect(
+      () => {
+        select(xAxis.value).call(axisBottom(xScale));
+      },
+      {
+        flush: 'post',
+      }
+    );
 
     const updateScale = ({ selection }) => {
       const extent = selection ? selection.map(xScale.invert) : props.xDomain;

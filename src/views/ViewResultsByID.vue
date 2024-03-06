@@ -20,7 +20,7 @@
             <li><b>Email:</b> {{ result.email }}</li>
             <li><b>Data Label:</b> {{ result.label }}</li>
             <li><b>Status:</b> {{ result.status }}</li>
-            <li><b>Date Time:</b> {{ result.dateTime }}</li>
+            <li><b>Date Time:</b> {{ date(result.dateTime) }}</li>
             <li><b>Number of Controls:</b> {{ result.nControls }}</li>
             <li>
               <b>Min number of reads in the control sample:</b>
@@ -197,7 +197,7 @@ import { ContentLoader } from 'vue-content-loader';
 
 import imagePlaceholder from '@/assets/img/placeholder-image.png';
 
-import { download, date } from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { download } from '../utils.js';
 
 import { useAuth } from '@/authentication.js';
 import nProgress from 'nprogress';
@@ -205,6 +205,8 @@ import nProgress from 'nprogress';
 import CcrAPI from '@/api/ccr.js';
 
 import imageList from '@/images.json';
+
+import { date } from '../utils.js';
 
 export default {
   name: 'ViewResultsByID',

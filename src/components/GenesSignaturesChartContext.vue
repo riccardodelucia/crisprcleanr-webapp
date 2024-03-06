@@ -33,14 +33,11 @@
 </template>
 
 <script>
-import {
-  getInnerChartSizes,
-  makeReactiveAxis,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { getInnerChartSizes } from '../utils.js';
 import { select, scaleLog, extent, scaleLinear, axisRight } from 'd3';
 import GenesSignaturesMarksCurve from '@/components/GenesSignaturesMarksCurve.vue';
 
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 export default {
   name: 'GenesSignaturesChartContext',
@@ -80,9 +77,14 @@ export default {
 
     const yScale = scaleLog().domain(props.yDomain).range([0, innerHeight]);
 
-    makeReactiveAxis(() => {
-      select(yAxis.value).call(axisRight(yScale));
-    });
+    watchEffect(
+      () => {
+        select(yAxis.value).call(axisRight(yScale));
+      },
+      {
+        flush: 'post',
+      }
+    );
 
     const xDomain = extent(props.data.genes.map((item) => item.x));
 

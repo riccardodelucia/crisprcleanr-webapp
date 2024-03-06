@@ -219,7 +219,8 @@
 
 <script>
 import CcrAPI from '@/api/ccr.js';
-import { download } from '@computational-biology-sw-web-dev-unit/ht-vue';
+
+import { download } from '../utils.js';
 
 import WebLayout from '@/layouts/WebLayout.vue';
 

@@ -83,12 +83,9 @@ import {
   axisLeft,
   axisBottom,
 } from 'd3';
-import { ref, computed } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 
-import {
-  getInnerChartSizes,
-  makeReactiveAxis,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { getInnerChartSizes } from '../utils.js';
 import GenesSignaturesMarksCurve from '@/components/GenesSignaturesMarksCurve.vue';
 import GenesSignaturesMarksGenesSet from '@/components/GenesSignaturesMarksGenesSet.vue';
 
@@ -136,17 +133,23 @@ export default {
 
     const xScale = scaleLinear().domain(xDomain).range([0, curveWidth]);
 
-    makeReactiveAxis(() => {
-      select(xAxis.value).call(axisBottom(xScale));
-    });
+    watchEffect(
+      () => {
+        select(xAxis.value).call(axisBottom(xScale));
+      },
+      { flush: 'post' }
+    );
 
     const yScale = computed(() =>
       scaleLog().domain(props.yDomain).range([0, innerHeight])
     );
 
-    makeReactiveAxis(() => {
-      select(yAxis.value).call(axisLeft(yScale.value));
-    });
+    watchEffect(
+      () => {
+        select(yAxis.value).call(axisLeft(yScale.value));
+      },
+      { flush: 'post' }
+    );
 
     const selectedGenesSetRecall = computed(() => {
       const recall = props.data.genesSets[props.genesSet].score * 100;
