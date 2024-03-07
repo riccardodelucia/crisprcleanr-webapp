@@ -31,8 +31,8 @@ function parseErrorMesssage(error) {
         ? error.response.data.detail
         : 'Unknown API response error data'
       : error.message
-      ? error.message
-      : error;
+        ? error.message
+        : error;
   } else {
     message = error.message ? error.message : error;
   }
