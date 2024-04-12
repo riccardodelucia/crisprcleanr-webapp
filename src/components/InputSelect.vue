@@ -5,7 +5,7 @@
     :options="options"
     :error-message="errorMessage"
     v-bind="$attrs"
-    @update:model-value="onChange"
+    @update:model-value="onUpdate"
   ></ht-select>
 </template>
 
@@ -27,13 +27,13 @@ export default {
     const uuid = uuidv4();
     const { value, errorMessage, handleChange } = useField(() => props.name);
 
-    const onChange = (value) => {
-      handleChange(value);
+    const onUpdate = (value) => {
+      handleChange(value.value);
     };
 
     return {
       uuid,
-      onChange,
+      onUpdate,
       value,
       errorMessage,
     };

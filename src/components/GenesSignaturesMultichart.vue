@@ -1,9 +1,10 @@
 <template>
   <div class="chart-select">
     <ht-select
-      v-model="genesSet"
+      :model-value="genesSet"
       label="Reference Genes Set"
       :options="genesSetsOptions"
+      @update:model-value="onUpdate"
     >
     </ht-select>
   </div>
@@ -68,7 +69,7 @@ const setupChart = (data) => {
       };
       return acc;
     },
-    {}
+    {},
   );
 
   return {
@@ -89,6 +90,10 @@ export default {
     },
   },
   setup(props) {
+    const onUpdate = (gene) => {
+      genesSet.value = gene.value;
+    };
+
     const chartData = setupChart(props.data);
 
     const yDomainFocus = ref(extent(chartData.genes.map((item) => item.y)));
@@ -116,6 +121,7 @@ export default {
     const width = chartFocusWidth + chartContextWidth;
 
     return {
+      onUpdate,
       width,
       height: 700,
       chartFocusWidth,
