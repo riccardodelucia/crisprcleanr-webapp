@@ -14,12 +14,12 @@ import VueFeather from 'vue-feather';
 
 import { AxiosError } from 'axios';
 
-import { HTVue } from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { HTVue } from '@nf-daha-iu3/ht-vue';
 import {
   HTNotificationsPlugin,
   sendErrorNotification,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
-import '@computational-biology-sw-web-dev-unit/ht-vue/style.css';
+} from '@nf-daha-iu3/ht-vue';
+import '@nf-daha-iu3/ht-vue/style.css';
 
 nProgress.configure({ showSpinner: false });
 

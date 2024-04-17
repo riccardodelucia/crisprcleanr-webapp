@@ -31,7 +31,7 @@ import { uploads, removeFileUpload } from './uploads';
 import {
   notifications,
   removeNotification,
-} from '@computational-biology-sw-web-dev-unit/ht-vue';
+} from '@nf-daha-iu3/ht-vue';
 
 import FileUploadController from './components/FileUploadController.vue';
 

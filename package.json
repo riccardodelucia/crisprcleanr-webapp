@@ -10,8 +10,8 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
   },
   "dependencies": {
-    "@computational-biology-sw-web-dev-unit/ht-design": "^0.0.2",
-    "@computational-biology-sw-web-dev-unit/ht-vue": "^0.1.0",
+    "@nf-daha-iu3/ht-design": "^0.0.2",
+    "@nf-daha-iu3/ht-vue": "^0.1.0",
     "@xstate/vue": "^2.0.0",
     "axios": "^1.1.3",
     "camelize": "^1.0.0",

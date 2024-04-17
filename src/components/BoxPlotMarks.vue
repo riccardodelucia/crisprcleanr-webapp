@@ -28,7 +28,7 @@
 <script>
 import { setTooltipContent } from '@/utils.js';
 
-import { useTooltip } from '@computational-biology-sw-web-dev-unit/ht-vue';
+import { useTooltip } from '@nf-daha-iu3/ht-vue';
 
 import { computed } from 'vue';
 
