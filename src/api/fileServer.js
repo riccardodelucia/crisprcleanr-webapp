@@ -1,11 +1,9 @@
-import { getEnv } from '@/utils.js';
-
 import axios from 'axios';
 
 import { interceptorAuthorize } from '@/authentication.js';
 import { interceptorCamelize } from '../utils.js';
 
-const baseURL = `${getEnv('VITE_URL_IORIO_CCR_FILESERVER')}`;
+const baseURL = import.meta.env.VITE_URL_IORIO_CCR_FILESERVER;
 
 export default {
   setupUpload(file, objectKey) {

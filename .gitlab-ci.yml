@@ -1,158 +1,57 @@
 stages:
-  - lint
-  - build
-  - package
   - test
-  - tag
+  - build
   - deploy
 
 variables:
-  BUILD: $CI_COMMIT_SHORT_SHA
-
-print pipeline defined variables:
-  stage: .pre
-  script:
-    - echo "CI_COMMIT_SHORT_SHA = $CI_COMMIT_SHORT_SHA"
-    - echo "CI_COMMIT_REF_NAME = $CI_COMMIT_REF_NAME"
-    - echo "CI_REGISTRY_IMAGE = $CI_REGISTRY_IMAGE"
-    - echo "CI_COMMIT_TAG = $CI_COMMIT_TAG"
-
-
-.install packages:
-    variables:
-      PACKAGE_REGISTRY_PROJECT_ID: 194 # because before_script doesn't have access to CICD custom variables
-    before_script:
-      - echo $PACKAGE_REGISTRY_PROJECT_ID
-      - npm config set -- //${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
-      - npm config set @${CI_PROJECT_NAMESPACE}:registry=https://${CI_SERVER_HOST}/api/v4/projects/${PACKAGE_REGISTRY_PROJECT_ID}/packages/npm/
-      - npm install
+  WEBSERVER_FOLDER_NAME: crisprcleanr_webapp
 
 ####################################################################################################
-# merge request pipeline: run this job only when a merge request is opened to save pipeline runs
+include:
 
-.lint:
-  stage: lint
-  rules:
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+  - component: $CICD_COMPONENTS_PROJECT/test_build_vite@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      stage: test
+    rules:
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+        when: never
+      - if: $CI_COMMIT_BRANCH == 'production'
+        when: never
+      - when: always
 
-lint-dockerfile:
-  extends: .lint
-  image: hadolint/hadolint:latest-debian
-  script:
-    - hadolint Dockerfile
+  - component: $CICD_COMPONENTS_PROJECT/build_vite@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      stage: build
+      environment: staging
+    rules:
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+        when: always
+      - when: never
 
+  - component: $CICD_COMPONENTS_PROJECT/build_vite@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      stage: build
+      environment: production
+    rules:
+      - if: $CI_COMMIT_BRANCH == 'production'
+        when: always
+      - when: never
+  
+  - component: $CICD_COMPONENTS_PROJECT/deploy_to_static_webserver@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      folder_name: $WEBSERVER_FOLDER_NAME
+      environment: staging
+    rules:
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+        when: always
+      - when: never
 
-lint-code:
-  image: node:18-alpine
-  extends:
-    - .lint
-    - .install packages
-  script:
-    - npm run lint
+  - component: $CICD_COMPONENTS_PROJECT/deploy_to_static_webserver@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      folder_name: $WEBSERVER_FOLDER_NAME
+      environment: production
+    rules:
+      - if: $CI_COMMIT_BRANCH == 'production'
+        when: always
+      - when: never
 
-####################################################################################################
-# branch pipeline: build, package and test image on the master branch
-
-.master branch:
-  rules:
-    - if: $CI_OPEN_MERGE_REQUESTS
-      when: never
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH # excludes execution when tagging the commit
-      when: always
-    - when: never
-
-build website:
-  stage: build
-  extends:
-    - .install packages
-    - .master branch
-  image: node:18-alpine
-  script:
-    - npm run build
-    - echo $BUILD > dist/build.html
-  artifacts:
-    paths:
-      - dist
-
-build image:
-  stage: package
-  extends: .master branch
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
-  script:
-    - ls $CI_PROJECT_DIR/dist
-    - mkdir -p /kaniko/.docker
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - cat $CI_SERVER_TLS_CA_FILE >> /kaniko/ssl/certs/ca-certificates.crt
-    - /kaniko/executor --context $CI_PROJECT_DIR --destination $CI_REGISTRY_IMAGE:$BUILD --destination $CI_REGISTRY_IMAGE:latest
-
-test docker image:
-  stage: test
-  extends: .master branch
-  image: curlimages/curl
-  variables:
-    VERSION: latest
-  services:
-    - name: "$CI_REGISTRY_IMAGE:$BUILD"
-      alias: website
-  script:
-    - curl http://website/build.html | grep $BUILD
-
-####################################################################################################
-# tag pipeline: tag image with git tag
-tag image:
-  stage: tag
-  image:
-    name: gcr.io/go-containerregistry/crane:debug
-    entrypoint: [""]
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - crane tag $CI_REGISTRY_IMAGE:$BUILD $CI_COMMIT_REF_NAME
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: always
-    - when: never
-
-####################################################################################################
-# branch pipeline: deploy to environment
-.deploy to environment:
-  stage: deploy
-  image: debian:bullseye-slim
-  before_script:
-    - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan $VM_HOSTNAME >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - apt-get update -y
-    - apt-get install -y gettext
-  variables:
-    ENV_FILE: deploy.env
-    TAG: $BUILD
-  script:
-    - envsubst < deploy/$ENV_FILE > .env
-    - envsubst < deploy/deploy.sh > deploy.sh
-    - envsubst < deploy/docker-compose.deploy.yml > docker-compose.deploy.yml
-    - ssh -l $USER -o StrictHostKeyChecking=no $VM_HOSTNAME "mkdir -p $VM_TARGET_DIR"
-    - scp deploy.sh $USER@$VM_HOSTNAME:$VM_TARGET_DIR/deploy.sh
-    - scp docker-compose.deploy.yml $USER@$VM_HOSTNAME:$VM_TARGET_DIR/docker-compose.yml
-    - scp .env $USER@$VM_HOSTNAME:$VM_TARGET_DIR/.env
-    - ssh -l $USER -o StrictHostKeyChecking=no $VM_HOSTNAME 'bash -s' < deploy.sh
-
-deploy to staging:
-  environment: staging
-  extends: .deploy to environment
-  only:
-    - staging
-
-deploy to production:
-  environment: production
-  extends: .deploy to environment
-  only:
-    - production
-  when: manual

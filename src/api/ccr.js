@@ -1,11 +1,10 @@
-import { getEnv } from '@/utils.js';
 import axios from 'axios';
 
 import { interceptorAuthorize } from '@/authentication.js';
 import { interceptorCamelize } from '../utils.js';
 
-const baseURL = `${getEnv('VITE_URL_IORIO_CCR_BACKEND')}`;
-const connectionTimeout = `${getEnv('VITE_CONNECTION_TIMEOUT_MS')}`;
+const baseURL = import.meta.env.VITE_URL_IORIO_CCR_BACKEND;
+const connectionTimeout = import.meta.env.VITE_CONNECTION_TIMEOUT_MS;
 
 const protectedInstance = axios.create({
   baseURL,

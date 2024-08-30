@@ -1,12 +1,11 @@
 import Keycloak from 'keycloak-js';
 import { reactive, inject } from 'vue';
-import { getEnv } from '@/utils.js';
 
-const authServerURL = `${getEnv('VITE_URL_AUTH_SERVER')}`;
+const authServerURL = import.meta.env.VITE_URL_AUTH_SERVER;
 
-const realm = getEnv('VITE_AUTH_REALM');
+const realm = import.meta.env.VITE_AUTH_REALM;
 
-const clientId = getEnv('VITE_AUTH_CLIENT_ID');
+const clientId = import.meta.env.VITE_AUTH_CLIENT_ID;
 
 const keycloak = new Keycloak({
   url: authServerURL,
@@ -71,10 +70,9 @@ export function authorize(redirectUri = window.location.origin) {
 }
 
 export function init() {
-  const env = getEnv('VITE_ENV');
   return keycloak.init({
     checkLoginIframe: false,
-    enableLogging: env !== 'prod',
+    enableLogging: import.meta.env.NODE_ENV !== 'production',
   });
 }
 
