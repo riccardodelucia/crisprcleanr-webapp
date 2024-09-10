@@ -9,15 +9,10 @@ variables:
 ####################################################################################################
 include:
 
-  - component: $CICD_COMPONENTS_PROJECT/test_build_vite@$CICD_COMPONENTS_COMMIT_REF
+  - component: $CICD_COMPONENTS_PROJECT/test_eslint@$CICD_COMPONENTS_COMMIT_REF
     inputs:
       stage: test
-    rules:
-      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-        when: never
-      - if: $CI_COMMIT_BRANCH == 'production'
-        when: never
-      - when: always
+      config_file: .eslintrc.json
 
   - component: $CICD_COMPONENTS_PROJECT/build_vite@$CICD_COMPONENTS_COMMIT_REF
     inputs:
