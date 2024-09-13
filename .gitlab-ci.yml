@@ -12,7 +12,7 @@ include:
   - component: $CICD_COMPONENTS_PROJECT/test_eslint@$CICD_COMPONENTS_COMMIT_REF
     inputs:
       stage: test
-      config_file: .eslintrc.json
+      src_folder: ./src
 
   - component: $CICD_COMPONENTS_PROJECT/build_vite@$CICD_COMPONENTS_COMMIT_REF
     inputs:
@@ -34,6 +34,7 @@ include:
   
   - component: $CICD_COMPONENTS_PROJECT/deploy_to_static_webserver@$CICD_COMPONENTS_COMMIT_REF
     inputs:
+      stage: deploy
       folder_name: $WEBSERVER_FOLDER_NAME
       environment: staging
     rules:
@@ -43,6 +44,7 @@ include:
 
   - component: $CICD_COMPONENTS_PROJECT/deploy_to_static_webserver@$CICD_COMPONENTS_COMMIT_REF
     inputs:
+      stage: deploy
       folder_name: $WEBSERVER_FOLDER_NAME
       environment: production
     rules:

@@ -52,11 +52,10 @@ export default {
       left: 0,
     };
 
-    // eslint-disable-next-line
     const { innerWidth, innerHeight } = getInnerChartSizes(
       props.width,
       props.height,
-      margin
+      margin,
     );
 
     const yScale = computed(() => {
@@ -69,7 +68,7 @@ export default {
       },
       {
         flush: 'post',
-      }
+      },
     );
 
     return { margin, innerWidth, innerHeight, yScale, yAxis };
