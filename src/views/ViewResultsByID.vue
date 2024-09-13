@@ -268,7 +268,7 @@ export default {
                     ...image,
                     src: URL.createObjectURL(response.data),
                   };
-                } catch (error) {
+                } catch {
                   return {
                     ...image,
                     src: null,
@@ -280,7 +280,7 @@ export default {
             .then((resolvedPromiseArray) => {
               images.value = resolvedPromiseArray;
               imageListByCathegory.normImages = images.value.filter(
-                (image) => image.section === 'norm'
+                (image) => image.section === 'norm',
               );
               imageListByCathegory.chrImages = images.value
                 .filter((image) => image.section === 'chr')
@@ -290,11 +290,11 @@ export default {
                   return a - b;
                 });
               imageListByCathegory.qcImages = images.value.filter(
-                (image) => image.section === 'qc'
+                (image) => image.section === 'qc',
               );
             });
         }
-      })
+      }),
     );
 
     const openModal = (img, id) => {

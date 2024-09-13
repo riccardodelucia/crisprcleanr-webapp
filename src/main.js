@@ -4,7 +4,7 @@ import router from './router';
 
 import { init as authInit, plugin as authPlugin } from '@/authentication.js';
 
-import '@/assets/scss/vendor/nprogress.scss';
+import '@/assets/style/vendor/nprogress.css';
 
 import nProgress from 'nprogress';
 
