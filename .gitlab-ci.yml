@@ -12,7 +12,6 @@ include:
   - component: $CICD_COMPONENTS_PROJECT/test_eslint@$CICD_COMPONENTS_COMMIT_REF
     inputs:
       stage: test
-      src_folder: ./src
 
   - component: $CICD_COMPONENTS_PROJECT/build_vite@$CICD_COMPONENTS_COMMIT_REF
     inputs:
