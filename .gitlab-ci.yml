@@ -9,7 +9,7 @@ variables:
 ####################################################################################################
 include:
 
-  - component: $CICD_COMPONENTS_PROJECT/test_eslint@$CICD_COMPONENTS_COMMIT_REF
+  - component: $CICD_COMPONENTS_PROJECT/lint_eslint@$CICD_COMPONENTS_COMMIT_REF
     inputs:
       stage: test
 
