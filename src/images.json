@@ -1,0 +1,272 @@
+[
+  {
+    "imgUri": "fcs.png",
+    "chart": "fcs",
+    "filename": "fcs",
+    "section": "norm",
+    "label": "sgRNA logFCs",
+    "component": "BoxPlotMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "normCounts.png",
+    "chart": "normCounts",
+    "filename": "normCounts",
+    "section": "norm",
+    "label": "sgRNA Counts",
+    "component": "BoxPlotMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "PrRc_by_sgRNA.png",
+    "chart": "PrRc_by_sgRNA",
+    "filename": "PrRc_by_sgRNA",
+    "section": "qc",
+    "label": "Precision-Recall Curve by sgRNA",
+    "component": "LineChartPrRc",
+    "width": "80rem"
+  },
+  {
+    "imgUri": "PrRc_by_gene.png",
+    "chart": "PrRc_by_gene",
+    "filename": "PrRc_by_gene",
+    "section": "qc",
+    "label": "Precision-Recall Curve by Genes",
+    "component": "LineChartPrRc",
+    "width": "80rem"
+  },
+  {
+    "imgUri": "ROC_by_sgRNA.png",
+    "chart": "ROC_by_sgRNA",
+    "filename": "ROC_by_sgRNA",
+    "section": "qc",
+    "label": "ROC Curve by sgRNA",
+    "component": "LineChartROC",
+    "width": "80rem"
+  },
+  {
+    "imgUri": "ROC_by_gene.png",
+    "chart": "ROC_by_gene",
+    "filename": "ROC_by_gene",
+    "section": "qc",
+    "label": "ROC Curve by Genes",
+    "component": "LineChartROC",
+    "width": "80rem"
+  },
+  {
+    "imgUri": "1.png",
+    "chart": "1",
+    "filename": "1",
+    "section": "chr",
+    "label": "Chromosome 1",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "2.png",
+    "chart": "2",
+    "filename": "2",
+    "section": "chr",
+    "label": "Chromosome 2",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "3.png",
+    "chart": "3",
+    "filename": "3",
+    "section": "chr",
+    "label": "Chromosome 3",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "4.png",
+    "chart": "4",
+    "filename": "4",
+    "section": "chr",
+    "label": "Chromosome 4",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "5.png",
+    "chart": "5",
+    "filename": "5",
+    "section": "chr",
+    "label": "Chromosome 5",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "6.png",
+    "chart": "6",
+    "filename": "6",
+    "section": "chr",
+    "label": "Chromosome 6",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "7.png",
+    "chart": "7",
+    "filename": "7",
+    "section": "chr",
+    "label": "Chromosome 7",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "8.png",
+    "chart": "8",
+    "filename": "8",
+    "section": "chr",
+    "label": "Chromosome 8",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "9.png",
+    "chart": "9",
+    "filename": "9",
+    "section": "chr",
+    "label": "Chromosome 9",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "10.png",
+    "chart": "10",
+    "filename": "10",
+    "section": "chr",
+    "label": "Chromosome 10",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "11.png",
+    "chart": "11",
+    "filename": "11",
+    "section": "chr",
+    "label": "Chromosome 11",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "12.png",
+    "chart": "12",
+    "filename": "12",
+    "section": "chr",
+    "label": "Chromosome 12",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "13.png",
+    "chart": "13",
+    "filename": "13",
+    "section": "chr",
+    "label": "Chromosome 13",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "14.png",
+    "chart": "14",
+    "filename": "14",
+    "section": "chr",
+    "label": "Chromosome 14",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "15.png",
+    "chart": "15",
+    "filename": "15",
+    "section": "chr",
+    "label": "Chromosome 15",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "16.png",
+    "chart": "16",
+    "filename": "16",
+    "section": "chr",
+    "label": "Chromosome 16",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "17.png",
+    "chart": "17",
+    "filename": "17",
+    "section": "chr",
+    "label": "Chromosome 17",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "18.png",
+    "chart": "18",
+    "filename": "18",
+    "section": "chr",
+    "label": "Chromosome 18",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "19.png",
+    "chart": "19",
+    "filename": "19",
+    "section": "chr",
+    "label": "Chromosome 19",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "20.png",
+    "chart": "20",
+    "filename": "20",
+    "section": "chr",
+    "label": "Chromosome 20",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "21.png",
+    "chart": "21",
+    "filename": "21",
+    "section": "chr",
+    "label": "Chromosome 21",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "22.png",
+    "chart": "22",
+    "filename": "22",
+    "section": "chr",
+    "label": "Chromosome 22",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "23.png",
+    "chart": "23",
+    "filename": "23",
+    "section": "chr",
+    "label": "Chromosome 23",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  },
+  {
+    "imgUri": "24.png",
+    "chart": "24",
+    "filename": "24",
+    "section": "chr",
+    "label": "Chromosome 24",
+    "component": "ChromosomeMultichart",
+    "width": "120rem"
+  }
+]

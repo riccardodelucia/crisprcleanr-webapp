@@ -1,0 +1,61 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  WEBSERVER_FOLDER_NAME: crisprcleanr_webapp
+
+####################################################################################################
+include:
+
+  - component: $CICD_COMPONENTS_PROJECT/test_eslint@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      stage: test
+
+  - component: $CICD_COMPONENTS_PROJECT/build_vite@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      stage: build
+
+  - component: $CICD_COMPONENTS_PROJECT/build_vite@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      stage: build
+      environment: staging
+      input_env_file: deploy.env
+      output_env_file: production.env
+    rules:
+      - if: $CI_COMMIT_BRANCH == 'staging'
+        when: always
+      - when: never
+
+  - component: $CICD_COMPONENTS_PROJECT/build_vite@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      stage: build
+      environment: production
+      input_env_file: deploy.env
+      output_env_file: production.env
+    rules:
+      - if: $CI_COMMIT_BRANCH == 'production'
+        when: always
+      - when: never
+  
+  - component: $CICD_COMPONENTS_PROJECT/deploy_to_static_webserver@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      stage: deploy
+      folder_name: $WEBSERVER_FOLDER_NAME
+      environment: staging
+    rules:
+      - if: $CI_COMMIT_BRANCH == 'staging'
+        when: always
+      - when: never
+
+  - component: $CICD_COMPONENTS_PROJECT/deploy_to_static_webserver@$CICD_COMPONENTS_COMMIT_REF
+    inputs:
+      stage: deploy
+      folder_name: $WEBSERVER_FOLDER_NAME
+      environment: production
+    rules:
+      - if: $CI_COMMIT_BRANCH == 'production'
+        when: always
+      - when: never
+
