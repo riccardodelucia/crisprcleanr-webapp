@@ -31,7 +31,7 @@
 
 <script>
 import { setTooltipContent } from '@/utils.js';
-import { useTooltip } from '@nf-daha-iu3/ht-vue';
+import { useTooltip } from '@nf-data-iu3/ht-vue';
 import { inject } from 'vue';
 
 export default {

@@ -28,10 +28,7 @@
 
 <script>
 import { uploads, removeFileUpload } from './uploads';
-import {
-  notifications,
-  removeNotification,
-} from '@nf-daha-iu3/ht-vue';
+import { notifications, removeNotification } from '@nf-data-iu3/ht-vue';
 
 import FileUploadController from './components/FileUploadController.vue';
 

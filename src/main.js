@@ -14,12 +14,12 @@ import VueFeather from 'vue-feather';
 
 import { AxiosError } from 'axios';
 
-import { HTVue } from '@nf-daha-iu3/ht-vue';
+import { HTVue } from '@nf-data-iu3/ht-vue';
 import {
   HTNotificationsPlugin,
   sendErrorNotification,
-} from '@nf-daha-iu3/ht-vue';
-import '@nf-daha-iu3/ht-vue/style.css';
+} from '@nf-data-iu3/ht-vue';
+import '@nf-data-iu3/ht-vue/style.css';
 
 nProgress.configure({ showSpinner: false });
 
