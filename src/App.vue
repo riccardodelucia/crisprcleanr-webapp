@@ -1,30 +1,85 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
   <router-view />
+  <div class="fixed-container ht-layout-stack">
+    <ht-toast
+      v-for="({ type, title, message, id }, idx) in notifications"
+      :key="idx"
+      :type="type"
+      :title="title"
+      :toast-id="id"
+      @close-notification="onCloseNotification"
+    >
+      <p>{{ message }}</p>
+    </ht-toast>
+    <template v-if="uploads.length > 0">
+      <div class="ht-card ht-container">
+        <FileUploadController
+          v-for="upload in uploads"
+          :key="upload.id"
+          class="upload-controller"
+          :upload="upload"
+          @remove-upload="onRemoveUpload"
+        >
+        </FileUploadController>
+      </div>
+    </template>
+  </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import { uploads, removeFileUpload } from './uploads';
+import { notifications, removeNotification } from '@nf-data-iu3/ht-vue';
+
+import FileUploadController from './components/FileUploadController.vue';
+
+export default {
+  components: { FileUploadController },
+  data() {
+    return { uploads, notifications };
+  },
+
+  methods: {
+    onRemoveUpload(upload) {
+      removeFileUpload(upload);
+    },
+    onCloseNotification(notification) {
+      removeNotification(notification);
+    },
+  },
+};
+</script>
+
+<style lang="postcss">
+.fixed-container {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: var(--size-3);
+  width: 25%;
+
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+  }
 }
 
-#nav {
-  padding: 30px;
+.upload-controller {
+  --background-color: var(--ht-surface-2);
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+.ht-card {
+  box-shadow: var(--shadow-3);
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.toggle-switch-container {
+  width: 12rem;
+}
+
+.app-content {
+  padding: var(--size-4);
+  overflow-x: scroll;
+}
+
+#main {
+  overflow-x: scroll;
 }
 </style>
